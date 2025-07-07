@@ -95,6 +95,12 @@ nav li {
 	font-size: 1.2em;
 }
 
+/* Modification de la taille de l'icone instagram */
+nav img {
+	width: 20px;
+	height: 20px;
+}
+
 li:hover {
 	color: #B1663C;
 }
