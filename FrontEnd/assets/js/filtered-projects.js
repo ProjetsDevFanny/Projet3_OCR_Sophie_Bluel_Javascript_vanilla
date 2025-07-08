@@ -1,20 +1,22 @@
-let projects = [];
+let projectsArray = [];
 const gallery = document.querySelector(".gallery");
 let uniqueCategories = [];
 
 // Fonction pour aller chercher les données de l'API
 async function fetchProjects() {
-  await fetch("http://localhost:5678/api/works")
-    .then((res) => res.json()) // On transforme la réponse en JSON
-    .then((data) => {
-      projects = data; // Stocke les données API dans "projects"
-      console.log(projects); // toujours ce garder l'objet ouvert dans la console
-      createButtons();
-      displayProjects(); //  On appelle cette fonction après avoir reçu les données
-    })
-    .catch((error) =>
-      console.error("Erreur lors de la récupération des projets :", error)
-    ); // Gestion des erreurs
+  try {
+    const response = await fetch("http://localhost:5678/api/works");
+    const data = await response.json();
+    projectsArray = data;
+
+    console.log("Projets récupérés :", projectsArray);
+
+    createButtons(); // On crée les boutons maintenant que les projets sont dispo
+    displayProjects(projectsArray); // On affiche tous les projets
+    setUpButtonListeners(); // On ajoute les écouteurs de clic après avoir créé les boutons
+  } catch (error) {
+    console.error("Erreur lors de la récupération des projets :", error);
+  }
 }
 
 // Fonction pour afficher les projets :
@@ -22,8 +24,9 @@ async function fetchProjects() {
 // on y ajoute l'image et le titre
 // Enfin on ajoute la figure dans la gallery.
 
-function displayProjects() {
-  projects.forEach((project) => {
+function displayProjects(projectsArray) {
+  gallery.innerHTML = ""; // On vide la galerie pour éviter d'empiler les projets
+  projectsArray.forEach((project) => {
     const figure = document.createElement("figure");
 
     const img = document.createElement("img");
@@ -40,16 +43,23 @@ function displayProjects() {
   });
 }
 
+// Fonction pour nettoyer les catégories :
+function normalizeCategoryName(name) {
+  return name
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9\-]/g, "");
+}
 
 //  Fonction de création des boutons :
 function createButtons() {
   // Création du tableau des catégories (on va les chercher dans l'API):
-  const categoriesArray = projects.map((project) => project.category.name);
+  const categoriesArray = projectsArray.map((project) => project.category.name);
   // suppression des doublons et création des boutons:
   uniqueCategories = [...new Set(categoriesArray)];
   uniqueCategories.unshift("Tous"); // on ajoute "Tous" comme 1er élement du tableau
   console.log(uniqueCategories);
-  
+
   // Création du container des boutons, seulement s'il n'existe pas :
   let btnContainer = document.querySelector(".btn-container");
   if (!btnContainer) {
@@ -63,11 +73,9 @@ function createButtons() {
   uniqueCategories.forEach((category) => {
     const btn = document.createElement("button");
     // Nettoyage du nom de la catégorie pour des noms de classe et dataSet standardisés (tout en minuscules, sans espaces, sans caractères spéciaux):
-    const refreshCategory = category.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9\-]/g, "");
+    const refreshCategory = normalizeCategoryName(category);
     btn.classList.add("btn"); // classe générique
-    btn.classList.add(
-      `btn-${refreshCategory}`
-    );
+    btn.classList.add(`btn-${refreshCategory}`);
     if (category === "Tous") {
       btn.dataset.category = "all"; // pour le filtrage des projets plus tard
     } else {
@@ -78,9 +86,36 @@ function createButtons() {
   });
 }
 
+// Gestion des évènements au clic sur les boutons  et filtrage des projets:
+function setUpButtonListeners() {
+  const btnContainer = document.querySelector(".btn-container");
+  if (!btnContainer) return;
 
+  btnContainer.addEventListener("click", (e) => {
+    if (e.target.tagName === "BUTTON") {
+      const category = e.target.dataset.category;
+      console.log("Filtrer par catégorie :", category);
+      filterProjects(category);
+    }
+  });
+}
 
+//Fonction pour filtrer les projets par catégories:
+function filterProjects(category) {
+  let filteredProjects;
 
+  if (category === "all") {
+    filteredProjects = projectsArray;
+  } else {
+    filteredProjects = projectsArray.filter((project) => {
+      return normalizeCategoryName(project.category.name) === category;
+    });
+  }
+
+  console.log(filteredProjects);
+  gallery.innerHTML = ""; // On vide la galerie avant d’afficher les projets filtrés
+  displayProjects(filteredProjects);
+}
 
 // Charger les projets au démarrage
 fetchProjects();

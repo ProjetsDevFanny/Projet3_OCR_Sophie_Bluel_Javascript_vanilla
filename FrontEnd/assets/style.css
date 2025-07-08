@@ -52,7 +52,10 @@ body {
 	margin:auto;
 	font-family: 'Work Sans' ;
 	font-size: 14px;
-}
+}	
+
+/* =============Style de l'en-tête ============= */
+
 header {
 	display: flex;
 	justify-content: space-between;
@@ -104,6 +107,9 @@ nav img {
 li:hover {
 	color: #B1663C;
 }
+
+/* =============Style de l'introduction ============= */
+
 #introduction {
 	display: flex;
 	align-items: center;
@@ -127,10 +133,47 @@ li:hover {
 #introduction p {
 	margin-bottom: 0.5em;
 }
+
+/* =============Style du portfolio ============= */
+
 #portfolio h2 {
 	text-align: center;
 	margin-bottom: 1em;
 }
+
+/* ============= Style des boutons ============= */
+
+.btn-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 1em;
+	gap: 1em;
+}
+
+.btn {
+	font-family: 'Syne';
+	font-weight: 700;
+	font-size: 15px;
+	color:#1D6154;
+	background-color: #ffffff;
+	padding: 0 2em;
+	width: auto;
+	height: 38px;
+	text-align: center;
+	border-radius: 60px;
+	border:1.5px solid #1D6154;
+	transition: all 0.3s ease;
+}
+
+.btn:hover {
+	background-color: #1D6154;
+	color: #ffffff;
+	cursor: pointer;
+}
+
+/* =============Style de la gallery ============= */
+
 .gallery {
 	width: 100%;
 	display: grid;
@@ -141,8 +184,10 @@ li:hover {
 
 .gallery img {
 	width: 100%;
-
 }
+
+/* =============Style du formulaire de contact ============= */
+
 #contact {
 	width: 50%;
 margin: auto;
@@ -186,6 +231,7 @@ input[type="submit"]{
 	border-radius: 60px ;
 }
 
+/* =============Style du footer ============= */
 footer nav ul {
 	display: flex;
 	justify-content: flex-end;
