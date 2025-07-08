@@ -28,6 +28,11 @@ article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
 	line-height: 1;
 }
@@ -53,6 +58,12 @@ body {
 	font-family: 'Work Sans' ;
 	font-size: 14px;
 }	
+
+a {
+	text-decoration: none;
+	color: #000000;
+	transition: color 0.2s ease;
+}
 
 /* =============Style de l'en-tête ============= */
 
@@ -98,15 +109,33 @@ nav li {
 	font-size: 1.2em;
 }
 
-/* Modification de la taille de l'icone instagram */
-nav img {
-	width: 20px;
-	height: 20px;
+nav li a:hover {
+	color: #B1663C;
+	cursor: pointer;
+	}
+
+nav li a:active {
+	font-weight: 600;
 }
 
-li:hover {
-	color: #B1663C;
+
+/* Modification de la taille de l'icone instagram */
+.insta-icon {
+  width: 24px;
+  height: 24px;
+  transition: filter 0.2s ease, transform 0.2s ease;
 }
+
+.insta-icon:hover {
+  filter: brightness(0) saturate(100%) invert(47%) sepia(32%) saturate(500%) hue-rotate(345deg) brightness(95%) contrast(90%);
+  transform: scale(1.1);
+	cursor: pointer;
+}
+
+
+
+
+
 
 /* =============Style de l'introduction ============= */
 
