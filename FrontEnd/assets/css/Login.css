@@ -3,7 +3,7 @@
 html, body {
   height: 100vh; /* 100% de la hauteur de la fenêtre */
   position: relative;
-	overflow: hidden;
+	overflow-y: hidden;
 }
 
 footer {
@@ -63,4 +63,11 @@ footer nav ul li {
 .forgot-password {
 	text-decoration: underline;
 	cursor: pointer;
+}
+
+#error-message {
+	color: red;
+	font-size: 1.2em;
+	margin-top: 1em;
+	text-align: center;
 }
