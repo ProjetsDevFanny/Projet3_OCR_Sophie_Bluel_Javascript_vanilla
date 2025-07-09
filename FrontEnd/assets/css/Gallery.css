@@ -1,0 +1,56 @@
+/* =============Style du portfolio ============= */
+
+#portfolio h2 {
+	text-align: center;
+	margin-bottom: 1em;
+}
+
+/* ============= Style des boutons ============= */
+
+.btn-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 3em 0;
+	gap: 1em;
+}
+
+.btn {
+	font-family: 'Syne';
+	font-weight: 700;
+	font-size: 15px;
+	color:#1D6154;
+	background-color: #fffef8;
+	padding: 0 2em;
+	width: auto;
+	height: 38px;
+	text-align: center;
+	border-radius: 60px;
+	border:1.5px solid #1D6154;
+	transition: all 0.3s ease;
+}
+
+.btn:hover {
+	background-color: #1D6154;
+	color: #fffef8;
+	cursor: pointer;
+}
+
+.btn.active {
+	background-color: #1D6154;
+	color: #fffef8;
+}
+
+/* =============Style de la gallery ============= */
+
+.gallery {
+	width: 100%;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	grid-column-gap: 20px;
+	grid-row-gap: 20px;
+}
+
+.gallery img {
+	width: 100%;
+}

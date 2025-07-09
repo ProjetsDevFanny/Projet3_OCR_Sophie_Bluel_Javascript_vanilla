@@ -1,3 +1,24 @@
+/* =============Style de la page de connexion ============= */
+
+html, body {
+  height: 100vh; /* 100% de la hauteur de la fenêtre */
+  position: relative;
+	overflow: hidden;
+}
+
+footer {
+	background-color: white;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	width: 100%;
+}
+
+footer nav ul li {
+	cursor: pointer;
+}
+
+
 #login {
 	width: 50%;
 	margin: auto;
@@ -32,8 +53,14 @@
 	color: white;
   height: 36px;
 	background-color: #1D6154;
-	margin : 2em auto ;
+	margin : 3em auto 2em auto ;
 	width: 180px;
 	text-align: center;
 	border-radius: 60px ;
+	cursor: pointer;
+}
+
+.forgot-password {
+	text-decoration: underline;
+	cursor: pointer;
 }
