@@ -78,6 +78,7 @@ function createButtons() {
     btn.classList.add(`btn-${refreshCategory}`);
     if (category === "Tous") {
       btn.dataset.category = "all"; // pour le filtrage des projets plus tard
+      btn.classList.add("active");
     } else {
       btn.dataset.category = refreshCategory;
     }
@@ -96,6 +97,15 @@ function setUpButtonListeners() {
       const category = e.target.dataset.category;
       console.log("Filtrer par catégorie :", category);
       filterProjects(category);
+
+      // Supprimer  la classe "active" de tous les boutons :
+      const allBtns = document.querySelectorAll(".btn");
+      allBtns.forEach((btn) => {
+        btn.classList.remove("active");
+      });
+
+      // Ajouter la classe "active" au bouton cliqué :
+      e.target.classList.add("active");
     }
   });
 }
