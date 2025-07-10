@@ -1,3 +1,5 @@
+// ********** Mise en place de la galerie et des boutons de filtrage **********
+
 let projectsArray = [];
 const gallery = document.querySelector(".gallery");
 let uniqueCategories = [];

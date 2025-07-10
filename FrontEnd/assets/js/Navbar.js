@@ -1,5 +1,6 @@
-// Fonction pour gérer le clic sur les liens du menu :
+// ********** Gestion du menu de navigation **********
 
+// Fonction pour gérer le clic sur les liens du menu :
 function clickNavbarLinks() {
   const allNavbarLinks = document.querySelectorAll("nav ul li a");
   if (!allNavbarLinks) return;
