@@ -3,20 +3,48 @@
 // Fonction générale pour modifier la page d'accueil en mode édition
 
 function editPage() {
+  console.log("editPage exécutée");
   // =============== Connexion ===============
 
-  // Récupération du token (si pas de token, on redirige vers login)
+  // Récupération du token (si pas de token, on redirige vers HomePage)
   const token = localStorage.getItem("token");
   if (!token) {
-    // Pas connecté, on redirige vers login
-    window.location.href = "Login.html";
+    window.location.href = "HomePage.html";
     return;
   }
 
-  // =============== Barre de mode édition =========================================
+  // =============== Barre supérieure du mode édition =========================================
 
   const editionMode = document.getElementById("edition-mode");
-  editionMode.textContent = `Mode édition`;
+  if (editionMode) {
+    const icone = document.createElement("i");
+    icone.classList.add("fa-regular", "fa-pen-to-square");
+    editionMode.appendChild(icone);
+
+    const texte = document.createElement("span");
+    texte.textContent = `Mode édition`;
+    editionMode.appendChild(texte);
+  }
+
+  // =============== Bouton de déconnexion ===============
+
+  const loginOutBtn = document.getElementById("login-out-btn");
+  if (loginOutBtn) {
+    loginOutBtn.textContent = `Logout`;
+  }
+
+  // ====================Bouton "Modifier" pour les projets ====================
+
+  const modifier = document.querySelector("#portfolio>h2");
+  if (modifier) {
+    const icone = document.createElement("i");
+    icone.classList.add("fa-regular", "fa-pen-to-square");
+    modifier.appendChild(icone);
+
+    const texte = document.createElement("span");
+    texte.textContent = `modifier`;
+    modifier.appendChild(texte);
+  }
 
   // =============== Masquage des boutons de filtrages de la galerie ===============
 
@@ -39,15 +67,12 @@ function editPage() {
 
   // =============== Déconnexion au clic sur le bouton logout ===============
 
-  const loginBtn = document.getElementById("login-btn");
+  const logoutBtn = document.getElementById("login-out-btn");
   // On ajoute un écouteur d'événement sur le bouton de déconnexion
-  loginBtn.addEventListener("click", () => {
+  logoutBtn.addEventListener("click", () => {
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
     // On redirige vers la page de connexion
-    window.location.href = "Login.html";
+    window.location.href = "HomePage.html";
   });
 }
-
-// On attend que le DOM soit totalement chargé et on appelle la fonction editPage
-document.addEventListener("DOMContentLoaded", editPage);

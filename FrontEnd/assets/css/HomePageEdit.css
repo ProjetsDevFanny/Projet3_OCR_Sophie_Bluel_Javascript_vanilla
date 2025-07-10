@@ -1,7 +1,28 @@
 #edition-mode {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
   background-color: #000;
   color: #fff;
   padding: 20px;
-  text-align: center;
-  font-size: 16px;
+  font-size: 18px;
 }
+
+#portfolio>h2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+
+#portfolio>h2>span {
+  color: black;
+  font-size: 12px;
+}
+
+#portfolio>h2>i {
+    color: black;
+    font-size: 14px;
+  }
+
