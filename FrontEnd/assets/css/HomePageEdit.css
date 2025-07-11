@@ -9,20 +9,30 @@
   font-size: 18px;
 }
 
-#portfolio>h2 {
+#portfolio {
+  margin-top: 100px;
+}
+
+.title-wrapper {
+ position: relative;
+}
+
+#portfolio h2 {
+  margin-top: 0;
+}
+
+.btn-modifier {
+  position: absolute;
+  right: 360px;
+  top: 50%;
+  transform: translateY(-50%);
   display: flex;
-  justify-content: center;
   align-items: center;
-  gap: 30px;
+  justify-content: center;
+  gap: 10px;
+  background-color: #fffef8;
+  border: none;
+  font-family: "Work Sans", sans-serif;
+  cursor: pointer;
 }
-
-#portfolio>h2>span {
-  color: black;
-  font-size: 12px;
-}
-
-#portfolio>h2>i {
-    color: black;
-    font-size: 14px;
-  }
 
