@@ -10,7 +10,9 @@
 	<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap"
 		rel="stylesheet">
 	<meta name="description" content="">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+		integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+		crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<link rel="stylesheet" href="../assets/css/Global.css">
 	<link rel="stylesheet" href="../assets/css/Navbar.css">
 	<link rel="stylesheet" href="../assets/css/Introduction.css">
@@ -18,6 +20,7 @@
 	<link rel="stylesheet" href="../assets/css/Contact.css">
 	<link rel="stylesheet" href="../assets/css/Footer.css">
 	<link rel="stylesheet" href="../assets/css/HomePageEdit.css">
+	<link rel="stylesheet" href="../assets/css/Modal.css">
 </head>
 
 <body>
@@ -124,10 +127,32 @@
 			</ul>
 		</nav>
 	</footer>
+
+	<!-- Modal -->
+	<div class="modal-overlay hidden"></div>
+	<div id="modal" class="modal hidden">
+		<div class="modal-content">
+			<span class="close-btn">X</span>
+			<h1>Galerie photo</h1>
+			<div class="gallery-modal">
+				<!-- <div class="gallery-item-modal">
+					<img src="../assets/images/abajour-tahina.png" alt="Abajour Tahina">
+				</div>
+				<div class="gallery-item-modal">
+					<img src="../assets/images/abajour-tahina.png" alt="Abajour Tahina">
+				</div>
+				<div class="gallery-item-modal">
+					<img src="../assets/images/abajour-tahina.png" alt="Abajour Tahina">
+				</div> -->
+			</div>
+		</div>
+	</div>
+
 	<script src="../assets/js/Main.js"></script>
 	<script src="../assets/js/Navbar.js"></script>
 	<script src="../assets/js/Gallery.js"></script>
 	<script src="../assets/js/HomePageEdit.js"></script>
+	<script src="../assets/js/Modal.js"></script>
 </body>
 
 </html>

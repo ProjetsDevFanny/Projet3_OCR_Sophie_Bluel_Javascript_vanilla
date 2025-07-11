@@ -81,6 +81,11 @@ function editPage() {
         titleWrapper,
         portfolio.querySelector(".btn-container")
       );
+
+      // Ajout de l'écouteur dès que le bouton "Modifier" est créé
+      modifierBtn.addEventListener("click", () => {
+        loadModal();
+      });
     }
     // On arrête d'observer après insertion
     observerModifier.disconnect();
@@ -92,6 +97,8 @@ function editPage() {
   // voir si des éléments enfants sont ajoutés dans les sous-éléments (subtree: true)
   // > Autrement dit, il surveille tout ce qui arrive dans la page, même les éléments injectés plus tard par Gallery.js.
   observerModifier.observe(document.body, { childList: true, subtree: true });
+
+  // =============== Modale ===============
 
   // =============== Masquage des boutons de filtrages de la galerie ===============
 
