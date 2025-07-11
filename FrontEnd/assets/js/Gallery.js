@@ -28,6 +28,7 @@ async function fetchProjects() {
 
 function displayProjects(projectsArray) {
   gallery.innerHTML = ""; // On vide la galerie pour éviter d'empiler les projets
+
   projectsArray.forEach((project) => {
     const figure = document.createElement("figure");
 
