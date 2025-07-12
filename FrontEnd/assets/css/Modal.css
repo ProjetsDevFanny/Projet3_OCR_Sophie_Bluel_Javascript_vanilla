@@ -34,13 +34,51 @@
 .close-btn {
   color: #aaa;
   float: right;
-  font-size: 28px;
-  font-weight: bold;
+  font-size: 20px;
 }
 
 .close-btn:hover,
 .close-btn:focus {
   color: black;
   text-decoration: none;
+  cursor: pointer;
+}
+
+.modal {
+  padding: 20px 30px;
+}
+
+.modal-content {
+  height: 100%;
+  width: 100%;
+}
+
+.modal-content h1 {
+  text-align: center;
+  font-family: "Work Sans", sans-serif;
+  font-size: 26px;
+  font-weight: 400;
+  color: #000;
+}
+
+.gallery-edit {
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 30px;
+  column-gap: 10px;
+  padding: 40px;
+ 
+}
+
+/* Styles spécifiques aux figures dans la modale */
+.gallery-edit figure {
+  width: 76px;
+  height: 102.6px;
+  overflow: hidden;
+}
+
+/* Styles spécifiques aux images dans la modale */
+.gallery-edit img {
+  width: 100%;
   cursor: pointer;
 }
