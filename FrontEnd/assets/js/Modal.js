@@ -1,6 +1,5 @@
 // ****************** Logique de la modale ******************
 
-
 // Affiche les projets dans la modale
 
 function displayProjectsModal(projectsArray) {
@@ -17,13 +16,16 @@ function displayProjectsModal(projectsArray) {
     const caption = document.createElement("figcaption");
     caption.innerText = project.title;
 
+    const supprPhotoIcon = document.createElement("i");
+    supprPhotoIcon.classList.add("fa-solid", "fa-trash-can", "supprPhotoIcon");
+    supprPhotoIcon.dataset.id = project.id;
+
     figure.appendChild(img);
     figure.appendChild(caption);
-
+    figure.appendChild(supprPhotoIcon);
     modalGallery.appendChild(figure);
   });
 }
-
 
 // Chargement de la modale
 function loadModal() {
@@ -32,7 +34,7 @@ function loadModal() {
     const modalOverlay = document.querySelector(".modal-overlay");
     const closeBtn = container.querySelector(".close-btn");
 
-   // Fermeture de la modale au click sur la croix (X)
+    // Fermeture de la modale au click sur la croix (X)
     if (closeBtn) {
       closeBtn.addEventListener("click", () => {
         container.classList.add("hidden");
