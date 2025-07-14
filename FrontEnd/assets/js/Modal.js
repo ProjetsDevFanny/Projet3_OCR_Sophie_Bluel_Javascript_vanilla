@@ -20,6 +20,26 @@ function displayProjectsModal(projectsArray) {
     supprPhotoIcon.classList.add("fa-solid", "fa-trash-can", "supprPhotoIcon");
     supprPhotoIcon.dataset.id = project.id;
 
+    // Supprime la photo de l'API au click sur l'icône de suppression (icone poubelle)
+    supprPhotoIcon.addEventListener("click", async (e) => {
+      const confirmed = confirm("Voulez-vous vraiment supprimer ce projet ?");
+      if (!confirmed) return; // Si l'utilisateur clique sur annuler, on arrête tout de suite la fonction avec return.
+
+      const idToDelete = e.target.dataset.id;
+      try {
+        await deleteProjectFromAPI(idToDelete); // Appel d'une fonction externe qui supprime la photo ciblée, de l'API
+
+        // Mise à jour dynamique : supprime juste l'élément du DOM en local (ici, la figure)
+        // -> visuellement plus fluide dans un 1er temps, puis un rechargement complet viendra plus après
+        e.target.closest("figure").remove();
+
+        // Recharge les projets dans la page principale et de la modale
+        refreshAllProjects(); // Appelle displayProjects() et displayProjectsModal()
+      } catch (err) {
+        console.error("Erreur lors de la suppression :", err);
+      }
+    });
+
     figure.appendChild(img);
     figure.appendChild(caption);
     figure.appendChild(supprPhotoIcon);
@@ -61,6 +81,7 @@ function loadModal() {
         if (modifierBtn) modifierBtn.blur();
       }
     });
+
     // Affiche la modale
     container.classList.remove("hidden");
     modalOverlay.classList.remove("hidden");
@@ -68,4 +89,29 @@ function loadModal() {
   } catch (error) {
     console.error("Erreur lors du chargement de la modale :", error);
   }
+}
+
+// Suppression d'un projet de l'API
+async function deleteProjectFromAPI(projectId) {
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(`http://localhost:5678/api/works/${projectId}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Échec de la suppression : " + response.status);
+  }
+}
+
+// Rechargement de tous les projets
+async function refreshAllProjects() {
+  const response = await fetch("http://localhost:5678/api/works");
+  const updatedProjects = await response.json();
+
+  displayProjects(updatedProjects);
+  displayProjectsModal(updatedProjects);
 }
