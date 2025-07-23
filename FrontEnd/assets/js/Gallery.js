@@ -8,6 +8,23 @@ let uniqueCategories = [];
 async function fetchProjects() {
   try {
     const response = await fetch("http://localhost:5678/api/works");
+
+    if (!response.ok) {
+      // Gestion spécifique selon le code HTTP
+      switch (response.status) {
+        case 401:
+          throw new Error("Erreur 401 : Non autorisé. Veuillez vérifier le token.");
+        case 404:
+          throw new Error("Erreur 404 : Ressource non trouvée.");
+        case 500:
+          throw new Error("Erreur 500 : Erreur serveur. Réessayez plus tard.");
+        default:
+          throw new Error("Erreur HTTP : " + response.status);
+      }
+    }
+
+    // Si on arrive ici, c'est que la réponse est OK
+
     const data = await response.json();
     projectsArray = data;
 
@@ -18,6 +35,7 @@ async function fetchProjects() {
     setUpButtonListeners(); // On ajoute les écouteurs de clic après avoir créé les boutons
   } catch (error) {
     console.error("Erreur lors de la récupération des projets :", error);
+    // Ici on peut afficher un message d'erreur à l'utilisateur.
   }
 }
 

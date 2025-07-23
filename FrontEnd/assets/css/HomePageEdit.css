@@ -3,8 +3,8 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
-  background-color: #000;
-  color: #fff;
+  background-color: var(--black-color);
+  color: var(--white-color);
   padding: 20px;
   font-size: 18px;
 }
@@ -30,7 +30,7 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
-  background-color: #fffef8;
+  background-color: var(--background-color);
   border: none;
   font-family: "Work Sans", sans-serif;
   cursor: pointer;

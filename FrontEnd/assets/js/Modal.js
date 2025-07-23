@@ -102,8 +102,14 @@ async function deleteProjectFromAPI(projectId) {
     },
   });
 
-  if (!response.ok) {
-    throw new Error("Échec de la suppression : " + response.status);
+  if (response.ok) {
+    // OK: projet supprimé
+  } else if (response.status === 401) {
+    console.error("Non autorisé : token invalide ou manquant.");
+  } else if (response.status === 500) {
+    console.error("Erreur serveur : suppression impossible.");
+  } else {
+    console.error("Erreur inconnue : ", response.status);
   }
 }
 

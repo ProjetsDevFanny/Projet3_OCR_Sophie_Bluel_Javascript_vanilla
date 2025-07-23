@@ -1,7 +1,7 @@
 /* =============Style du footer ============= */
 
 footer {
-	background-color: #ffffff;
+	background-color: var(--background-color);
 	padding: 2em 0;
 }
 

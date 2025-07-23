@@ -16,7 +16,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: white;
+  background: var(--white-color);
   padding: 2rem;
   border-radius: 8px;
   z-index: 1001; /* au-dessus de l'overlay */
@@ -44,7 +44,7 @@
   position: absolute;
   top: 0;
   right: 0;
-  color: #B3B3B3;
+  color: var(--grey-color);
   float: right;
   font-size: 20px;
 }
@@ -61,7 +61,7 @@
   font-family: "Work Sans", sans-serif;
   font-size: 26px;
   font-weight: 400;
-  color: #000;
+  color: var(--black-color);
   margin-top: 40px;
 }
 
@@ -72,7 +72,7 @@
   column-gap: 10px;
   padding-bottom: 70px;
   margin: 50px 100px 60px 100px;
-  border-bottom: 1px solid #B3B3B3;
+  border-bottom: 1px solid var(--grey-color);
  
 }
 
@@ -96,7 +96,7 @@
   position:absolute;
   font-size: 10px;
   font-weight: 400;
-  color: #eae5e5;
+  color: var(--light-grey-color);
   text-align: center;
   transition: opacity  ease-in-out 0.5s;
   opacity:0;
@@ -113,11 +113,11 @@
   position: absolute;
   top: 5px;
   right: 5px;
-  color: #f8f1f1;
+  color: var(--nuance-white-color);
   font-size: 10px;
   cursor: pointer;
   padding: 3px;
-  background-color: #0f1010;
+  background-color: var(--black-nuance-color);
   border-radius: 3px;
 }
 
@@ -135,8 +135,8 @@
   box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
   font-family: 'Syne';
   font-weight: 600;
-  color: white;
-  background-color: #1D6154;
+  color: var(--white-color);
+  background-color: var(--green-color);
   text-align: center;
   border-radius: 60px;
   cursor: pointer;

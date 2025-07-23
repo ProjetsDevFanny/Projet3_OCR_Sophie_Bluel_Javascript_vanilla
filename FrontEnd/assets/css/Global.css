@@ -40,6 +40,21 @@ html {
 body {
 	line-height: 1;
 }
+
+/* =============Variables couleurs ============= */
+:root{
+	--green-color: #1D6154;
+	--dark-green-color: #0e2f28;
+	--black-color: #000000;
+	--black-nuance-color:#0f1010;
+	--background-color: #fffef8;
+	--white-color: #FFFFFF;
+	--nuance-white-color: #f8f1f1;
+	--red-color: #FF0000;
+	--grey-color: #B3B3B3;
+	--light-grey-color: #eae5e5;
+}
+
 ol, ul {
 	list-style: none;
 }

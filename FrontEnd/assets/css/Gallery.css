@@ -19,26 +19,26 @@
 	font-family: 'Syne';
 	font-weight: 700;
 	font-size: 15px;
-	color:#1D6154;
-	background-color: #fffef8;
+	color:var(--green-color);
+	background-color: var(--background-color);
 	padding: 0 2em;
 	width: auto;
 	height: 38px;
 	text-align: center;
 	border-radius: 60px;
-	border:1.5px solid #1D6154;
+	border:1.5px solid var(--green-color);
 	transition: all 0.3s ease;
 }
 
 .btn:hover {
-	background-color: #1D6154;
-	color: #fffef8;
+	background-color: var(--green-color);
+	color: var(--background-color);
 	cursor: pointer;
 }
 
 .btn.active {
-	background-color: #1D6154;
-	color: #fffef8;
+	background-color: var(--green-color);
+	color: var(--background-color);
 }
 
 /* =============Style de la gallery ============= */
