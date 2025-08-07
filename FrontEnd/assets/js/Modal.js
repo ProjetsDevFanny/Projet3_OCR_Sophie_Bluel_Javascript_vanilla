@@ -121,3 +121,65 @@ async function refreshAllProjects() {
   displayProjects(updatedProjects);
   displayProjectsModal(updatedProjects);
 }
+
+// Affiche la modale "Ajout d'une photo"
+function loadModalAddPhoto() {
+  try {
+    const modalAddPhoto = document.querySelector(".modal-add-photo");
+    const modalOverlay = document.querySelector(".modal-overlay");
+    const closeBtn = container.querySelector(".close-btn");
+
+    // Fermeture de la modale ajout photo au click sur la croix (X)
+    if (closeBtn) {
+      closeBtn.addEventListener("click", () => {
+        modalAddPhoto.classList.add("hidden");
+        modalOverlay.classList.add("hidden");
+      });
+    }
+
+    // Quand l'utilisateur clique en dehors de la fenêtre modale ajout photo, elle se ferme
+    if (modalOverlay) {
+      modalOverlay.addEventListener("click", () => {
+        modalAddPhoto.classList.add("hidden");
+        modalOverlay.classList.add("hidden");
+      });
+    }
+
+    // Fermeture de la modale au click sur la touche "Escape"
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        modalAddPhoto.classList.add("hidden");
+        modalOverlay.classList.add("hidden");
+      }
+    });
+
+    // Affiche la modale
+    modalAddPhoto.classList.remove("hidden");
+    modalOverlay.classList.remove("hidden");
+  } catch (error) {
+    console.error(
+      "Erreur lors du chargement de la modale 'ajout photo' :",
+      error
+    );
+  }
+}
+
+// ==================================================================
+
+const addPhotoBtn = document.querySelector("#addPhotoBtn");
+addPhotoBtn.addEventListener("click", () => {
+  loadModalAddPhoto();
+});
+
+// Affiche la modale "Ajout d'une photo"
+function loadModalAddPhoto() {
+  const modalAddPhoto = document.querySelector(".modal-add-photo");
+  modalAddPhoto.classList.remove("hidden");
+  container.classList.add("hidden");
+}
+
+// Fermeture de la modale "Ajout d'une photo"
+function closeModalAddPhoto() {
+  const modalAddPhoto = document.querySelector(".modal-add-photo");
+  modalAddPhoto.classList.add("hidden");
+}

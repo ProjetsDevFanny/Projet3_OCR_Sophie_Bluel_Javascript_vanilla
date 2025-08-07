@@ -138,6 +138,22 @@
   		<button id="addPhotoBtn">Ajouter une photo</button>
 		</div>
 	</div>
+	<div id="modal-add-photo" class="modal hidden">
+		<h1>Ajout photo</h1>
+		<form action="#" method="post">
+			<label for="image">Image</label>
+			<input type="file" name="image" id="image">
+			<label for="title">Titre</label>
+			<input type="text" name="title" id="title">
+			<label for="category">Catégorie</label>
+			<select name="category" id="category">
+				<option value="1">Objets</option>
+				<option value="2">Appartements</option>
+				<option value="3">Hôtels & Restaurants</option>
+			</select>
+			<button type="submit">Valider</button>
+		</form>
+	</div>
 
 
 	<script src="../assets/js/Navbar.js" defer></script>
