@@ -4,27 +4,34 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.6); /* Noir semi-transparent */
+  background-color: rgba(0, 0, 0, 0.6);
+  /* Noir semi-transparent */
   z-index: 1000;
 }
 
 .modal {
   position: fixed;
-  display: flex; 
-  align-items: center; 
+  display: flex;
+  align-items: center;
   justify-content: center;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   background: var(--white-color);
-  padding: 2rem;
+  padding: 1.5rem;
   border-radius: 8px;
-  z-index: 1001; /* au-dessus de l'overlay */
+  z-index: 1001;
+  /* au-dessus de l'overlay */
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-  width: 630px; 
-  height: 688px;
+  width: 40vw;
+  height: 80vh;
+  max-width: 500px;
+  /* limite sur grands écrans */
+  max-height: 500px;
+  /* limite sur petits écrans */
   border-radius: 10px;
-  overflow: auto; /* Activer le défilement si nécessaire */
+  overflow: auto;
+  /* Activer le défilement si nécessaire */
 }
 
 .hidden {
@@ -38,7 +45,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-} 
+}
 
 .close-btn {
   position: absolute;
@@ -62,44 +69,44 @@
   font-size: 26px;
   font-weight: 400;
   color: var(--black-color);
-  margin-top: 40px;
+  margin-top: 2rem;
 }
 
 .gallery-edit {
-  display: flex;
-  flex-wrap: wrap;
-  row-gap: 30px;
-  column-gap: 10px;
-  padding-bottom: 70px;
-  margin: 50px 100px 60px 100px;
-  border-bottom: 1px solid var(--grey-color);
- 
-}
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)); /* largeur min */
+  gap: 1rem; /* espace entre les images */
+  margin: 2rem;
+  }
 
 /* Styles spécifiques aux figures dans la modale */
 .gallery-edit figure {
   position: relative;
-  width: 76px;
-  height: 102.6px;
-
+  margin: 0; /* on retire la marge par défaut de figure */
+  padding: 0;
+  max-width: 100%; /* ne dépasse pas la largeur dispo */
 }
 
 .gallery-edit figure img {
-  width:100%;
-  }
+  display: block;
+  max-width: 100%;
+  /* image ne déborde pas du conteneur */
+  height: auto;
+  /* conserve les proportions */
+}
 
 .gallery-edit figure:hover figcaption {
   opacity: 1;
 }
 
 .gallery-edit figure figcaption {
-  position:absolute;
+  position: absolute;
   font-size: 10px;
   font-weight: 400;
   color: var(--light-grey-color);
   text-align: center;
-  transition: opacity  ease-in-out 0.5s;
-  opacity:0;
+  transition: opacity ease-in-out 0.5s;
+  opacity: 0;
   background-color: rgba(39, 36, 36, 0.717);
   border-radius: 5px;
   padding: 5px;
@@ -127,6 +134,17 @@
   cursor: pointer;
 }
 
+.modal-footer {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  border-top: 2px solid var(--light-grey-color);
+  padding-top: 2rem;           /* espace entre la barre et le bouton */
+  text-align: center;
+  width: 90%;
+}
+
 #addPhotoBtn {
   width: 237px;
   height: 36px;
@@ -141,3 +159,5 @@
   border-radius: 60px;
   cursor: pointer;
 }
+
+
