@@ -20,7 +20,7 @@
 	<link rel="stylesheet" href="../assets/css/Contact.css">
 	<link rel="stylesheet" href="../assets/css/Footer.css">
 	<link rel="stylesheet" href="../assets/css/HomePageEdit.css">
-	<link rel="stylesheet" href="../assets/css/Modal.css">
+	<link rel="stylesheet" href="../assets/css/Modals.css">
 </head>
 
 <body>
@@ -128,7 +128,7 @@
 		</nav>
 	</footer>
 
-	<!-- Modal -->
+	<!-- Modal "Galerie photo" = supprimer une photo -->
 	<div class="modal-overlay hidden"></div>
 	<div id="modal" class="modal hidden">
 		<div class="modal-content">
@@ -140,21 +140,28 @@
 			</div>
 		</div>
 	</div>
+
+	<!-- Modal "Ajout d'une photo" -->
 	<div id="modal-add-photo" class="modal hidden">
-		<h1>Ajout photo</h1>
-		<form action="#" method="post">
-			<label for="image">Image</label>
-			<input type="file" name="image" id="image">
-			<label for="title">Titre</label>
-			<input type="text" name="title" id="title">
-			<label for="category">Catégorie</label>
-			<select name="category" id="category">
-				<option value="1">Objets</option>
-				<option value="2">Appartements</option>
-				<option value="3">Hôtels & Restaurants</option>
-			</select>
-			<button type="submit">Valider</button>
-		</form>
+		<div class="modal-add-photo-content">
+			<span class="close-btn"><i class="fa-solid fa-xmark"></i></span>
+			<h1>Ajout photo</h1>
+			<form action="#" method="post">
+				<label for="image">Image</label>
+				<input type="file" name="image" id="image">
+				<label for="title">Titre</label>
+				<input type="text" name="title" id="title">
+				<label for="category">Catégorie</label>
+				<select name="category" id="category">
+					<option value="1">Objets</option>
+					<option value="2">Appartements</option>
+					<option value="3">Hôtels & Restaurants</option>
+				</select>
+			</form>
+			<div class="modal-footer">
+				<button type="submit">Valider</button>
+			</div>
+		</div>
 	</div>
 
 

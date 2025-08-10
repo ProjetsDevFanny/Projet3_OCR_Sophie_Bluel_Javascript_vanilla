@@ -74,17 +74,21 @@
 
 .gallery-edit {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)); /* largeur min */
-  gap: 1rem; /* espace entre les images */
+  grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+  /* largeur min */
+  gap: 1rem;
+  /* espace entre les images */
   margin: 2rem;
-  }
+}
 
 /* Styles spécifiques aux figures dans la modale */
 .gallery-edit figure {
   position: relative;
-  margin: 0; /* on retire la marge par défaut de figure */
+  margin: 0;
+  /* on retire la marge par défaut de figure */
   padding: 0;
-  max-width: 100%; /* ne dépasse pas la largeur dispo */
+  max-width: 100%;
+  /* ne dépasse pas la largeur dispo */
 }
 
 .gallery-edit figure img {
@@ -140,7 +144,8 @@
   left: 50%;
   transform: translateX(-50%);
   border-top: 2px solid var(--light-grey-color);
-  padding-top: 2rem;           /* espace entre la barre et le bouton */
+  padding-top: 2rem;
+  /* espace entre la barre et le bouton */
   text-align: center;
   width: 90%;
 }
@@ -158,6 +163,11 @@
   text-align: center;
   border-radius: 60px;
   cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: var(--dark-green-color);
+    cursor: pointer;
+  }
+
 }
-
-

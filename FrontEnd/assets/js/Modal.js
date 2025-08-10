@@ -122,14 +122,14 @@ async function refreshAllProjects() {
   displayProjectsModal(updatedProjects);
 }
 
-// Affiche la modale "Ajout d'une photo"
+// Affiche la nouvelle modale "Ajout d'une photo"
 function loadModalAddPhoto() {
   try {
-    const modalAddPhoto = document.querySelector(".modal-add-photo");
+    const modalAddPhoto = document.querySelector("#modal-add-photo");
     const modalOverlay = document.querySelector(".modal-overlay");
-    const closeBtn = container.querySelector(".close-btn");
+    const closeBtn = modalAddPhoto.querySelector(".close-btn");
 
-    // Fermeture de la modale ajout photo au click sur la croix (X)
+    // Fermeture de la modale "ajout photo" au click sur la croix (X)
     if (closeBtn) {
       closeBtn.addEventListener("click", () => {
         modalAddPhoto.classList.add("hidden");
@@ -168,15 +168,11 @@ function loadModalAddPhoto() {
 
 const addPhotoBtn = document.querySelector("#addPhotoBtn");
 addPhotoBtn.addEventListener("click", () => {
+  console.log("click");
   loadModalAddPhoto();
 });
 
-// Affiche la modale "Ajout d'une photo"
-function loadModalAddPhoto() {
-  const modalAddPhoto = document.querySelector(".modal-add-photo");
-  modalAddPhoto.classList.remove("hidden");
-  container.classList.add("hidden");
-}
+
 
 // Fermeture de la modale "Ajout d'une photo"
 function closeModalAddPhoto() {

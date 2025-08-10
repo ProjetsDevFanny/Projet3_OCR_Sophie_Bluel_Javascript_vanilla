@@ -23,7 +23,7 @@
 
 .btn-modifier {
   position: absolute;
-  right: 360px;
+  right: 32%;
   top: 50%;
   transform: translateY(-50%);
   display: flex;
