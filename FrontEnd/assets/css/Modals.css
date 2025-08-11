@@ -18,7 +18,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   background: var(--white-color);
-  padding: 1.5rem;
+  padding: 1.5rem 1.5rem 2rem 1.5rem;
   border-radius: 8px;
   z-index: 1001;
   /* au-dessus de l'overlay */
@@ -51,14 +51,15 @@
   position: absolute;
   top: 0;
   right: 0;
-  color: var(--grey-color);
   float: right;
+  color: var(--black-color);
   font-size: 20px;
+  transition: color 0.2s ease;
 }
 
 .close-btn:hover,
 .close-btn:focus {
-  color: black;
+  color: var(--grey-color);
   text-decoration: none;
   cursor: pointer;
 }
@@ -72,13 +73,18 @@
   margin-top: 2rem;
 }
 
+.edit {
+  margin: 0 4rem;
+  height: 100%;
+}
+
 .gallery-edit {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
   /* largeur min */
   gap: 1rem;
   /* espace entre les images */
-  margin: 2rem;
+  margin: 4rem;
 }
 
 /* Styles spécifiques aux figures dans la modale */
@@ -143,31 +149,38 @@
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  border-top: 2px solid var(--light-grey-color);
-  padding-top: 2rem;
+  border-top: 1px solid var(--grey-color);
+  padding-top: 1.5rem;
   /* espace entre la barre et le bouton */
   text-align: center;
-  width: 90%;
+  width: 75%;
 }
 
-#addPhotoBtn {
+/*  boutons des modales */
+#addPhotoBtn,
+#submit-addPhotoBtn {
   width: 237px;
-  height: 36px;
-  font-size: 16px;
-  border: none;
-  box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
-  font-family: 'Syne';
-  font-weight: 600;
-  color: var(--white-color);
-  background-color: var(--green-color);
-  text-align: center;
-  border-radius: 60px;
-  cursor: pointer;
-  transition: all 0.3s ease;
+}
 
-  &:hover {
-    background-color: var(--dark-green-color);
-    cursor: pointer;
-  }
 
+/* Formulaire d'ajout de photo */
+
+#modal-add-photo .modal-content {
+  align-items: stretch;
+}
+
+#modal-add-photo input[type="file"] {
+  height: 15vh;
+  box-shadow: none;
+}
+
+#modal-add-photo input[type="text"],
+#modal-add-photo select {
+  height: 4.5vh;
+}
+
+
+
+#modal-add-photo label {
+  margin: 1em 0 0.5em 0;
 }

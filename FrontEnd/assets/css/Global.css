@@ -87,3 +87,43 @@ a {
 	color: #000000;
 	transition: color 0.2s ease;
 }
+
+/* ============= Style général des boutons ============= */
+
+.style-btn {
+	height: 36px;
+	width: 180px;
+	font-size: 16px;
+	font-weight: 600;
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	font-family: 'Syne';
+	color: var(--white-color);
+	background-color: var(--green-color);
+	text-align: center;
+	border-radius: 60px;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	
+	&:hover {
+		background-color: var(--dark-green-color);
+		cursor: pointer;
+	}
+		
+	}
+
+
+	/* ======Styles des formulaires ====== */
+
+	form {
+		text-align: left;
+		display: flex;
+		flex-direction: column;
+	}
+
+	input, select {
+		font-size: 1.2em;
+		border: none;
+		box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.3);
+	}
+	
