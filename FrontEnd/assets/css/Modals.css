@@ -97,19 +97,21 @@
   /* ne dépasse pas la largeur dispo */
 }
 
-.gallery-edit figure img {
+.gallery-edit img {
   display: block;
   max-width: 100%;
   /* image ne déborde pas du conteneur */
   height: auto;
   /* conserve les proportions */
+  width: 100%;
+  cursor: pointer;
 }
 
 .gallery-edit figure:hover figcaption {
   opacity: 1;
 }
 
-.gallery-edit figure figcaption {
+.gallery-edit figcaption {
   position: absolute;
   font-size: 10px;
   font-weight: 400;
@@ -121,7 +123,7 @@
   border-radius: 5px;
   padding: 5px;
   cursor: pointer;
-  top: 50%;
+  top: 15%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
@@ -136,12 +138,6 @@
   padding: 3px;
   background-color: var(--black-nuance-color);
   border-radius: 3px;
-}
-
-/* Styles spécifiques aux images dans la modale */
-.gallery-edit img {
-  width: 100%;
-  cursor: pointer;
 }
 
 .modal-footer {
@@ -162,16 +158,59 @@
   width: 237px;
 }
 
-
 /* Formulaire d'ajout de photo */
 
 #modal-add-photo .modal-content {
   align-items: stretch;
 }
+#modal-add-photo .edit {
+  margin-top: 1rem;
+}
 
-#modal-add-photo input[type="file"] {
-  height: 15vh;
-  box-shadow: none;
+#modal-add-photo form {
+  position: relative;
+}
+
+.photo-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 10px;
+  border-radius: 3px;
+  background-color: var(--light-blue-color);
+  transition: border-color 0.3s ease;
+  height: 14vh;
+  box-shadow: inset 0px 0px 14px rgba(0, 0, 0, 0.09);
+  border-radius: 3px;
+}
+
+.photo-upload .fa-image {
+  display: block;
+  font-size:3.5rem;
+  border-radius: 50%;
+  color: var(--grey-blue-color);
+}
+
+.photo-upload button {
+  display: block;
+  height: 2rem;
+  width: 10rem;
+  margin: 0 auto;
+  background-color: var(--grey-blue-color);
+  font-size: 0.9rem;
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 400;
+  color: var(--dark-blue-color);
+    
+  &:hover {
+    background-color: var(--grey-color);
+  }
+}
+
+.photo-upload small {
+  font-size: 0.7rem;
+  color: var(--dark-grey-color);
 }
 
 #modal-add-photo input[type="text"],
@@ -179,8 +218,31 @@
   height: 4.5vh;
 }
 
+/* On enlève laflèche de la sélection */
+#modal-add-photo select {
+  appearance: none;          /* Pour Firefox, Edge, etc. */
+  -webkit-appearance: none;  /* Pour Chrome, Safari */
+  -moz-appearance: none;     /* Pour Firefox */
+  }
 
+.custom-chevron {
+  position: absolute;
+  top: 93%;
+  right: 10px;
+  pointer-events: none; /* pour que l’icône ne gêne pas le clic */
+  transform: translateY(-50%);
+  color: var(--dark-grey-color);
+  font-size: 1em;
+}
 
 #modal-add-photo label {
   margin: 1em 0 0.5em 0;
+}
+
+#submit-addPhotoBtn {
+  background-color: var(--grey-color);
+  
+  &:hover {
+    background-color: var(--green-color);
+  }
 }

@@ -148,8 +148,12 @@
 			<h1>Ajout photo</h1>
 			<div class="edit">
 				<form action="#" method="post">
-					<label for="image">Image</label>
-					<input type="file" name="image" id="image">
+					<label for="image" class="photo-upload">
+						<i class="fa-solid fa-image"></i>
+						<button type="button" id="uploadPhotoBtn" class="style-btn">+ Ajouter photo</button>
+						<small>jpg, png : 4mo max</small>
+						<input type="file" class="hidden" name="image" id="image" accept=".jpg,.jpeg,.png">
+					</label>
 					<label for="title">Titre</label>
 					<input type="text" name="title" id="title">
 					<label for="category">Catégorie</label>
@@ -159,6 +163,7 @@
 						<option value="2">Appartements</option>
 						<option value="3">Hôtels & Restaurants</option>
 					</select>
+					<i class="fa fa-chevron-down custom-chevron"></i>
 				</form>
 			</div>
 			<div class="modal-footer">
