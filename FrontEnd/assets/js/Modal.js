@@ -50,14 +50,14 @@ function displayProjectsModal(projectsArray) {
 // Chargement de la modale
 function loadModal() {
   try {
-    const container = document.querySelector("#modal");
+    const modal = document.querySelector("#modal");
     const modalOverlay = document.querySelector(".modal-overlay");
-    const closeBtn = container.querySelector(".close-btn");
+    const closeBtn = modal.querySelector(".close-btn");
 
     // Fermeture de la modale au click sur la croix (X)
     if (closeBtn) {
       closeBtn.addEventListener("click", () => {
-        container.classList.add("hidden");
+        modal.classList.add("hidden");
         modalOverlay.classList.add("hidden");
       });
     }
@@ -65,7 +65,7 @@ function loadModal() {
     // Quand l'utilisateur clique en dehors de la fenêtre modale, elle se ferme
     if (modalOverlay) {
       modalOverlay.addEventListener("click", () => {
-        container.classList.add("hidden");
+        modal.classList.add("hidden");
         modalOverlay.classList.add("hidden");
       });
     }
@@ -73,7 +73,7 @@ function loadModal() {
     // Fermeture de la modale au click sur la touche "Escape"
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") {
-        container.classList.add("hidden");
+        modal.classList.add("hidden");
         modalOverlay.classList.add("hidden");
 
         // Enlève le focus du bouton Modifier si c'est lui qui l'a
@@ -83,7 +83,7 @@ function loadModal() {
     });
 
     // Affiche la modale
-    container.classList.remove("hidden");
+    modal.classList.remove("hidden");
     modalOverlay.classList.remove("hidden");
     displayProjectsModal(projectsArray);
   } catch (error) {
@@ -122,60 +122,58 @@ async function refreshAllProjects() {
   displayProjectsModal(updatedProjects);
 }
 
+// ========================== Modale "Ajout d'une photo" ==========================
+
 // Affiche la nouvelle modale "Ajout d'une photo"
 function loadModalAddPhoto() {
-  try {
-    const modalAddPhoto = document.querySelector("#modal-add-photo");
-    const modalOverlay = document.querySelector(".modal-overlay");
-    const closeBtn = modalAddPhoto.querySelector(".close-btn");
+  const modalAddPhoto = document.querySelector("#modal-add-photo");
+  const modalOverlay = document.querySelector(".modal-overlay");
 
-    // Fermeture de la modale "ajout photo" au click sur la croix (X)
-    if (closeBtn) {
-      closeBtn.addEventListener("click", () => {
-        modalAddPhoto.classList.add("hidden");
-        modalOverlay.classList.add("hidden");
-      });
-    }
-
-    // Quand l'utilisateur clique en dehors de la fenêtre modale ajout photo, elle se ferme
-    if (modalOverlay) {
-      modalOverlay.addEventListener("click", () => {
-        modalAddPhoto.classList.add("hidden");
-        modalOverlay.classList.add("hidden");
-      });
-    }
-
-    // Fermeture de la modale au click sur la touche "Escape"
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") {
-        modalAddPhoto.classList.add("hidden");
-        modalOverlay.classList.add("hidden");
-      }
-    });
-
-    // Affiche la modale
-    modalAddPhoto.classList.remove("hidden");
-    modalOverlay.classList.remove("hidden");
-  } catch (error) {
-    console.error(
-      "Erreur lors du chargement de la modale 'ajout photo' :",
-      error
-    );
+  if (!modalAddPhoto || !modalOverlay) {
+    console.error("Éléments de la modale non trouvés");
+    return;
   }
+
+  const closeBtn = modalAddPhoto.querySelector(".close-btn");
+
+  // Fermeture de la modale "ajout photo" au click sur la croix (X)
+  closeBtn.addEventListener("click", () => {
+    modalAddPhoto.classList.add("hidden");
+    modalOverlay.classList.add("hidden");
+    modal.classList.add("hidden");
+  });
+
+  // Fermeture de la modale "ajout photo" au click sur le bouton "Retour"
+  const backBtn = modalAddPhoto.querySelector(".back-btn");
+
+  backBtn.addEventListener("click", () => {
+    modalAddPhoto.classList.add("hidden");
+  });
+
+  // Quand l'utilisateur clique en dehors de la fenêtre modale ajout photo, elle se ferme
+  modalOverlay.addEventListener("click", () => {
+    modalAddPhoto.classList.add("hidden");
+    modalOverlay.classList.add("hidden");
+  });
+
+  // Fermeture de la modale au click sur la touche "Escape"
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      modalAddPhoto.classList.add("hidden");
+      modalOverlay.classList.add("hidden");
+    }
+  });
+
+  // Affiche la modale
+  modalAddPhoto.classList.remove("hidden");
+  modalOverlay.classList.remove("hidden");
 }
 
 // ==================================================================
 
+// Ouverture de la modale "Ajout photo"au click sur le btn "Ajouter une photo"
 const addPhotoBtn = document.querySelector("#addPhotoBtn");
 addPhotoBtn.addEventListener("click", () => {
   console.log("click");
   loadModalAddPhoto();
 });
-
-
-
-// Fermeture de la modale "Ajout d'une photo"
-function closeModalAddPhoto() {
-  const modalAddPhoto = document.querySelector(".modal-add-photo");
-  modalAddPhoto.classList.add("hidden");
-}
