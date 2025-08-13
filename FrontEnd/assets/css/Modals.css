@@ -64,6 +64,22 @@
   cursor: pointer;
 }
 
+.back-btn {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: var(--black-color);
+  font-size: 20px;
+  transition: color 0.2s ease;
+}
+
+.back-btn:hover,
+.back-btn:focus {
+  color: var(--grey-color);
+  text-decoration: none;
+  cursor: pointer;
+}
+
 .modal-content h1 {
   text-align: center;
   font-family: "Work Sans", sans-serif;
@@ -185,11 +201,10 @@
   border-radius: 3px;
 }
 
-.photo-upload .fa-image {
+.photo-upload img {
   display: block;
-  font-size:3.5rem;
-  border-radius: 50%;
-  color: var(--grey-blue-color);
+  object-fit: cover;
+  border-radius: 5px;
 }
 
 .photo-upload button {
@@ -202,6 +217,7 @@
   font-family: 'Work Sans', sans-serif;
   font-weight: 400;
   color: var(--dark-blue-color);
+  cursor: pointer;
     
   &:hover {
     background-color: var(--grey-color);
@@ -218,21 +234,37 @@
   height: 4.5vh;
 }
 
-/* On enlève laflèche de la sélection */
-#modal-add-photo select {
+/* Style pour le select avec chevron personnalisé */
+
+/* On créer un select-container car on ne peut pas mettre d'élément en after directement dans un select, car le <select> est un élément natif complexe, il ne contient pas d’enfants HTML custom. */
+.select-container {
+  position: relative;
+  display: block;
+  width: 100%;
+}
+
+.select-container::after {
+  content: "\f078"; /* Code Unicode pour chevron-down de Font Awesome */
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  color: var(--black-nuance-color);
+  font-size: 0.8em;
+  cursor: pointer; /* Curseur pointer sur le chevron */
+  z-index: 1;
+}
+
+/* On enlève la flèche de la sélection */
+.select-container select {
   appearance: none;          /* Pour Firefox, Edge, etc. */
   -webkit-appearance: none;  /* Pour Chrome, Safari */
   -moz-appearance: none;     /* Pour Firefox */
-  }
-
-.custom-chevron {
-  position: absolute;
-  top: 93%;
-  right: 10px;
-  pointer-events: none; /* pour que l’icône ne gêne pas le clic */
-  transform: translateY(-50%);
-  color: var(--dark-grey-color);
-  font-size: 1em;
+  position: relative;        /* pour que le select prenne toute la largeur */
+  padding-right: 35px;       /* Espace pour le chevron */
+  width: 100%;               /* Prend toute la largeur du container */
 }
 
 #modal-add-photo label {
@@ -240,7 +272,7 @@
 }
 
 #submit-addPhotoBtn {
-  background-color: var(--grey-color);
+  background-color: var(--dark-grey-color);
   
   &:hover {
     background-color: var(--green-color);
