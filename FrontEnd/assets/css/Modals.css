@@ -7,6 +7,7 @@
   background-color: rgba(0, 0, 0, 0.6);
   /* Noir semi-transparent */
   z-index: 1000;
+  cursor: pointer;
 }
 
 .modal {
@@ -203,8 +204,9 @@
 
 .photo-upload img {
   display: block;
+  max-width: 150px;
+  max-height: 14vh;
   object-fit: cover;
-  border-radius: 5px;
 }
 
 .photo-upload button {
@@ -222,11 +224,15 @@
   &:hover {
     background-color: var(--grey-color);
   }
+
+  &:active {
+    transform: scale(0.95);
+  }
 }
 
 .photo-upload small {
   font-size: 0.7rem;
-  color: var(--dark-grey-color);
+  color: var(--black-nuance-color);
 }
 
 #modal-add-photo input[type="text"],
