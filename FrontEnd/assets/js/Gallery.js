@@ -2,7 +2,6 @@
 
 let projectsArray = [];
 const gallery = document.querySelector(".gallery");
-let uniqueCategories = [];
 
 // Fonction pour aller chercher les données de l'API
 async function fetchProjects() {
@@ -13,7 +12,9 @@ async function fetchProjects() {
       // Gestion spécifique selon le code HTTP
       switch (response.status) {
         case 401:
-          throw new Error("Erreur 401 : Non autorisé. Veuillez vérifier le token.");
+          throw new Error(
+            "Erreur 401 : Non autorisé. Veuillez vérifier le token."
+          );
         case 404:
           throw new Error("Erreur 404 : Ressource non trouvée.");
         case 500:
@@ -72,13 +73,20 @@ function normalizeCategoryName(name) {
     .replace(/[^a-z0-9\-]/g, "");
 }
 
+// Fonction pour aller chercher les catégories de l'API
+
+let categoriesFromAPI = [];
+
+async function fetchCategories() {
+  const response = await fetch("http://localhost:5678/api/categories");
+  const categories = await response.json();
+  categoriesFromAPI = categories.map((cat) => cat.name);
+}
+
 //  Fonction de création des boutons :
+
 function createButtons() {
-  // Création du tableau des catégories (on va les chercher dans l'API):
-  const categoriesArray = projectsArray.map((project) => project.category.name);
-  // suppression des doublons et création des boutons:
-  uniqueCategories = [...new Set(categoriesArray)];
-  uniqueCategories.unshift("Tous"); // on ajoute "Tous" comme 1er élement du tableau
+  const uniqueCategories = ["Tous", ...categoriesFromAPI];
   console.log(uniqueCategories);
 
   // Création du container des boutons, seulement s'il n'existe pas :
@@ -107,6 +115,9 @@ function createButtons() {
     btnContainer.appendChild(btn);
   });
 }
+
+// Charger les catégories puis création des boutons au démarrage
+fetchCategories().then(createButtons);
 
 // Gestion des évènements au clic sur les boutons  et filtrage des projets:
 function setUpButtonListeners() {

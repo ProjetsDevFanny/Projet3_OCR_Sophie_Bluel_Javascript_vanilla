@@ -184,35 +184,56 @@ addPhotoBtn.addEventListener("click", () => {
 
 const uploadPhotoBtn = document.getElementById("uploadPhotoBtn");
 const fileInput = document.getElementById("image");
-const previewImage = document.getElementById("previewImage");
+const photoUploadDiv = document.getElementById("photoUpload");
 
 // Ouvrir la fenêtre de sélection de fichier quand on clique sur le bouton "+ Ajouter photo"
 uploadPhotoBtn.addEventListener("click", () => {
   fileInput.click(); // Simule le click sur l'input file
 });
 
-// Affichage de l'image choisie dans le previewImage (avec l'objet FileReader)
+// Affiche l'image choisie (avec l'objet FileReader) et cache les autres éléments
 
 // Quand le contenu du champ "fileInput" change (l'utilisateur a choisi un fichier)...
 fileInput.addEventListener("change", () => {
-    
   // On récupère le premier fichier choisi (s'il y en a plusieurs, on prend uniquement le premier)
   const file = fileInput.files[0];
-  
+
   // On vérifie qu'un fichier a bien été sélectionné
   if (file) {
-      
-      // On crée un nouvel objet FileReader qui servira à lire le contenu du fichier
-      const reader = new FileReader();
-      
-      // Quand le fichier a fini d'être lu...
-      reader.onload = (e) => {
-          // On remplace la source (src) de l'image d'aperçu par le contenu lu
-          // e.target.result contient une URL "data:" en base64 qui représente l'image
-          previewImage.src = e.target.result;
-      };
-      
-      // On lit le fichier sous forme de DataURL (URL encodée en base64 utilisable dans un <img>)
-      reader.readAsDataURL(file);
+    // On crée un nouvel objet FileReader qui servira à lire le contenu du fichier
+    const reader = new FileReader();
+
+    // Quand le fichier a fini d'être lu...
+    reader.onload = (e) => {
+      // Vider la div avant d'insérer l'image
+      photoUploadDiv.innerHTML = "";
+
+      // Créer un nouvel élément <img> pour l'aperçu
+
+      const img = document.createElement("img");
+      img.id = "uploadedImage";
+      img.src = e.target.result; // e.target.result contient une URL "data:" en base64 qui représente l'image
+      img.alt = "Aperçu de la photo choisie";
+      img.style.maxWidth = "100%";
+        
+      // Ajouter l'image dans la div
+      photoUploadDiv.appendChild(img);
+    };
+    // On lit le fichier sous forme de DataURL (URL encodée en base64 utilisable dans un <img>)
+    reader.readAsDataURL(file);
   }
 });
+
+
+// ======== Ajout des catégories provenant de l'API au select de la modale "Ajout d'une photo"  ==========
+
+// Fonction pour aller chercher les catégories depuis l'API
+async function fetchCategories() {
+  const response = await fetch("http://localhost:5678/api/categories");
+  const categories = await response.json();
+
+  const uniqueCategories = [...new Set(categories.map((category) => category.name))];
+  console.log(uniqueCategories);
+}
+
+fetchCategories();

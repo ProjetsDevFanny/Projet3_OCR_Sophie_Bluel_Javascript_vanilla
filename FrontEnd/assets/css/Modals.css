@@ -193,19 +193,23 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
-  padding: 10px;
   border-radius: 3px;
   background-color: var(--light-blue-color);
   transition: border-color 0.3s ease;
-  height: 14vh;
+  height: 18vh;
   box-shadow: inset 0px 0px 14px rgba(0, 0, 0, 0.09);
   border-radius: 3px;
 }
 
-.photo-upload img {
+#iconeImage {
   display: block;
-  max-width: 150px;
-  max-height: 14vh;
+  object-fit: cover;
+  filter: invert(106%) sepia(3%) saturate(52%) hue-rotate(153deg) brightness(300%) contrast(85%);
+}
+
+#uploadedImage {
+  display: block;
+  max-height: 18vh;
   object-fit: cover;
 }
 
@@ -238,6 +242,10 @@
 #modal-add-photo input[type="text"],
 #modal-add-photo select {
   height: 4.5vh;
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  padding-left: 1rem;
 }
 
 /* Style pour le select avec chevron personnalisé */
