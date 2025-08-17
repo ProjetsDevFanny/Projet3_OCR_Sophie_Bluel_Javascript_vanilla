@@ -1,7 +1,13 @@
-// ********** Gestion du menu de navigation **********
+// ======================================================
+// Fichier : Navbar.js
+// Description : Gère le menu de navigation.
+// Auteur : SIMON Fanny
+// Date : 2025-08-17
+// ======================================================
 
-// Fonction pour gérer le clic sur les liens du menu :
-function clickNavbarLinks() {
+// ----------------- Gestion du menu de navigation -----------------
+
+export function clickNavbarLinks() {
   const allNavbarLinks = document.querySelectorAll("nav ul li a");
   if (!allNavbarLinks) return;
 
@@ -25,5 +31,3 @@ function clickNavbarLinks() {
     });
   });
 }
-
-clickNavbarLinks();

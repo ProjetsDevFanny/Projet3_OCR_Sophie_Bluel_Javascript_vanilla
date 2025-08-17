@@ -13,14 +13,14 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
 		integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
 		crossorigin="anonymous" referrerpolicy="no-referrer" />
-	<link rel="stylesheet" href="../assets/css/Global.css">
-	<link rel="stylesheet" href="../assets/css/Navbar.css">
-	<link rel="stylesheet" href="../assets/css/Introduction.css">
-	<link rel="stylesheet" href="../assets/css/Gallery.css">
-	<link rel="stylesheet" href="../assets/css/Contact.css">
-	<link rel="stylesheet" href="../assets/css/Footer.css">
-	<link rel="stylesheet" href="../assets/css/HomePageEdit.css">
-	<link rel="stylesheet" href="../assets/css/Modals.css">
+	<link rel="stylesheet" href="../css/Global.css">
+	<link rel="stylesheet" href="../css/Navbar.css">
+	<link rel="stylesheet" href="../css/Introduction.css">
+	<link rel="stylesheet" href="../css/Gallery.css">
+	<link rel="stylesheet" href="../css/Contact.css">
+	<link rel="stylesheet" href="../css/Footer.css">
+	<link rel="stylesheet" href="../css/HomePageEdit.css">
+	<link rel="stylesheet" href="../css/Modals.css">
 </head>
 
 <body>
@@ -34,7 +34,7 @@
 					<li><a href="Login.html" id="login-out-btn">login</a></li>
 					<li>
 						<a href="https://instagram.com" target="_blank" aria-label="Instagram">
-							<img class="insta-icon" src="../assets/icons/instagram.png" alt="Instagram">
+							<img class="insta-icon" src="/FrontEnd/assets/icons/instagram.png" alt="Instagram">
 						</a>
 					</li>
 				</ul>
@@ -43,7 +43,7 @@
 		<main>
 			<section id="introduction">
 				<figure>
-					<img src="../assets/images/sophie-bluel.png" alt="">
+					<img src="/FrontEnd/assets/images/sophie-bluel.png" alt="">
 				</figure>
 				<article>
 					<h2>Designer d'espace</h2>
@@ -59,50 +59,6 @@
 			<section id="portfolio">
 				<h2>Mes Projets</h2>
 				<div class="gallery">
-					<!-- <figure>
-				<img src="assets/images/abajour-tahina.png" alt="Abajour Tahina">
-				<figcaption>Abajour Tahina</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/appartement-paris-v.png" alt="Appartement Paris V">
-				<figcaption>Appartement Paris V</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/restaurant-sushisen-londres.png" alt="Restaurant Sushisen - Londres">
-				<figcaption>Restaurant Sushisen - Londres</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/la-balisiere.png" alt="Villa “La Balisiere” - Port Louis">
-				<figcaption>Villa “La Balisiere” - Port Louis</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/structures-thermopolis.png" alt="Structures Thermopolis">
-				<figcaption>Structures Thermopolis</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/appartement-paris-x.png" alt="Appartement Paris X">
-				<figcaption>Appartement Paris X</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/le-coteau-cassis.png" alt="Pavillon “Le coteau” - Cassis">
-				<figcaption>Pavillon “Le coteau” - Cassis</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/villa-ferneze.png" alt="Villa Ferneze - Isola d’Elba">
-				<figcaption>Villa Ferneze - Isola d’Elba</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/appartement-paris-xviii.png" alt="Appartement Paris XVIII">
-				<figcaption>Appartement Paris XVIII</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/bar-lullaby-paris.png" alt="Bar “Lullaby” - Paris">
-				<figcaption>Bar “Lullaby” - Paris</figcaption>
-			</figure>
-			<figure>
-				<img src="assets/images/hotel-first-arte-new-delhi.png" alt="Hotel First Arte - New Delhi">
-				<figcaption>Hotel First Arte - New Delhi</figcaption>
-			</figure> -->
 				</div>
 			</section>
 			<section id="contact">
@@ -150,7 +106,7 @@
 			<div class="edit">
 				<form action="#" method="post">
 					<div class="photo-upload" id="photoUpload">
-						<img id="iconeImage" src="../assets/icons/add-photo.png" alt="uploadPhoto">
+						<img id="iconeImage" src="/FrontEnd/assets/icons/add-photo.png" alt="uploadPhoto">
 						<button type="button" id="uploadPhotoBtn" class="style-btn">+ Ajouter photo</button>
 						<small>jpg, png : 4mo max</small>
 						<input type="file" class="hidden" name="image" id="image" accept=".jpg,.jpeg,.png">
@@ -161,9 +117,9 @@
 					<div class="select-container">
 						<select name="category" id="category">
 							<option value="" selected></option>
-							<option value="1">Objets</option>
-							<option value="2">Appartements</option>
-							<option value="3">Hôtels & Restaurants</option>
+							<option class="category-option" value="1"></option>
+							<option class="category-option" value="2"></option>
+							<option class="category-option" value="3"></option>
 						</select>
 					</div>
 				</form>
@@ -174,12 +130,7 @@
 		</div>
 	</div>
 
-
-	<script src="../assets/js/Navbar.js" defer></script>
-	<script src="../assets/js/Gallery.js" defer></script>
-	<script src="../assets/js/Modal.js" defer></script>
-	<script src="../assets/js/HomePageEdit.js" defer></script>
-	<script src="../assets/js/Main.js" defer></script>
+	<script type="module" src="../js/Main.js"></script>
 </body>
 
 </html>

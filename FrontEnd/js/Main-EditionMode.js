@@ -1,4 +1,4 @@
-// =============== Edition Mode ===============
+// ************** Edition Mode **************************
 
 document.addEventListener("DOMContentLoaded", () => {
   console.log("main.js chargé");

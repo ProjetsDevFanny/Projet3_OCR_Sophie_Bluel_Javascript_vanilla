@@ -215,7 +215,7 @@ fileInput.addEventListener("change", () => {
       img.src = e.target.result; // e.target.result contient une URL "data:" en base64 qui représente l'image
       img.alt = "Aperçu de la photo choisie";
       img.style.maxWidth = "100%";
-        
+
       // Ajouter l'image dans la div
       photoUploadDiv.appendChild(img);
     };
@@ -224,7 +224,6 @@ fileInput.addEventListener("change", () => {
   }
 });
 
-
 // ======== Ajout des catégories provenant de l'API au select de la modale "Ajout d'une photo"  ==========
 
 // Fonction pour aller chercher les catégories depuis l'API
@@ -232,8 +231,12 @@ async function fetchCategories() {
   const response = await fetch("http://localhost:5678/api/categories");
   const categories = await response.json();
 
-  const uniqueCategories = [...new Set(categories.map((category) => category.name))];
+  const uniqueCategories = [
+    ...new Set(categories.map((category) => category.name)),
+  ];
   console.log(uniqueCategories);
 }
 
 fetchCategories();
+
+// Fonction pour insérer les catégories dans le select de la modale "Ajout d'une photo"

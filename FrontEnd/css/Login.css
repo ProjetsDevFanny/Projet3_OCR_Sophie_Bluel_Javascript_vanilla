@@ -47,18 +47,12 @@ footer nav ul li {
 	margin: 2em 0 1em 0;
 }
 
-#login input[type="submit"]{
-	font-family: 'Syne';
+#submit-loginBtn {
 	font-weight: 400;
-	color: var(--white-color);
-  height: 36px;
-	background-color: var(--green-color);
 	margin : 3em auto 2em auto ;
-	width: 180px;
-	text-align: center;
-	border-radius: 60px ;
-	cursor: pointer;
 }
+
+
 
 .forgot-password {
 	text-decoration: underline;
