@@ -1,22 +1,16 @@
 // ======================================================
-// Fichier : Filters.js
+// Fichier : filters.js
 // Description : Gère la logique des boutons et des filtres.
 // Auteur : SIMON Fanny
 // Date : 2025-08-17
-// ====================================================== 
+// ======================================================
 
-import { displayProjects } from "./Gallery.js";
+import { displayProjects } from "./gallery.js";
 
-// ----------------- Fonction pour nettoyer les catégories -----------------
-
-export function normalizeCategoryName(name) {
-  return name.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9\-]/g, "");
-}
-
-// ----------------- Fonction pour créer les boutons -----------------
+// ----------------- Création des boutons -----------------
 
 export function createButtons(categories) {
-  const uniqueCategories = ["Tous", ...categories.map((cat) => cat.name)];
+  const uniqueCategories = [{ id: "all", name: "Tous" }, ...categories];
 
   let btnContainer = document.querySelector(".btn-container");
   const gallery = document.querySelector(".gallery");
@@ -26,20 +20,28 @@ export function createButtons(categories) {
     btnContainer.classList.add("btn-container");
     document.getElementById("portfolio").insertBefore(btnContainer, gallery);
   }
+
+  // On vide le conteneur des boutons
   btnContainer.innerHTML = "";
 
   uniqueCategories.forEach((category) => {
     const btn = document.createElement("button");
-    const refreshCategory = normalizeCategoryName(category);
-    btn.classList.add("btn", `btn-${refreshCategory}`);
-    btn.dataset.category = category === "Tous" ? "all" : refreshCategory;
-    btn.textContent = category;
-    if (category === "Tous") btn.classList.add("active");
+    btn.classList.add("btn");
+
+    // On utilise directement l'id
+    btn.dataset.category = category.id;
+
+    // Le texte du bouton
+    btn.textContent = category.name;
+
+    // Si c'est le bouton "Tous", on ajoute la classe active
+    if (category.id === "all") btn.classList.add("active");
+
     btnContainer.appendChild(btn);
   });
 }
 
-// ----------------- Fonction pour gérer les événements des boutons -----------------
+// ----------------- Gestion des événements des boutons -----------------
 
 export function setUpButtonListeners(projects) {
   const btnContainer = document.querySelector(".btn-container");
@@ -61,14 +63,14 @@ export function setUpButtonListeners(projects) {
   });
 }
 
-// ----------------- Fonction pour filtrer les projets par catégories -----------------
+// ----------------- Filtre des projets par catégories -----------------
 
-function filterProjects(category, projects) {
-  if (category === "all") {
+function filterProjects(categoryId, projects) {
+  if (categoryId === "all") {
     displayProjects(projects);
   } else {
     const filteredProjects = projects.filter(
-      (project) => normalizeCategoryName(project.category.name) === category
+      (project) => project.category.id === parseInt(categoryId)
     );
     displayProjects(filteredProjects);
   }

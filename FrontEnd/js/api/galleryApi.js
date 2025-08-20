@@ -1,11 +1,11 @@
 // ======================================================
-// Fichier : Api.js
-// Description : Gère la communication avec l'API.
+// Fichier : galleryApi.js
+// Description : Gestion des requêtes liées aux projets et catégories
 // Auteur : SIMON Fanny
-// Date : 2025-08-17
+// Date : 2025-08-20
 // ======================================================
 
-const API_URL = "http://localhost:5678/api";
+import { API_URL } from "./config.js";
 
 // ----------------- Récupération des projets depuis l'API -----------------
 

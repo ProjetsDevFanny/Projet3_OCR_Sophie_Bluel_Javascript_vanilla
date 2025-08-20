@@ -5,27 +5,34 @@
 // Date : 2025-08-17
 // ======================================================
 
-// ----------------- Importation des modules -----------------
+// ----------------- Importation des modules API -----------------
+import { fetchWorks, fetchCategories } from "./api/galleryApi.js";
+import { login, logout } from "./api/authApi.js";
 
-import { fetchWorks, fetchCategories } from "./Api.js";
-import { displayProjects } from "./Gallery.js";
-import { createButtons, setUpButtonListeners } from "./Filters.js";
-import { clickNavbarLinks } from "./Navbar.js";
-// import { initModal } from "./Modal.js";
-// import { editPage } from "./HomePageEdit.js";
+// ----------------- Importation des modules UI -----------------
+import { displayProjects } from "./modules/gallery.js";
+import { createButtons, setUpButtonListeners } from "./modules/filters.js";
+import { clickNavbarLinks } from "./modules/navbar.js";
+import { initEditMode } from "./modules/editMode.js";
 
-// ----------------- Fonction pour initialiser l'application -----------------
+// ----------------- Initialisation -----------------
 
 async function init() {
   try {
+    // Récupération des projets et affichage
     const projects = await fetchWorks();
     displayProjects(projects);
 
+    // Récupération des catégories et création des boutons
     const categories = await fetchCategories();
     createButtons(categories);
     setUpButtonListeners(projects);
+
+    // Navbar et mode édition
     clickNavbarLinks();
-    console.log("Projets et catégories chargés avec succès");
+    initEditMode(); // active le mode édition si connecté
+
+    console.log("Application initialisée avec succès");
   } catch (error) {
     console.error("Erreur lors de l'initialisation :", error);
   }

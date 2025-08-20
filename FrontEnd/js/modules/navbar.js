@@ -16,7 +16,7 @@ export function clickNavbarLinks() {
   allNavbarLinks.forEach((link) => {
     const linkPath = new URL(link.href); // Récupérer le chemin de la page liée
 
-    // Ajouter automatiquement la classe "active-nav" si le lien correspond à la page ET à l'ancre (hash)
+    // Si lien cliqué est sur la page courante, et son ancre aussi, alors on ajoute la classe "active-nav "(= font-weight: 600)
     if (
       linkPath.pathname === currentPath.pathname &&
       linkPath.hash === currentPath.hash
@@ -31,3 +31,16 @@ export function clickNavbarLinks() {
     });
   });
 }
+
+// --------------------- Explications: -----------------
+
+// Au chargement de la page:
+// -> La fonction vérifie tous les liens de ta <nav>.
+// -> Elle compare l’URL du lien (linkPath.pathname + linkPath.hash) avec l’URL actuelle (window.location).
+// -> Si ça correspond, elle ajoute la classe active-nav automatiquement au bon lien.
+// -> Sert à mettre en évidence la page (et même la section via #ancre) où l'on se trouve.
+
+// Au clic sur un lien:
+// -> Elle enlève la classe active-nav de tous les liens.
+// -> Elle ajoute la classe active-nav seulement sur le lien cliqué.
+// -> Permet de mettre à jour la surbrillance dans la navbar quand l’utilisateur navigue.
