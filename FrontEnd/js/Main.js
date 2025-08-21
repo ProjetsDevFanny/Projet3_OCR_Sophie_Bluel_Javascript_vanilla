@@ -1,41 +1,54 @@
 // ======================================================
 // Fichier : Main.js
-// Description : Gère l'initialisation de l'application.
+// Description : Orchestrateur principal de l'application
 // Auteur : SIMON Fanny
 // Date : 2025-08-17
 // ======================================================
 
 // ----------------- Importation des modules API -----------------
-import { fetchWorks, fetchCategories } from "./api/galleryApi.js";
+import { fetchWorks, fetchCategories } from "./api/api.js";
 import { login, logout } from "./api/authApi.js";
 
 // ----------------- Importation des modules UI -----------------
 import { displayProjects } from "./modules/gallery.js";
 import { createButtons, setUpButtonListeners } from "./modules/filters.js";
 import { clickNavbarLinks } from "./modules/navbar.js";
-import { initEditMode } from "./modules/editMode.js";
+import { editPage } from "./modules/editMode.js";
+import { loadModalGallery } from "./modules/modals.js";
 
-// ----------------- Initialisation -----------------
+// ----------------- Initialisation de l'application -----------------
 
 async function init() {
   try {
-    // Récupération des projets et affichage
+    console.log("🚀 Initialisation de l'application...");
+    
+    // 1. Récupération et affichage des données
+    console.log("📊 Chargement des projets...");
     const projects = await fetchWorks();
     displayProjects(projects);
 
-    // Récupération des catégories et création des boutons
+    console.log("🏷️ Chargement des catégories...");
     const categories = await fetchCategories();
     createButtons(categories);
     setUpButtonListeners(projects);
 
-    // Navbar et mode édition
+    // 2. Configuration de l'interface utilisateur
+    console.log("🧭 Configuration de la navigation...");
     clickNavbarLinks();
-    initEditMode(); // active le mode édition si connecté
+    
+    // 3. Activation du mode édition si connecté
+    console.log("✏️ Vérification du mode édition...");
+    editPage(() => {
+      console.log("📝 Ouverture de la modale d'édition");
+      loadModalGallery(projects);
+    });
 
-    console.log("Application initialisée avec succès");
+    console.log("✅ Application initialisée avec succès");
   } catch (error) {
-    console.error("Erreur lors de l'initialisation :", error);
+    console.error("❌ Erreur lors de l'initialisation :", error);
   }
 }
 
+// ----------------- Point d'entrée unique -----------------
+// Tous les modules sont initialisés depuis ici pour éviter les conflits
 document.addEventListener("DOMContentLoaded", init);

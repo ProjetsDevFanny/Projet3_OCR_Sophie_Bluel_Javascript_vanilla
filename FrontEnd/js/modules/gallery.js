@@ -3,9 +3,9 @@
 // Description : Gère l'affichage des projets dans la galerie.
 // Auteur : SIMON Fanny
 // Date : 2025-08-17
-// ====================================================== 
+// ======================================================
 
-  // ----------------- Affichage des projets dans la galerie -----------------
+// ----------------- Affichage des projets dans la galerie -----------------
 
 export function displayProjects(projects) {
   const gallery = document.querySelector(".gallery");

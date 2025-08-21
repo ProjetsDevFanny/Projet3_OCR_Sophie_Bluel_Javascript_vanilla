@@ -1,5 +1,5 @@
 // ======================================================
-// Fichier : Login.js
+// Fichier : login.js
 // Description : Gestion de la connexion
 // Auteur : SIMON Fanny
 // Date : 2025-08-20
@@ -8,7 +8,7 @@
 // ----------------- Connexion -----------------
 
 // Importation des fonctions d'authentification
-import { login, saveAuth } from "../api/authApi.js";
+import { login, saveAuth } from "./api/authApi.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const loginForm = document.getElementById("login");
