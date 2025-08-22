@@ -21,14 +21,15 @@ export function createButtons(categories) {
     document.getElementById("portfolio").insertBefore(btnContainer, gallery);
   }
 
-  // On vide le conteneur des boutons
+  // On vide le conteneur des boutons (pour éviter d'empiler les boutons à appel de la fonction createButtons)
   btnContainer.innerHTML = "";
 
   uniqueCategories.forEach((category) => {
     const btn = document.createElement("button");
     btn.classList.add("btn");
 
-    // On utilise directement l'id
+    // On utilise directement l'id (pour éviter de faire une requête à l'API)
+    // On utilise un dataset pour l'événement click par la suite
     btn.dataset.category = category.id;
 
     // Le texte du bouton
@@ -43,14 +44,14 @@ export function createButtons(categories) {
 
 // ----------------- Gestion des événements des boutons -----------------
 
-export function setUpButtonListeners(projects) {
+export function setUpButtonListeners(projectsArray) {
   const btnContainer = document.querySelector(".btn-container");
   if (!btnContainer) return;
 
   btnContainer.addEventListener("click", (e) => {
     if (e.target.tagName === "BUTTON") {
       const category = e.target.dataset.category;
-      filterProjects(category, projects);
+      filterProjects(category, projectsArray);
 
       // Supprimer la classe "active" de tous les boutons :
       document.querySelectorAll(".btn").forEach((btn) => {
@@ -65,13 +66,21 @@ export function setUpButtonListeners(projects) {
 
 // ----------------- Filtre des projets par catégories -----------------
 
-function filterProjects(categoryId, projects) {
+function filterProjects(categoryId, projectsArray) {
   if (categoryId === "all") {
-    displayProjects(projects);
+    displayProjects(projectsArray);
   } else {
-    const filteredProjects = projects.filter(
+    const filteredProjects = projectsArray.filter(
       (project) => project.category.id === parseInt(categoryId)
     );
     displayProjects(filteredProjects);
   }
 }
+
+// Notes personnelles :
+
+// categoryId → l'ID de la catégorie choisie (ex. "1")
+
+// ParseInt (convertir une chaîne de caractère en nombre) = pour comparer la même chose:  project.category.id (nombre = id de la catégorie cherchée dans le tableau projectsArray) avec parseInt(categoryId) (string convertie en nombre).
+
+// => Il faut toujours lui donner en comparaison un nombre, car project.category.id est un nombre.

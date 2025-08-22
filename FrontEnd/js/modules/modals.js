@@ -7,6 +7,7 @@
 
 // Import de la fonction displayProjects depuis gallery.js
 import { displayProjects } from "./gallery.js";
+import { deleteWork, addWork, fetchWorks } from "../api/api.js";
 
 // ========================== Helpers (fonctions transversales) ==========================
 
@@ -30,12 +31,19 @@ function closeAllModals() {
   document.querySelector(".modal-overlay").classList.add("hidden");
 }
 
+// Rechargement de tous les projets (mise à jour après ajout ou suppression)
+async function refreshAllProjects() {
+  const updatedProjects = await fetchWorks();
+  displayProjects(updatedProjects);
+  displayProjectsModal(updatedProjects);
+}
+
 // ========================== 1ère Modale : Gallery Display ==========================
 
 // Affiche les projets dans la modale Gallery Display
 function displayProjectsModal(projectsArray) {
-  const modalGallery = document.querySelector(".gallery-edit");
-  modalGallery.innerHTML = "";
+  const galleryEditModal = document.querySelector(".gallery-edit");
+  galleryEditModal.innerHTML = "";
 
   projectsArray.forEach((project) => {
     const figure = document.createElement("figure");
@@ -57,7 +65,7 @@ function displayProjectsModal(projectsArray) {
       if (!confirmed) return;
 
       try {
-        await deleteProjectFromAPI(e.target.dataset.id);
+        await deleteWork(e.target.dataset.id);
         e.target.closest("figure").remove();
         refreshAllProjects();
       } catch (err) {
@@ -66,67 +74,45 @@ function displayProjectsModal(projectsArray) {
     });
 
     figure.append(img, caption, supprPhotoIcon);
-    modalGallery.appendChild(figure);
+    galleryEditModal.appendChild(figure);
   });
 }
 
 // Chargement de la modale Gallery Display
 export function loadModalGallery(projectsArray) {
-  const modal = document.querySelector("#modalGalleryDisplay");
+  const modalGalleryDisplay = document.getElementById("modalGalleryDisplay");
   const overlay = document.querySelector(".modal-overlay");
 
-  const closeBtn = modal.querySelector(".close-btn");
-  if (closeBtn) closeBtn.onclick = () => closeModal(modal);
+  const closeBtn = modalGalleryDisplay.querySelector(".close-btn");
+  if (closeBtn) closeBtn.onclick = () => closeModal(modalGalleryDisplay);
 
-  overlay.onclick = () => closeModal(modal);
+  overlay.onclick = () => closeModal(modalGalleryDisplay);
 
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeModal(modal);
+    if (e.key === "Escape") closeModal(modalGalleryDisplay);
   });
 
-  openModal(modal);
+  openModal(modalGalleryDisplay);
   displayProjectsModal(projectsArray);
-}
-
-// Suppression d’un projet de l’API
-async function deleteProjectFromAPI(projectId) {
-  const token = localStorage.getItem("token");
-
-  const response = await fetch(`http://localhost:5678/api/works/${projectId}`, {
-    method: "DELETE",
-    headers: { Authorization: `Bearer ${token}` },
-  });
-
-  if (!response.ok) {
-    if (response.status === 401)
-      throw new Error("Non autorisé : token invalide.");
-    if (response.status === 500) throw new Error("Erreur serveur.");
-    throw new Error(`Erreur inconnue : ${response.status}`);
-  }
-}
-
-// Rechargement de tous les projets
-async function refreshAllProjects() {
-  const response = await fetch("http://localhost:5678/api/works");
-  const updatedProjects = await response.json();
-  displayProjects(updatedProjects);
-  displayProjectsModal(updatedProjects);
 }
 
 // ========================== 2ème Modale : Ajout Photo ==========================
 
-function loadModalAddPhoto(projectsArray) {
-  const modal = document.querySelector("#modal-add-photo");
+// Chargement de la modale Ajout Photo
+function loadModalAddPhoto() {
+  const modalAddPhoto = document.getElementById("modal-add-photo");
   const overlay = document.querySelector(".modal-overlay");
 
-  const closeBtn = modal.querySelector(".close-btn");
-  const backBtn = modal.querySelector(".back-btn");
+  const closeBtn = modalAddPhoto.querySelector(".close-btn");
+  const backBtn = modalAddPhoto.querySelector(".back-btn");
 
   closeBtn.onclick = () => closeAllModals();
-  backBtn.onclick = () => {
-    closeAllModals();
-    // Rouvrir la modale galerie avec les projets à jour
-    loadModalGallery(projectsArray);
+  backBtn.onclick = async () => {
+    // Fermer seulement la modale add-photo
+    modalAddPhoto.classList.add("hidden");
+    alert(
+      "Attention, êtes-vous sûr de vouloir revenir en arrière ? Votre projet risque d'être perdu."
+    );
   };
 
   overlay.onclick = () => closeAllModals();
@@ -135,24 +121,16 @@ function loadModalAddPhoto(projectsArray) {
     if (e.key === "Escape") closeAllModals();
   });
 
-  openModal(modal);
+  openModal(modalAddPhoto);
 }
 
 // Bouton "Ajouter une photo"
 const addPhotoBtn = document.querySelector("#addPhotoBtn");
 addPhotoBtn.addEventListener("click", () => {
-  // Récupérer les projets actuels pour les passer à la modale
-  fetch("http://localhost:5678/api/works")
-    .then((response) => response.json())
-    .then((projects) => {
-      loadModalAddPhoto(projects);
-    })
-    .catch((error) => {
-      console.error("Erreur lors du chargement des projets:", error);
-    });
+  loadModalAddPhoto();
 });
 
-// ========================== Upload d’une photo ==========================
+// upload d'une photo
 
 const uploadPhotoBtn = document.getElementById("uploadPhotoBtn");
 const fileInput = document.getElementById("image");
@@ -171,23 +149,52 @@ fileInput.addEventListener("change", () => {
     img.id = "uploadedImage";
     img.src = e.target.result;
     img.alt = "Aperçu de la photo choisie";
-    img.style.maxWidth = "100%";
     photoUploadDiv.appendChild(img);
   };
   reader.readAsDataURL(file);
 });
 
-// ========================== Catégories ==========================
+// formulaire d'ajout
 
-async function fetchCategories() {
-  const response = await fetch("http://localhost:5678/api/categories");
-  const categories = await response.json();
+const addPhotoSubmitBtn = document.getElementById("submit-addPhotoBtn");
 
-  const uniqueCategories = [
-    ...new Set(categories.map((category) => category.name)),
-  ];
-  console.log(uniqueCategories);
-  // TODO: injecter ces catégories dans le <select>
+addPhotoSubmitBtn.addEventListener("click", async (e) => {
+  const formData = new FormData();
+  const imageFile = document.getElementById("uploadedImage").src;
+  const title = document.getElementById("title").value;
+  const category = document.getElementById("category-select").value;
+
+  if (!imageFile || !title || !category) {
+    alert("Veuillez remplir tous les champs s.v.p");
+    return;
+  }
+
+  formData.append("imageUrl", imageFile);
+  formData.append("title", title);
+  formData.append("category", category);
+
+  console.log(formData);
+
+  try {
+    // Utiliser la fonction addWork de l'API
+    await addWork(formData);
+    alert("Projet ajouté avec succès !");
+    closeAllModals();
+    refreshAllProjects();
+  } catch (error) {
+    console.error("Erreur :", error);
+    alert("Erreur lors de l'ajout du projet");
+  }
+});
+
+// catégories dans le select
+
+export function injectCategoriesInSelect(categories) {
+  const select = document.querySelector("#category-select");
+  categories.forEach((category) => {
+    const option = document.createElement("option");
+    option.value = category.id;
+    option.textContent = category.name;
+    select.appendChild(option);
+  });
 }
-
-fetchCategories();

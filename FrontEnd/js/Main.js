@@ -14,36 +14,40 @@ import { displayProjects } from "./modules/gallery.js";
 import { createButtons, setUpButtonListeners } from "./modules/filters.js";
 import { clickNavbarLinks } from "./modules/navbar.js";
 import { editPage } from "./modules/editMode.js";
-import { loadModalGallery } from "./modules/modals.js";
+import {
+  loadModalGallery,
+  injectCategoriesInSelect,
+} from "./modules/modals.js";
 
 // ----------------- Initialisation de l'application -----------------
 
 async function init() {
   try {
-    console.log("🚀 Initialisation de l'application...");
-    
-    // 1. Récupération et affichage des données
-    console.log("📊 Chargement des projets...");
-    const projects = await fetchWorks();
-    displayProjects(projects);
+    // console.log("🚀 Initialisation de l'application...");
 
-    console.log("🏷️ Chargement des catégories...");
+    // 1. Récupération et affichage des données
+    // console.log("📊 Chargement des projets...");
+    const projectsArray = await fetchWorks();
+    displayProjects(projectsArray);
+
+    // console.log("🏷️ Chargement des catégories...");
     const categories = await fetchCategories();
     createButtons(categories);
-    setUpButtonListeners(projects);
+    setUpButtonListeners(projectsArray);
+    injectCategoriesInSelect(categories);
 
     // 2. Configuration de l'interface utilisateur
-    console.log("🧭 Configuration de la navigation...");
+    // console.log("🧭 Configuration de la navigation...");
     clickNavbarLinks();
-    
+
     // 3. Activation du mode édition si connecté
-    console.log("✏️ Vérification du mode édition...");
+    // console.log("✏️ Vérification du mode édition...");
     editPage(() => {
       console.log("📝 Ouverture de la modale d'édition");
-      loadModalGallery(projects);
+      loadModalGallery(projectsArray);
     });
 
-    console.log("✅ Application initialisée avec succès");
+    // console.log("✅ Application initialisée avec succès");
   } catch (error) {
     console.error("❌ Erreur lors de l'initialisation :", error);
   }
