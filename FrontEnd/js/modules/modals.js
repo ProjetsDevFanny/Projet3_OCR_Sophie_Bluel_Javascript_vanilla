@@ -105,6 +105,9 @@ function loadModalAddPhoto() {
 
   const closeBtn = modalAddPhoto.querySelector(".close-btn");
   const backBtn = modalAddPhoto.querySelector(".back-btn");
+  const addPhotoSubmitBtn = document.getElementById("submit-addPhotoBtn");
+  const uploadPhotoBtn = document.getElementById("uploadPhotoBtn");
+  const photoUploadDiv = document.getElementById("photoUpload");
 
   closeBtn.onclick = () => closeAllModals();
   backBtn.onclick = async () => {
@@ -115,13 +118,132 @@ function loadModalAddPhoto() {
     );
   };
 
+  // Événement du bouton submit
+  addPhotoSubmitBtn.addEventListener("click", async (e) => {
+    e.preventDefault();
+
+    console.log("🔍 Début de la soumission du formulaire");
+
+    // Debug : vérifier si la modale est ouverte
+    console.log("📋 modalAddPhoto:", modalAddPhoto);
+    console.log("📋 modalAddPhoto.classList:", modalAddPhoto.classList);
+
+    // Debug : vérifier tous les éléments input dans la modale
+    const allInputs = modalAddPhoto.querySelectorAll("input");
+    console.log("📋 Tous les inputs dans la modale:", allInputs);
+
+    // Essayer différentes façons de récupérer l'élément image
+    let imageInput = document.getElementById("image");
+    console.log("📁 imageInput par ID:", imageInput);
+
+    if (!imageInput) {
+      imageInput = document.querySelector('input[name="image"]');
+      console.log("📁 imageInput par name:", imageInput);
+    }
+    if (!imageInput) {
+      imageInput = document.querySelector('input[type="file"]');
+      console.log("📁 imageInput par type:", imageInput);
+    }
+    if (!imageInput) {
+      imageInput = modalAddPhoto.querySelector('input[type="file"]');
+      console.log("📁 imageInput par modalAddPhoto:", imageInput);
+    }
+
+    console.log("📁 imageInput final:", imageInput);
+    console.log("📁 imageInput.files:", imageInput?.files);
+    console.log("📁 imageInput.files[0]:", imageInput?.files?.[0]);
+
+    if (!imageInput || !imageInput.files || !imageInput.files[0]) {
+      alert("Veuillez sélectionner une image !");
+      return;
+    }
+
+    const title = document.getElementById("title").value;
+    const category = document.getElementById("category-select").value;
+
+    console.log("📝 Titre:", title);
+    console.log("🏷️ Catégorie:", category);
+
+    if (!title || !category) {
+      alert("Veuillez remplir tous les champs s.v.p");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("image", imageInput.files[0]); // Clé correcte pour l'API
+    formData.append("title", title);
+    formData.append("category", category); // Variable correcte
+
+    console.log("📦 FormData contenu :");
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
+
+    try {
+      await addWork(formData);
+      alert("Projet ajouté avec succès !");
+      closeAllModals();
+      refreshAllProjects();
+    } catch (error) {
+      console.error("Erreur :", error);
+      alert("Erreur lors de l'ajout du projet");
+    }
+  });
+
+  // Événements pour l'upload de photo
+  uploadPhotoBtn.onclick = () => {
+    const currentFileInput = document.getElementById("image");
+    currentFileInput.click();
+  };
+
   overlay.onclick = () => closeAllModals();
 
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") closeAllModals();
   });
 
+  // Ouvrir la modale AVANT d'attacher les événements
   openModal(modalAddPhoto);
+
+  // Maintenant récupérer fileInput après l'ouverture de la modale
+  const fileInput = modalAddPhoto.querySelector("#image");
+
+  // Attacher l'événement change à l'élément fileInput
+  if (fileInput) {
+    fileInput.onchange = () => {
+      const file = fileInput.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        // Préserver l'élément #image
+        const imageInput = photoUploadDiv.querySelector("#image");
+
+        photoUploadDiv.innerHTML = "";
+
+        // Recréer l'élément #image
+        const newImageInput = document.createElement("input");
+        newImageInput.type = "file";
+        newImageInput.className = "hidden";
+        newImageInput.name = "image";
+        newImageInput.id = "image";
+        newImageInput.accept = ".jpg,.jpeg,.png";
+        newImageInput.files = imageInput.files; // Préserver les fichiers sélectionnés
+
+        const img = document.createElement("img");
+        img.id = "uploadedImage";
+        img.src = e.target.result;
+        img.alt = "Aperçu de la photo choisie";
+
+        photoUploadDiv.appendChild(newImageInput);
+        photoUploadDiv.appendChild(img);
+
+        // Réattacher l'événement change au nouvel élément
+        newImageInput.onchange = fileInput.onchange;
+      };
+      reader.readAsDataURL(file);
+    };
+  }
 }
 
 // Bouton "Ajouter une photo"
@@ -130,65 +252,7 @@ addPhotoBtn.addEventListener("click", () => {
   loadModalAddPhoto();
 });
 
-// upload d'une photo
-
-const uploadPhotoBtn = document.getElementById("uploadPhotoBtn");
-const fileInput = document.getElementById("image");
-const photoUploadDiv = document.getElementById("photoUpload");
-
-uploadPhotoBtn.addEventListener("click", () => fileInput.click());
-
-fileInput.addEventListener("change", () => {
-  const file = fileInput.files[0];
-  if (!file) return;
-
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    photoUploadDiv.innerHTML = "";
-    const img = document.createElement("img");
-    img.id = "uploadedImage";
-    img.src = e.target.result;
-    img.alt = "Aperçu de la photo choisie";
-    photoUploadDiv.appendChild(img);
-  };
-  reader.readAsDataURL(file);
-});
-
-// formulaire d'ajout
-
-const addPhotoSubmitBtn = document.getElementById("submit-addPhotoBtn");
-
-addPhotoSubmitBtn.addEventListener("click", async (e) => {
-  const formData = new FormData();
-  const imageFile = document.getElementById("uploadedImage").src;
-  const title = document.getElementById("title").value;
-  const category = document.getElementById("category-select").value;
-
-  if (!imageFile || !title || !category) {
-    alert("Veuillez remplir tous les champs s.v.p");
-    return;
-  }
-
-  formData.append("imageUrl", imageFile);
-  formData.append("title", title);
-  formData.append("category", category);
-
-  console.log(formData);
-
-  try {
-    // Utiliser la fonction addWork de l'API
-    await addWork(formData);
-    alert("Projet ajouté avec succès !");
-    closeAllModals();
-    refreshAllProjects();
-  } catch (error) {
-    console.error("Erreur :", error);
-    alert("Erreur lors de l'ajout du projet");
-  }
-});
-
 // catégories dans le select
-
 export function injectCategoriesInSelect(categories) {
   const select = document.querySelector("#category-select");
   categories.forEach((category) => {
