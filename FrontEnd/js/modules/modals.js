@@ -132,7 +132,7 @@ function loadModalAddPhoto() {
     const allInputs = modalAddPhoto.querySelectorAll("input");
     console.log("📋 Tous les inputs dans la modale:", allInputs);
 
-    // Essayer différentes façons de récupérer l'élément image
+    // DEBUG : Essayer différentes façons de récupérer l'élément image
     let imageInput = document.getElementById("image");
     console.log("📁 imageInput par ID:", imageInput);
 
@@ -182,7 +182,10 @@ function loadModalAddPhoto() {
     try {
       await addWork(formData);
       alert("Projet ajouté avec succès !");
-      closeAllModals();
+      // Réinitialiser les champs du formulaire
+      // document.getElementById("title").value = "";
+      // document.getElementById("category-select").value = "";
+      // document.getElementById("image").value = "";
       refreshAllProjects();
     } catch (error) {
       console.error("Erreur :", error);
