@@ -38,6 +38,25 @@ async function refreshAllProjects() {
   displayProjectsModal(updatedProjects);
 }
 
+// Vider le formulaire d'ajout de photo
+function clearForm() {
+  const title = document.getElementById("title");
+  const categorySelect = document.getElementById("category-select");
+  const image = document.getElementById("image");
+  const uploadedImage = document.getElementById("uploadedImage");
+  const uploadPhotoContainer = document.querySelector(".uploadPhoto-container");
+
+  if (title) title.value = "";
+  if (categorySelect) categorySelect.value = "";
+  if (image) image.value = "";
+  if (uploadedImage) uploadedImage.remove();
+
+  // Réafficher le conteneur d'upload
+  if (uploadPhotoContainer) {
+    uploadPhotoContainer.style.display = "block";
+  }
+}
+
 // ========================== 1ère Modale : Gallery Display ==========================
 
 // Affiche les projets dans la modale Gallery Display
@@ -107,52 +126,24 @@ function loadModalAddPhoto() {
   const backBtn = modalAddPhoto.querySelector(".back-btn");
   const addPhotoSubmitBtn = document.getElementById("submit-addPhotoBtn");
   const uploadPhotoBtn = document.getElementById("uploadPhotoBtn");
-  const photoUploadDiv = document.getElementById("photoUpload");
+  const fileInput = modalAddPhoto.querySelector("#image");
 
   closeBtn.onclick = () => closeAllModals();
-  backBtn.onclick = async () => {
-    // Fermer seulement la modale add-photo
-    modalAddPhoto.classList.add("hidden");
-    alert(
-      "Attention, êtes-vous sûr de vouloir revenir en arrière ? Votre projet risque d'être perdu."
+  backBtn.onclick = () => {
+    const confirmed = confirm(
+      "Attention ! Etes-vous sûr de vouloir revenir en arrière ?\nValidez votre projet avant, sinon il risque d'être perdu."
     );
+    if (!confirmed) return;
+    clearForm();
+    modalAddPhoto.classList.add("hidden");
   };
 
   // Événement du bouton submit
   addPhotoSubmitBtn.addEventListener("click", async (e) => {
     e.preventDefault();
 
-    console.log("🔍 Début de la soumission du formulaire");
-
-    // Debug : vérifier si la modale est ouverte
-    console.log("📋 modalAddPhoto:", modalAddPhoto);
-    console.log("📋 modalAddPhoto.classList:", modalAddPhoto.classList);
-
-    // Debug : vérifier tous les éléments input dans la modale
-    const allInputs = modalAddPhoto.querySelectorAll("input");
-    console.log("📋 Tous les inputs dans la modale:", allInputs);
-
-    // DEBUG : Essayer différentes façons de récupérer l'élément image
-    let imageInput = document.getElementById("image");
-    console.log("📁 imageInput par ID:", imageInput);
-
-    if (!imageInput) {
-      imageInput = document.querySelector('input[name="image"]');
-      console.log("📁 imageInput par name:", imageInput);
-    }
-    if (!imageInput) {
-      imageInput = document.querySelector('input[type="file"]');
-      console.log("📁 imageInput par type:", imageInput);
-    }
-    if (!imageInput) {
-      imageInput = modalAddPhoto.querySelector('input[type="file"]');
-      console.log("📁 imageInput par modalAddPhoto:", imageInput);
-    }
-
-    console.log("📁 imageInput final:", imageInput);
-    console.log("📁 imageInput.files:", imageInput?.files);
-    console.log("📁 imageInput.files[0]:", imageInput?.files?.[0]);
-
+    // Vérification du remplissage des champs du formulaire "ajout projet" avant l'envoie à l'API
+    const imageInput = document.getElementById("image");
     if (!imageInput || !imageInput.files || !imageInput.files[0]) {
       alert("Veuillez sélectionner une image !");
       return;
@@ -161,32 +152,23 @@ function loadModalAddPhoto() {
     const title = document.getElementById("title").value;
     const category = document.getElementById("category-select").value;
 
-    console.log("📝 Titre:", title);
-    console.log("🏷️ Catégorie:", category);
-
     if (!title || !category) {
       alert("Veuillez remplir tous les champs s.v.p");
       return;
     }
 
+    // Création FormData : Prépare les données pour l'envoi à l'API
     const formData = new FormData();
     formData.append("image", imageInput.files[0]); // Clé correcte pour l'API
     formData.append("title", title);
     formData.append("category", category); // Variable correcte
 
-    console.log("📦 FormData contenu :");
-    for (let [key, value] of formData.entries()) {
-      console.log(key, value);
-    }
-
+    // Envoi des données à l'API
     try {
       await addWork(formData);
       alert("Projet ajouté avec succès !");
-      // Réinitialiser les champs du formulaire
-      // document.getElementById("title").value = "";
-      // document.getElementById("category-select").value = "";
-      // document.getElementById("image").value = "";
       refreshAllProjects();
+      clearForm();
     } catch (error) {
       console.error("Erreur :", error);
       alert("Erreur lors de l'ajout du projet");
@@ -205,13 +187,15 @@ function loadModalAddPhoto() {
     if (e.key === "Escape") closeAllModals();
   });
 
-  // Ouvrir la modale AVANT d'attacher les événements
+  // Ouvrir la modale (avant d'attacher les événements)
   openModal(modalAddPhoto);
 
-  // Maintenant récupérer fileInput après l'ouverture de la modale
-  const fileInput = modalAddPhoto.querySelector("#image");
+  // Récupérer l'élément uploadPhotoContainer
+  const uploadPhotoContainer = modalAddPhoto.querySelector(
+    ".uploadPhoto-container"
+  );
 
-  // Attacher l'événement change à l'élément fileInput
+  // Gestion de l'aperçu d'image
   if (fileInput) {
     fileInput.onchange = () => {
       const file = fileInput.files[0];
@@ -219,30 +203,26 @@ function loadModalAddPhoto() {
 
       const reader = new FileReader();
       reader.onload = (e) => {
-        // Préserver l'élément #image
-        const imageInput = photoUploadDiv.querySelector("#image");
+        // Supprimer un ancien aperçu s'il existe
+        const oldPreview = modalAddPhoto.querySelector("#uploadedImage");
+        if (oldPreview) oldPreview.remove();
 
-        photoUploadDiv.innerHTML = "";
+        // Masquer le conteneur d'upload
+        if (uploadPhotoContainer) {
+          uploadPhotoContainer.style.display = "none";
+        }
 
-        // Recréer l'élément #image
-        const newImageInput = document.createElement("input");
-        newImageInput.type = "file";
-        newImageInput.className = "hidden";
-        newImageInput.name = "image";
-        newImageInput.id = "image";
-        newImageInput.accept = ".jpg,.jpeg,.png";
-        newImageInput.files = imageInput.files; // Préserver les fichiers sélectionnés
-
+        // Créer un nouvel aperçu
         const img = document.createElement("img");
         img.id = "uploadedImage";
         img.src = e.target.result;
         img.alt = "Aperçu de la photo choisie";
 
-        photoUploadDiv.appendChild(newImageInput);
-        photoUploadDiv.appendChild(img);
-
-        // Réattacher l'événement change au nouvel élément
-        newImageInput.onchange = fileInput.onchange;
+        // Ajouter l'aperçu dans la div uploadPhoto
+        const uploadPhotoDiv = modalAddPhoto.querySelector(".uploadPhoto");
+        if (uploadPhotoDiv) {
+          uploadPhotoDiv.appendChild(img);
+        }
       };
       reader.readAsDataURL(file);
     };

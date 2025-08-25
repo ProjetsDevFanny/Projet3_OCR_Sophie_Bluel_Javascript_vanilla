@@ -188,17 +188,21 @@
   position: relative;
 }
 
-.photo-upload {
+.uploadPhoto {
+border-radius: 3px;
+background-color: var(--light-blue-color);
+transition: border-color 0.3s ease;
+height: 18vh;
+box-shadow: inset 0px 0px 14px rgba(0, 0, 0, 0.09);
+border-radius: 3px;
+}
+
+.uploadPhoto-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
-  border-radius: 3px;
-  background-color: var(--light-blue-color);
-  transition: border-color 0.3s ease;
-  height: 18vh;
-  box-shadow: inset 0px 0px 14px rgba(0, 0, 0, 0.09);
-  border-radius: 3px;
+  height: 100%;
 }
 
 #iconeImage {
@@ -213,7 +217,7 @@
   object-fit: cover;
 }
 
-.photo-upload button {
+.uploadPhoto-container button {
   display: block;
   height: 2rem;
   width: 10rem;
@@ -234,7 +238,7 @@
   }
 }
 
-.photo-upload small {
+.uploadPhoto-container small {
   font-size: 0.7rem;
   color: var(--black-nuance-color);
 }

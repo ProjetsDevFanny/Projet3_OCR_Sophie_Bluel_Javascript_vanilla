@@ -105,10 +105,12 @@
 			<h1>Ajout photo</h1>
 			<div class="edit">
 				<form action="#" method="post">
-					<div class="photo-upload" id="photoUpload">
-						<img id="iconeImage" src="/FrontEnd/assets/icons/add-photo.png" alt="uploadPhoto">
-						<button type="button" id="uploadPhotoBtn" class="style-btn">+ Ajouter photo</button>
-						<small>jpg, png : 4mo max</small>
+					<div class="uploadPhoto">
+						<div class="uploadPhoto-container">
+							<img id="iconeImage" src="/FrontEnd/assets/icons/add-photo.png" alt="uploadPhoto">
+							<button type="button" id="uploadPhotoBtn" class="style-btn">+ Ajouter photo</button>
+							<small>jpg, png : 4mo max</small>
+						</div>
 						<input type="file" class="hidden" name="image" id="image" accept=".jpg,.jpeg,.png">
 					</div>
 					<label for="title">Titre</label>
