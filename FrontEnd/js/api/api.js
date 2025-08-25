@@ -8,6 +8,29 @@
 import { API_URL } from "./config.js";
 import { getToken } from "./authApi.js";
 
+// ------------------ Vérifier présence et expiration du token ------------------
+
+export async function checkTokenExpiration(token) { 
+  console.log("🔑 Token récupéré:", token ? "Token trouvé" : "Aucun token");
+  console.log("🔑 Token complet:", token);
+
+  if (!token) throw new Error("Utilisateur non authentifié");
+
+  // Vérifier l'expiration du token
+  try {
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    const expirationDate = new Date(payload.exp * 1000);
+    const now = new Date();
+    console.log("⏰ Token expiré:", now > expirationDate);
+
+    if (now > expirationDate) {
+      throw new Error("Token expiré");
+    }
+  } catch (error) {
+    console.error("❌ Erreur décodage token:", error);
+  }
+}
+
 // ----------------- Récupération des projets depuis l'API -----------------
 
 export async function fetchWorks() {
@@ -32,24 +55,7 @@ export async function fetchWorks() {
 // Ajouter un projet
 export async function addWork(formData) {
   const token = getToken();
-  console.log("🔑 Token récupéré:", token ? "Token trouvé" : "Aucun token");
-  console.log("🔑 Token complet:", token);
-
-  if (!token) throw new Error("Utilisateur non authentifié");
-
-  // Vérifier l'expiration du token
-  try {
-    const payload = JSON.parse(atob(token.split(".")[1]));
-    const expirationDate = new Date(payload.exp * 1000);
-    const now = new Date();
-    console.log("⏰ Token expiré:", now > expirationDate);
-
-    if (now > expirationDate) {
-      throw new Error("Token expiré");
-    }
-  } catch (error) {
-    console.error("❌ Erreur décodage token:", error);
-  }
+  checkTokenExpiration(token);
 
   const response = await fetch(`${API_URL}/works`, {
     method: "POST",
@@ -67,7 +73,7 @@ export async function addWork(formData) {
 // Supprimer un projet
 export async function deleteWork(workId) {
   const token = getToken();
-  if (!token) throw new Error("Utilisateur non authentifié");
+  checkTokenExpiration(token);
 
   const response = await fetch(`${API_URL}/works/${workId}`, {
     method: "DELETE",

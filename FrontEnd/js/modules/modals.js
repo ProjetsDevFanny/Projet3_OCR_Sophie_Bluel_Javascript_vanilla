@@ -53,7 +53,7 @@ function clearForm() {
 
   // Réafficher le conteneur d'upload
   if (uploadPhotoContainer) {
-    uploadPhotoContainer.style.display = "block";
+    uploadPhotoContainer.style.display = "flex";
   }
 }
 
@@ -119,16 +119,21 @@ export function loadModalGallery(projectsArray) {
 
 // Chargement de la modale Ajout Photo
 function loadModalAddPhoto() {
+    // Récupération de la modal et de l'overlay
   const modalAddPhoto = document.getElementById("modal-add-photo");
   const overlay = document.querySelector(".modal-overlay");
 
+  // Récupération des éléments des boutons (close, back, submit du formulaire)
   const closeBtn = modalAddPhoto.querySelector(".close-btn");
   const backBtn = modalAddPhoto.querySelector(".back-btn");
   const addPhotoSubmitBtn = document.getElementById("submit-addPhotoBtn");
-  const uploadPhotoBtn = document.getElementById("uploadPhotoBtn");
-  const fileInput = modalAddPhoto.querySelector("#image");
 
+  const uploadPhotoBtn = document.getElementById("uploadPhotoBtn"); // Bouton upload photo
+  const fileInput = modalAddPhoto.querySelector("#image"); // Input file
+
+  // Événements sur les boutons close, back et submit
   closeBtn.onclick = () => closeAllModals();
+
   backBtn.onclick = () => {
     const confirmed = confirm(
       "Attention ! Etes-vous sûr de vouloir revenir en arrière ?\nValidez votre projet avant, sinon il risque d'être perdu."
@@ -138,7 +143,6 @@ function loadModalAddPhoto() {
     modalAddPhoto.classList.add("hidden");
   };
 
-  // Événement du bouton submit
   addPhotoSubmitBtn.addEventListener("click", async (e) => {
     e.preventDefault();
 
@@ -157,7 +161,7 @@ function loadModalAddPhoto() {
       return;
     }
 
-    // Création FormData : Prépare les données pour l'envoi à l'API
+    // Si tous les champs remplis: création FormData : Prépare les données pour l'envoi à l'API
     const formData = new FormData();
     formData.append("image", imageInput.files[0]); // Clé correcte pour l'API
     formData.append("title", title);
@@ -175,7 +179,7 @@ function loadModalAddPhoto() {
     }
   });
 
-  // Événements pour l'upload de photo
+  // Événement sur le bouton upload photo
   uploadPhotoBtn.onclick = () => {
     const currentFileInput = document.getElementById("image");
     currentFileInput.click();
@@ -229,10 +233,10 @@ function loadModalAddPhoto() {
   }
 }
 
-// Bouton "Ajouter une photo"
+// Bouton "Ajouter une photo" (dans la modal gallery display)
 const addPhotoBtn = document.querySelector("#addPhotoBtn");
 addPhotoBtn.addEventListener("click", () => {
-  loadModalAddPhoto();
+   loadModalAddPhoto();
 });
 
 // catégories dans le select

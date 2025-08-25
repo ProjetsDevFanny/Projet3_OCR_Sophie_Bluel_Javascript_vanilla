@@ -215,6 +215,7 @@ border-radius: 3px;
   display: block;
   max-height: 18vh;
   object-fit: cover;
+  margin: 0 auto;
 }
 
 .uploadPhoto-container button {
