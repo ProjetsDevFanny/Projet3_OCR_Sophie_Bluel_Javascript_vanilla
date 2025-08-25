@@ -117,23 +117,38 @@ export function loadModalGallery(projectsArray) {
 
 // ========================== 2ème Modale : Ajout Photo ==========================
 
-// Chargement de la modale Ajout Photo
-function loadModalAddPhoto() {
-    // Récupération de la modal et de l'overlay
+// 1. Ouvrir la modale quand on clique sur le bouton "Ajouter une photo"
+const addPhotoBtn = document.querySelector("#addPhotoBtn");
+addPhotoBtn.addEventListener("click", () => {
+  openAddPhotoModal();
+});
+
+// Fonction qui ouvre la modale
+function openAddPhotoModal() {
+  const modalAddPhoto = document.getElementById("modal-add-photo");
+
+  // Ouvrir la modale
+  openModal(modalAddPhoto);
+
+  // Attacher les événements seulement après ouverture
+  attachAddPhotoEvents();
+}
+
+// 2. Attacher les événements de la modale
+function attachAddPhotoEvents() {
   const modalAddPhoto = document.getElementById("modal-add-photo");
   const overlay = document.querySelector(".modal-overlay");
 
-  // Récupération des éléments des boutons (close, back, submit du formulaire)
   const closeBtn = modalAddPhoto.querySelector(".close-btn");
   const backBtn = modalAddPhoto.querySelector(".back-btn");
-  const addPhotoSubmitBtn = document.getElementById("submit-addPhotoBtn");
-
+  const addPhotoSubmitBtn = document.getElementById("submit-addPhotoBtn"); // Bouton submit du formulaire
   const uploadPhotoBtn = document.getElementById("uploadPhotoBtn"); // Bouton upload photo
-  const fileInput = modalAddPhoto.querySelector("#image"); // Input file
+  const fileInput = modalAddPhoto.querySelector("#image"); // Input file pour l'upload de la photo
 
-  // Événements sur les boutons close, back et submit
+  // Fermer la modale
   closeBtn.onclick = () => closeAllModals();
 
+  // Retour en arrière
   backBtn.onclick = () => {
     const confirmed = confirm(
       "Attention ! Etes-vous sûr de vouloir revenir en arrière ?\nValidez votre projet avant, sinon il risque d'être perdu."
@@ -143,31 +158,69 @@ function loadModalAddPhoto() {
     modalAddPhoto.classList.add("hidden");
   };
 
+  // Fermer si clic sur overlay ou touche Escape
+  overlay.onclick = () => closeAllModals();
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeAllModals();
+  });
+
+  // 3. Upload photo → input + aperçu
+  uploadPhotoBtn.onclick = () => fileInput.click();
+
+  fileInput.onchange = () => {
+    const file = fileInput.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      // Supprimer un ancien aperçu
+      const oldPreview = modalAddPhoto.querySelector("#uploadedImage");
+      if (oldPreview) oldPreview.remove();
+
+      // Masquer le conteneur d'upload
+      const uploadPhotoContainer = modalAddPhoto.querySelector(
+        ".uploadPhoto-container"
+      );
+      if (uploadPhotoContainer) uploadPhotoContainer.style.display = "none";
+
+      // Créer et insérer l’aperçu
+      const img = document.createElement("img");
+      img.id = "uploadedImage";
+      img.src = e.target.result;
+      img.alt = "Aperçu de la photo choisie";
+
+      const uploadPhotoDiv = modalAddPhoto.querySelector(".uploadPhoto");
+      if (uploadPhotoDiv) uploadPhotoDiv.appendChild(img);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  // 4. Submit du formulaire → envoi à l’API
   addPhotoSubmitBtn.addEventListener("click", async (e) => {
     e.preventDefault();
 
-    // Vérification du remplissage des champs du formulaire "ajout projet" avant l'envoie à l'API
+    // Vérification si l'image est sélectionnée
     const imageInput = document.getElementById("image");
     if (!imageInput || !imageInput.files || !imageInput.files[0]) {
       alert("Veuillez sélectionner une image !");
       return;
     }
 
+    // Vérification si le titre et la catégorie sont remplis
     const title = document.getElementById("title").value;
     const category = document.getElementById("category-select").value;
-
     if (!title || !category) {
       alert("Veuillez remplir tous les champs s.v.p");
       return;
     }
 
-    // Si tous les champs remplis: création FormData : Prépare les données pour l'envoi à l'API
+    // Création du FormData
     const formData = new FormData();
-    formData.append("image", imageInput.files[0]); // Clé correcte pour l'API
+    formData.append("image", imageInput.files[0]);
     formData.append("title", title);
-    formData.append("category", category); // Variable correcte
+    formData.append("category", category);
 
-    // Envoi des données à l'API
+    // Ajout du projet à l'API
     try {
       await addWork(formData);
       alert("Projet ajouté avec succès !");
@@ -178,68 +231,9 @@ function loadModalAddPhoto() {
       alert("Erreur lors de l'ajout du projet");
     }
   });
-
-  // Événement sur le bouton upload photo
-  uploadPhotoBtn.onclick = () => {
-    const currentFileInput = document.getElementById("image");
-    currentFileInput.click();
-  };
-
-  overlay.onclick = () => closeAllModals();
-
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeAllModals();
-  });
-
-  // Ouvrir la modale (avant d'attacher les événements)
-  openModal(modalAddPhoto);
-
-  // Récupérer l'élément uploadPhotoContainer
-  const uploadPhotoContainer = modalAddPhoto.querySelector(
-    ".uploadPhoto-container"
-  );
-
-  // Gestion de l'aperçu d'image
-  if (fileInput) {
-    fileInput.onchange = () => {
-      const file = fileInput.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        // Supprimer un ancien aperçu s'il existe
-        const oldPreview = modalAddPhoto.querySelector("#uploadedImage");
-        if (oldPreview) oldPreview.remove();
-
-        // Masquer le conteneur d'upload
-        if (uploadPhotoContainer) {
-          uploadPhotoContainer.style.display = "none";
-        }
-
-        // Créer un nouvel aperçu
-        const img = document.createElement("img");
-        img.id = "uploadedImage";
-        img.src = e.target.result;
-        img.alt = "Aperçu de la photo choisie";
-
-        // Ajouter l'aperçu dans la div uploadPhoto
-        const uploadPhotoDiv = modalAddPhoto.querySelector(".uploadPhoto");
-        if (uploadPhotoDiv) {
-          uploadPhotoDiv.appendChild(img);
-        }
-      };
-      reader.readAsDataURL(file);
-    };
-  }
 }
 
-// Bouton "Ajouter une photo" (dans la modal gallery display)
-const addPhotoBtn = document.querySelector("#addPhotoBtn");
-addPhotoBtn.addEventListener("click", () => {
-   loadModalAddPhoto();
-});
-
-// catégories dans le select
+// ========================== Injecter les catégories dans le select ( modal Ajout Photo)==========================
 export function injectCategoriesInSelect(categories) {
   const select = document.querySelector("#category-select");
   categories.forEach((category) => {
