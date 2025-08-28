@@ -22,31 +22,23 @@ import {
 
 async function init() {
   try {
-    // console.log("🚀 Initialisation de l'application...");
-
-    // 1. Récupération et affichage des données
-    // console.log("📊 Chargement des projets...");
+    // Récupération et affichage des données
     const projectsArray = await fetchWorksPublic();
     displayProjects(projectsArray);
 
-    // console.log("🏷️ Chargement des catégories...");
+    // Chargement des catégories
     const categories = await fetchCategories();
     createButtons(categories);
     setUpButtonListeners(projectsArray);
     injectCategoriesInSelect(categories);
 
-    // 2. Configuration de l'interface utilisateur
-    // console.log("🧭 Configuration de la navigation...");
+    // Configuration de l'interface utilisateur
     clickNavbarLinks();
 
-    // 3. Activation du mode édition si connecté
-    // console.log("✏️ Vérification du mode édition...");
+    // Activation du mode édition si connecté
     editPage(() => {
-      console.log("📝 Ouverture de la modale d'édition");
       loadModalGallery(projectsArray);
     });
-
-    // console.log("✅ Application initialisée avec succès");
   } catch (error) {
     console.error("❌ Erreur lors de l'initialisation :", error);
   }

@@ -109,7 +109,7 @@ export async function deleteWork(workId) {
   handleApiResponse(response, "Erreur lors de la suppression du projet");
 
   return { success: true, message: "Projet supprimé avec succès" };
-}
+} 
 
 // ----------------- Récupérer les catégories -----------------
 

@@ -43,7 +43,7 @@ export function createButtons(categories) {
   });
 }
 
-// ----------------- Gestion des événements des boutons -----------------
+// ----------------- Gestion des événements des boutons de filtre -----------------
 
 export function setUpButtonListeners(projectsArray) {
   const btnContainer = document.querySelector(".btn-container");

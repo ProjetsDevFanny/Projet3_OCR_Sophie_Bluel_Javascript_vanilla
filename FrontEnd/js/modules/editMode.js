@@ -32,7 +32,7 @@ function displayBanner() {
 function updateNavbar() {
   const loginOutBtn = document.getElementById("login-out-btn");
   if (loginOutBtn) {
-    loginOutBtn.textContent = "Logout";
+    loginOutBtn.textContent = "logout";
     loginOutBtn.addEventListener("click", () => {
       localStorage.removeItem("token");
       localStorage.removeItem("userId");

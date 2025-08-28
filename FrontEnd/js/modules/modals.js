@@ -118,6 +118,7 @@ export function loadModalGallery(projectsArray) {
 // ========================== 2ème Modale : Ajout Photo ==========================
 
 // 1. Ouvrir la modale quand on clique sur le bouton "Ajouter une photo"
+
 const addPhotoBtn = document.querySelector("#addPhotoBtn");
 addPhotoBtn.addEventListener("click", () => {
   openAddPhotoModal();
@@ -132,20 +133,22 @@ function openAddPhotoModal() {
 
   // On attache les events une seule fois (création d'un dataset qui indique que les events sont attachés)
   if (!modalAddPhoto.dataset.eventsAttached) {
-    attachAddPhotoEvents(modalAddPhoto); // <-- on passe la modalAddPhoto
+    attachAddPhotoEvents(); // <-- on passe la modalAddPhoto
     modalAddPhoto.dataset.eventsAttached = "true";
   }
 }
 
 // 2. Attacher les événements de la modale
-function attachAddPhotoEvents(modalAddPhoto) {
+
+function attachAddPhotoEvents() {
+  const modalAddPhoto = document.getElementById("modal-add-photo");
   const overlay = document.querySelector(".modal-overlay");
 
   const closeBtn = modalAddPhoto.querySelector(".close-btn");
   const backBtn = modalAddPhoto.querySelector(".back-btn");
   const addPhotoSubmitBtn = document.getElementById("submit-addPhotoBtn"); // Bouton submit du formulaire
   const uploadPhotoBtn = document.getElementById("uploadPhotoBtn"); // Bouton upload photo
-  const fileInput = modalAddPhoto.querySelector("#image"); // Input file pour l'upload de la photo
+  const fileInput = document.getElementById("image"); // Input file pour l'upload de la photo
 
   // Fermer la modale
   closeBtn.onclick = () => closeAllModals();
@@ -167,7 +170,7 @@ function attachAddPhotoEvents(modalAddPhoto) {
   });
 
   // 3. Upload photo → input + aperçu
-  uploadPhotoBtn.onclick = () => fileInput.click();
+  uploadPhotoBtn.onclick = () => fileInput.click(); // simulation de clic sur le bouton upload photo (car on ne peut pas cliquer sur l'input file)
 
   fileInput.onchange = () => {
     const file = fileInput.files[0];
@@ -195,7 +198,50 @@ function attachAddPhotoEvents(modalAddPhoto) {
       if (uploadPhotoDiv) uploadPhotoDiv.appendChild(img);
     };
     reader.readAsDataURL(file);
+
+    // Simulation du déploiment des options du select categories sur le chevron
+    const selectContainer = document.querySelector(".select-container");
+    const categorySelect = document.getElementById("category-select");
+    if (selectContainer) {
+      const chevron = selectContainer.querySelector("::after");
+      chevron.onclick = () => {
+        categorySelect.click();
+      };
+    }
   };
+
+  // Fonction pour vérifier si tous les champs sont remplis et activer le bouton submit (coloration verte)
+
+  function checkFormCompletion() {
+    const title = document.getElementById("title").value;
+    const category = document.getElementById("category-select").value;
+    const imageInput = document.getElementById("image");
+
+    if (imageInput.files[0] && title && category) {
+      addPhotoSubmitBtn.classList.add("verified-add-photo-form");
+    } else {
+      addPhotoSubmitBtn.classList.remove("verified-add-photo-form");
+    }
+  }
+
+  // Écouter les changements sur les champs
+  const titleInput = document.getElementById("title");
+  const categorySelect = document.getElementById("category-select");
+
+  if (titleInput) {
+    titleInput.addEventListener("input", checkFormCompletion);
+  }
+
+  if (categorySelect) {
+    categorySelect.addEventListener("change", checkFormCompletion);
+  }
+
+  if (fileInput) {
+    fileInput.addEventListener("change", checkFormCompletion);
+  }
+
+  // Vérification initiale
+  checkFormCompletion();
 
   // 4. Submit du formulaire → envoi à l’API
   addPhotoSubmitBtn.addEventListener("click", async (e) => {
@@ -214,10 +260,6 @@ function attachAddPhotoEvents(modalAddPhoto) {
     if (!title || !category) {
       alert("Veuillez remplir tous les champs s.v.p");
       return;
-    }
-
-    if (imageInput.files[0] && title && category) {
-      addPhotoSubmitBtn.classList.add("verified-add-photo-form");
     }
 
     // Création du FormData
@@ -241,6 +283,7 @@ function attachAddPhotoEvents(modalAddPhoto) {
 }
 
 // ========================== Injecter les catégories dans le select ( modal Ajout Photo)==========================
+
 export function injectCategoriesInSelect(categories) {
   const select = document.querySelector("#category-select");
   categories.forEach((category) => {

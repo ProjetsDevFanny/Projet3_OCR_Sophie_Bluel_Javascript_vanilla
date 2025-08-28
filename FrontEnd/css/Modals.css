@@ -277,11 +277,11 @@ border-radius: 3px;
   font-weight: 900;
   position: absolute;
   top: 50%;
-  right: 15px;
+  right: 0.7rem;
   transform: translateY(-50%);
   color: var(--black-nuance-color);
   font-size: 0.8em;
-  cursor: pointer; /* Curseur pointer sur le chevron */
+  pointer-events: none; /* ← clics passent au select */
   z-index: 1;
 }
 
@@ -291,8 +291,9 @@ border-radius: 3px;
   -webkit-appearance: none;  /* Pour Chrome, Safari */
   -moz-appearance: none;     /* Pour Firefox */
   position: relative;        /* pour que le select prenne toute la largeur */
-  padding-right: 35px;       /* Espace pour le chevron */
+  padding: 0.5rem 2rem 0.5rem 0.5rem; /* espace à droite pour le chevron */
   width: 100%;               /* Prend toute la largeur du container */
+  cursor: pointer;
 }
 
 #modal-add-photo label {
@@ -304,6 +305,6 @@ border-radius: 3px;
 }
 
 /* classe spécifique à la modale d'ajout de photo, qui vérifie que tous les champs sont remplis */
-.verified-add-photo-form { 
-  background-color: var(--green-color);
+#submit-addPhotoBtn.verified-add-photo-form { 
+  background-color: var(--green-color) !important;
 }
