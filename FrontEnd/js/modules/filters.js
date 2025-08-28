@@ -26,7 +26,8 @@ export function createButtons(categories) {
 
   uniqueCategories.forEach((category) => {
     const btn = document.createElement("button");
-    btn.classList.add("btn");
+    btn.classList.add("btn-filter");
+    btn.classList.add("style-btn");
 
     // On utilise directement l'id (pour éviter de faire une requête à l'API)
     // On utilise un dataset pour l'événement click par la suite
@@ -54,7 +55,7 @@ export function setUpButtonListeners(projectsArray) {
       filterProjects(category, projectsArray);
 
       // Supprimer la classe "active" de tous les boutons :
-      document.querySelectorAll(".btn").forEach((btn) => {
+      document.querySelectorAll(".btn-filter").forEach((btn) => {
         btn.classList.remove("active");
       });
 

@@ -31,9 +31,7 @@
   max-height: 500px;
   /* limite sur petits écrans */
   border-radius: 10px;
-  overflow: auto;
-  /* Activer le défilement si nécessaire */
-}
+ }
 
 .hidden {
   display: none;
@@ -91,17 +89,27 @@
 }
 
 .edit {
-  margin: 0 4rem;
+  margin: 0 2rem;
   height: 100%;
 }
 
 .gallery-edit {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
-  /* largeur min */
-  gap: 1rem;
-  /* espace entre les images */
-  margin: 4rem;
+  grid-template-columns: repeat(5, 1fr); 
+  gap: 1rem; 
+  justify-content: start; /* colle à gauche */
+  align-content: start;   /* colle en haut */
+  margin: 2rem 4rem 0 4rem;
+  
+  /* Pour activer le scroll vertical */
+  max-height: 340px; /* adapte la valeur à ton besoin */
+  overflow-y: auto;
+  overflow-x: hidden; /* évite la barre en bas */
+  padding: 0 5px;
+  
+  /* Style de la barre de scroll */
+  scrollbar-width: 10px; /* Pour Firefox */
+  scrollbar-color: var(--grey-color) transparent;
 }
 
 /* Styles spécifiques aux figures dans la modale */
@@ -122,6 +130,7 @@
   /* conserve les proportions */
   width: 100%;
   cursor: pointer;
+  object-fit: cover;
 }
 
 .gallery-edit figure:hover figcaption {
@@ -140,7 +149,7 @@
   border-radius: 5px;
   padding: 5px;
   cursor: pointer;
-  top: 15%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
@@ -166,7 +175,7 @@
   padding-top: 1.5rem;
   /* espace entre la barre et le bouton */
   text-align: center;
-  width: 75%;
+  width: 73%;
 }
 
 /*  boutons des modales */
@@ -292,8 +301,9 @@ border-radius: 3px;
 
 #submit-addPhotoBtn {
   background-color: var(--dark-grey-color);
-  
-  &:hover {
-    background-color: var(--green-color);
-  }
+}
+
+/* classe spécifique à la modale d'ajout de photo, qui vérifie que tous les champs sont remplis */
+.verified-add-photo-form { 
+  background-color: var(--green-color);
 }

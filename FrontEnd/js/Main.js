@@ -6,8 +6,7 @@
 // ======================================================
 
 // ----------------- Importation des modules API -----------------
-import { fetchWorks, fetchCategories } from "./api/api.js";
-import { login, logout } from "./api/authApi.js";
+import { fetchWorksPublic, fetchCategories } from "./api/api.js";
 
 // ----------------- Importation des modules UI -----------------
 import { displayProjects } from "./modules/gallery.js";
@@ -27,7 +26,7 @@ async function init() {
 
     // 1. Récupération et affichage des données
     // console.log("📊 Chargement des projets...");
-    const projectsArray = await fetchWorks();
+    const projectsArray = await fetchWorksPublic();
     displayProjects(projectsArray);
 
     // console.log("🏷️ Chargement des catégories...");

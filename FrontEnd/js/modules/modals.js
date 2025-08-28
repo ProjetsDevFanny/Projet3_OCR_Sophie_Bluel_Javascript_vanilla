@@ -7,7 +7,7 @@
 
 // Import de la fonction displayProjects depuis gallery.js
 import { displayProjects } from "./gallery.js";
-import { deleteWork, addWork, fetchWorks } from "../api/api.js";
+import { deleteWork, addWork, fetchWorksAdmin } from "../api/api.js";
 
 // ========================== Helpers (fonctions transversales) ==========================
 
@@ -33,7 +33,7 @@ function closeAllModals() {
 
 // Rechargement de tous les projets (mise à jour après ajout ou suppression)
 async function refreshAllProjects() {
-  const updatedProjects = await fetchWorks();
+  const updatedProjects = await fetchWorksAdmin();
   displayProjects(updatedProjects);
   displayProjectsModal(updatedProjects);
 }
@@ -130,13 +130,15 @@ function openAddPhotoModal() {
   // Ouvrir la modale
   openModal(modalAddPhoto);
 
-  // Attacher les événements seulement après ouverture
-  attachAddPhotoEvents();
+  // On attache les events une seule fois (création d'un dataset qui indique que les events sont attachés)
+  if (!modalAddPhoto.dataset.eventsAttached) {
+    attachAddPhotoEvents(modalAddPhoto); // <-- on passe la modalAddPhoto
+    modalAddPhoto.dataset.eventsAttached = "true";
+  }
 }
 
 // 2. Attacher les événements de la modale
-function attachAddPhotoEvents() {
-  const modalAddPhoto = document.getElementById("modal-add-photo");
+function attachAddPhotoEvents(modalAddPhoto) {
   const overlay = document.querySelector(".modal-overlay");
 
   const closeBtn = modalAddPhoto.querySelector(".close-btn");
@@ -151,7 +153,7 @@ function attachAddPhotoEvents() {
   // Retour en arrière
   backBtn.onclick = () => {
     const confirmed = confirm(
-      "Attention ! Etes-vous sûr de vouloir revenir en arrière ?\nValidez votre projet avant, sinon il risque d'être perdu."
+      "Etes-vous sûr de vouloir revenir en arrière ?\nValidez votre projet avant, sinon il risque d'être perdu."
     );
     if (!confirmed) return;
     clearForm();
@@ -214,6 +216,10 @@ function attachAddPhotoEvents() {
       return;
     }
 
+    if (imageInput.files[0] && title && category) {
+      addPhotoSubmitBtn.classList.add("verified-add-photo-form");
+    }
+
     // Création du FormData
     const formData = new FormData();
     formData.append("image", imageInput.files[0]);
@@ -226,6 +232,7 @@ function attachAddPhotoEvents() {
       alert("Projet ajouté avec succès !");
       refreshAllProjects();
       clearForm();
+      addPhotoSubmitBtn.classList.remove("verified-add-photo-form");
     } catch (error) {
       console.error("Erreur :", error);
       alert("Erreur lors de l'ajout du projet");

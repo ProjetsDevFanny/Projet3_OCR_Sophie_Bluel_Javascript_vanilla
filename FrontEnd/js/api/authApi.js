@@ -16,7 +16,7 @@ export async function login(email, password) {
   });
 
   if (!response.ok) {
-    if (response.status === 401) {
+    if (response.status === 401) { // 401 = Unauthorized
       throw new Error("Identifiants incorrects");
     }
     throw new Error("Erreur lors de la connexion");

@@ -5,7 +5,7 @@
 	margin-top: 3em;
 }
 
-/* ============= Style des boutons ============= */
+/* ============= Style des boutons des filtres ============= */
 
 .btn-container {
 	display: flex;
@@ -15,28 +15,21 @@
 	gap: 1em;
 }
 
-.btn {
-	font-family: 'Syne';
-	font-weight: 700;
-	font-size: 15px;
-	color:var(--green-color);
+.btn-filter {
 	background-color: var(--background-color);
 	padding: 0 2em;
 	width: auto;
-	height: 38px;
-	text-align: center;
-	border-radius: 60px;
 	border:1.5px solid var(--green-color);
-	transition: all 0.3s ease;
+	color: var(--green-color);
 }
 
-.btn:hover {
+.btn-filter:hover {
 	background-color: var(--green-color);
 	color: var(--background-color);
 	cursor: pointer;
 }
 
-.btn.active {
+.btn-filter.active {
 	background-color: var(--green-color);
 	color: var(--background-color);
 }

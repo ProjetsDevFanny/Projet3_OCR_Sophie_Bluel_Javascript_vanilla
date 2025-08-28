@@ -77,7 +77,7 @@ function setupEditButton(loadModal) {
 // --- Cache les boutons de filtrage
 function hideFilterButtons() {
   const observerHideBtns = new MutationObserver(() => {
-    const btns = document.querySelectorAll(".btn");
+    const btns = document.querySelectorAll(".btn-filter");
     btns.forEach((btn) => {
       btn.style.display = "none";
     });
