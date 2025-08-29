@@ -40,7 +40,7 @@ async function init() {
       loadModalGallery(projectsArray);
     });
   } catch (error) {
-    console.error("❌ Erreur lors de l'initialisation :", error);
+    console.error("Erreur lors de l'initialisation :", error);
   }
 }
 

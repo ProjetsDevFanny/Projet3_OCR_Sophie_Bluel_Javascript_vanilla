@@ -13,19 +13,23 @@
   margin-top: 100px;
 }
 
+.mode-edit-title-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .title-wrapper {
   position: relative;
 }
 
 #portfolio h2 {
-  margin-top: 0;
+  margin: 0;
 }
 
 .btn-modifier {
+  margin-left: 320px;
   position: absolute;
-  right: 32%;
-  top: 50%;
-  transform: translateY(-50%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -35,4 +39,3 @@
   font-family: "Work Sans", sans-serif;
   cursor: pointer;
 }
-

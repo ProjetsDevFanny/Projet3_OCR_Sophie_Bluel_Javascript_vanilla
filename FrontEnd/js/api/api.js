@@ -29,8 +29,8 @@ export function handleApiResponse(
 
 export async function checkTokenExpiration(token) {
   // Log pour déboguer = vérifier si le token est bien récupéré
-  console.log("🔑 Token récupéré:", token ? "Token trouvé" : "Aucun token");
-  console.log("🔑 Token complet:", token);
+  console.log("Token récupéré:", token ? "Token trouvé" : "Aucun token");
+  console.log("Token complet:", token);
 
   if (!token) throw new Error("Utilisateur non authentifié");
 
@@ -42,7 +42,7 @@ export async function checkTokenExpiration(token) {
     // Vérification de l’expiration
     const expirationDate = new Date(payload.exp * 1000);
     const now = new Date();
-    console.log("⏰ Token expiré:", now > expirationDate);
+    console.log("Token expiré:", now > expirationDate);
 
     if (now > expirationDate) {
       localStorage.removeItem("token"); // Suppression du token de localStorage
@@ -50,7 +50,7 @@ export async function checkTokenExpiration(token) {
       throw new Error("Token expiré");
     }
   } catch (error) {
-    console.error("❌ Erreur décodage token:", error);
+    console.error("Erreur décodage token:", error);
   }
 }
 

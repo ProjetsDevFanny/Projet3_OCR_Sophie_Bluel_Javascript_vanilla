@@ -24,12 +24,8 @@
   z-index: 1001;
   /* au-dessus de l'overlay */
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-  width: 40vw;
-  height: 80vh;
-  max-width: 500px;
-  /* limite sur grands écrans */
-  max-height: 500px;
-  /* limite sur petits écrans */
+  width: 480px;
+  height: 500px;
   border-radius: 10px;
  }
 
@@ -96,15 +92,16 @@
 .gallery-edit {
   display: grid;
   grid-template-columns: repeat(5, 1fr); 
-  gap: 1rem; 
+  column-gap: 0.4rem; 
+  row-gap: 1rem;
   justify-content: start; /* colle à gauche */
   align-content: start;   /* colle en haut */
-  margin: 2rem 4rem 0 4rem;
+  margin: 2rem 3rem 0 3rem;
   
   /* Pour activer le scroll vertical */
-  max-height: 340px; /* adapte la valeur à ton besoin */
+  height: 320px;
   overflow-y: auto;
-  overflow-x: hidden; /* évite la barre en bas */
+  overflow-x: hidden; /* pour éviter la barre en bas */
   padding: 0 5px;
   
   /* Style de la barre de scroll */
@@ -175,7 +172,7 @@
   padding-top: 1.5rem;
   /* espace entre la barre et le bouton */
   text-align: center;
-  width: 73%;
+  width: 79%;
 }
 
 /*  boutons des modales */
@@ -183,6 +180,8 @@
 #submit-addPhotoBtn {
   width: 237px;
 }
+
+/* ------------------ Modale d'ajout de photo ------------------ */
 
 /* Formulaire d'ajout de photo */
 
@@ -194,14 +193,17 @@
 }
 
 #modal-add-photo form {
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 0.3rem;
 }
 
 .uploadPhoto {
 border-radius: 3px;
 background-color: var(--light-blue-color);
 transition: border-color 0.3s ease;
-height: 18vh;
+min-height: 150px;
 box-shadow: inset 0px 0px 14px rgba(0, 0, 0, 0.09);
 border-radius: 3px;
 }
@@ -212,6 +214,7 @@ border-radius: 3px;
   align-items: center;
   justify-content: space-evenly;
   height: 100%;
+  min-height: 150px;
 }
 
 #iconeImage {
@@ -222,7 +225,7 @@ border-radius: 3px;
 
 #uploadedImage {
   display: block;
-  max-height: 18vh;
+  height: 150px;
   object-fit: cover;
   margin: 0 auto;
 }
@@ -255,7 +258,7 @@ border-radius: 3px;
 
 #modal-add-photo input[type="text"],
 #modal-add-photo select {
-  height: 4.5vh;
+  min-height: 40px;
   font-family: 'Work Sans', sans-serif;
   font-weight: 400;
   font-size: 14px;
@@ -291,7 +294,6 @@ border-radius: 3px;
   -webkit-appearance: none;  /* Pour Chrome, Safari */
   -moz-appearance: none;     /* Pour Firefox */
   position: relative;        /* pour que le select prenne toute la largeur */
-  padding: 0.5rem 2rem 0.5rem 0.5rem; /* espace à droite pour le chevron */
   width: 100%;               /* Prend toute la largeur du container */
   cursor: pointer;
 }

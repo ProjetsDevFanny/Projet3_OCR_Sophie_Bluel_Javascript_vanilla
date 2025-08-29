@@ -48,6 +48,9 @@ function setupEditButton(loadModal) {
     const btnContainer = portfolio?.querySelector(".btn-container");
 
     if (portfolio && btnContainer) {
+      const modeEditTitleContainer = document.createElement("div");
+      modeEditTitleContainer.classList.add("mode-edit-title-container");
+
       const titleWrapper = document.createElement("div");
       titleWrapper.classList.add("title-wrapper");
 
@@ -62,8 +65,9 @@ function setupEditButton(loadModal) {
       modifierBtn.appendChild(icone);
       modifierBtn.append("Modifier");
 
-      titleWrapper.appendChild(modifierBtn);
-      portfolio.insertBefore(titleWrapper, btnContainer);
+      modeEditTitleContainer.appendChild(titleWrapper);
+      modeEditTitleContainer.appendChild(modifierBtn);
+      portfolio.insertBefore(modeEditTitleContainer, btnContainer);
 
       modifierBtn.addEventListener("click", loadModal);
 
