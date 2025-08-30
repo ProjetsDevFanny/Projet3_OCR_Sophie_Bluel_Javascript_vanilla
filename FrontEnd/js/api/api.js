@@ -28,30 +28,34 @@ export function handleApiResponse(
 // ------------------ Vérifier présence et expiration du token ------------------
 
 export async function checkTokenExpiration(token) {
-  // Log pour déboguer = vérifier si le token est bien récupéré
-  console.log("Token récupéré:", token ? "Token trouvé" : "Aucun token");
-  console.log("Token complet:", token);
-
   if (!token) throw new Error("Utilisateur non authentifié");
 
-  // Vérifier l'expiration du token
+  let payload;
   try {
-    // Décodage du token JWT
-    const payload = JSON.parse(atob(token.split(".")[1]));
-
-    // Vérification de l’expiration
-    const expirationDate = new Date(payload.exp * 1000);
-    const now = new Date();
-    console.log("Token expiré:", now > expirationDate);
-
-    if (now > expirationDate) {
-      localStorage.removeItem("token"); // Suppression du token de localStorage
-      window.location.href = "/FrontEnd/pages/login.html"; // Redirection vers la page de connexion
-      throw new Error("Token expiré");
-    }
-  } catch (error) {
-    console.error("Erreur décodage token:", error);
+    payload = JSON.parse(atob(token.split(".")[1]));
+  } catch {
+    throw new Error("Token invalide ou corrompu");
   }
+
+  const expirationDate = new Date(payload.exp * 1000);
+  const now = new Date(); // date actuelle
+
+  // Déconnexion immédiate si token déjà expiré (exemple lors d'une requête)
+  if (now >= expirationDate) {
+    localStorage.removeItem("token");
+    window.location.href = "/FrontEnd/pages/login.html";
+    throw new Error("Délais de connexion dépassé, veuillez vous reconnecter.");
+  }
+
+  // Déconnexion automatique quand le token expirera
+  const delay = expirationDate - now; // en ms
+  setTimeout(() => {
+    alert("Token expiré");
+    localStorage.removeItem("token");
+    window.location.href = "/FrontEnd/pages/login.html";
+  }, delay);
+
+  return true; // token valide
 }
 
 // ----------------- Récupération des projets depuis l'API -----------------
@@ -59,7 +63,10 @@ export async function checkTokenExpiration(token) {
 // Pour le mode public (hors connexion)
 export async function fetchWorksPublic() {
   const response = await fetch(`${API_URL}/works`);
-  handleApiResponse(response, "Erreur lors de la récupération des projets publics");
+  handleApiResponse(
+    response,
+    "Erreur lors de la récupération des projets publics"
+  );
   const data = await response.json();
   console.log("Projets récupérés :", data);
   return data;
@@ -74,7 +81,10 @@ export async function fetchWorksAdmin() {
     headers: { Authorization: `Bearer ${token}` },
   });
 
-  handleApiResponse(response, "Erreur lors de la récupération des projets");
+  handleApiResponse(
+    response,
+    "Erreur lors de la récupération des projets privés"
+  );
   return response.json();
 }
 
@@ -82,7 +92,7 @@ export async function fetchWorksAdmin() {
 
 export async function addWork(formData) {
   const token = getToken();
-  await checkTokenExpiration(token); // attendre la vérification du token avant d'ajouter un projet
+  await checkTokenExpiration(token);
 
   const response = await fetch(`${API_URL}/works`, {
     method: "POST",
@@ -107,9 +117,8 @@ export async function deleteWork(workId) {
   });
 
   handleApiResponse(response, "Erreur lors de la suppression du projet");
-
   return { success: true, message: "Projet supprimé avec succès" };
-} 
+}
 
 // ----------------- Récupérer les catégories -----------------
 

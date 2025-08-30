@@ -24,8 +24,8 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = await login(email, password);
       saveAuth(data); // sauvegarde du token dans le localStorage
       window.location.href = "HomePage.html";
-    } catch (err) {
-      document.getElementById("error-message").textContent = err.message;
+    } catch (error) {
+      document.getElementById("error-message").textContent = error.message;
     }
   });
 });
