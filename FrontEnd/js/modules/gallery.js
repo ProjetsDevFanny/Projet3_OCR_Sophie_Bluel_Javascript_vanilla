@@ -9,11 +9,12 @@
 
 export function displayProjects(projectsArray) {
   const gallery = document.querySelector(".gallery");
-  gallery.innerHTML = "";
+  gallery.innerHTML = ""; // vider pour éviter l'empilement des projets
 
   projectsArray.forEach((project) => {
     const figure = document.createElement("figure");
-    figure.dataset.category = project.category.id;
+    // création d'un attribut data-category sur l'élément <figure> avec la valeur de project.category.id.
+    // Permettra le filtrage des projets avec les boutons de filtage par le suite
 
     const img = document.createElement("img");
     img.src = project.imageUrl;

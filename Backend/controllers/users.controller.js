@@ -50,8 +50,8 @@ exports.login = async (req, res) => {
       userId: user.id,
       token: jwt.sign(
         { userId: user.id },
-        process.env.TOKEN_SECRET, // clé secrète pour signer le token =  doit être défini dans ton .env !
-        { expiresIn: "6h" } // durée de validité du token
+        process.env.TOKEN_SECRET, // clé secrète pour signer le token =  doit être défini dans notre.env !
+        { expiresIn: "1h" } // durée de validité du token
       ),
     });
   }

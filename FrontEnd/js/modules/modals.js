@@ -27,7 +27,7 @@ function closeModal(modal) {
 
 // Ferme toutes les modales ouvertes
 function closeAllModals() {
-  document.querySelectorAll(".modal").forEach((m) => m.classList.add("hidden"));
+  document.querySelectorAll(".modal").forEach((modal) => modal.classList.add("hidden"));
   document.querySelector(".modal-overlay").classList.add("hidden");
 }
 
@@ -45,7 +45,7 @@ async function refreshAllProjects() {
   }
 }
 
-// Vider le formulaire d'ajout de photo
+// Vider le formulaire d'ajout de photo, après ajout d'une projet
 function clearForm() {
   const title = document.getElementById("title");
   const categorySelect = document.getElementById("category-select");

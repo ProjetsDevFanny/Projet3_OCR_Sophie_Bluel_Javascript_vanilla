@@ -46,5 +46,6 @@ async function init() {
 }
 
 // ----------------- Point d'entrée unique -----------------
+
 // Tous les modules sont initialisés depuis ici pour éviter les conflits
 document.addEventListener("DOMContentLoaded", init);

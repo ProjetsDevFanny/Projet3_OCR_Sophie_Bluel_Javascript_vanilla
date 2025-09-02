@@ -10,22 +10,19 @@
 // Importation des fonctions d'authentification
 import { login, saveAuth } from "./api/authApi.js";
 
-document.addEventListener("DOMContentLoaded", () => {
-  const loginForm = document.getElementById("login");
-  if (!loginForm) return;
+// ----------------- Gestion du formulaire de connexion -----------------
 
-  // ----------------- Gestion du formulaire de connexion -----------------
-  loginForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+const loginForm = document.getElementById("loginForm");
+loginForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
 
-    try {
-      const data = await login(email, password);
-      saveAuth(data); // sauvegarde du token dans le localStorage
-      window.location.href = "HomePage.html";
-    } catch (error) {
-      document.getElementById("error-message").textContent = error.message;
-    }
-  });
+  try {
+    const data = await login(email, password);
+    saveAuth(data); // sauvegarde du token dans le localStorage
+    window.location.href = "HomePage.html"; // retourne sur la page d'accueil (mais en mode edition car le token a été sauvegardé dans le localStorage)
+  } catch (error) {
+    document.getElementById("error-message").textContent = error.message;
+  }
 });

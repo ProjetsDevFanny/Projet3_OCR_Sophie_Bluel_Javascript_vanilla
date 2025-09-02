@@ -11,16 +11,18 @@ import { API_URL } from "./config.js";
 
 export async function login(email, password) {
   if (!email || !password) {
-    throw new Error("Veuillez renseigner un email et un mot de passe s'il vous plait.");
+    throw new Error(
+      "Veuillez renseigner un email et un mot de passe s'il vous plait."
+    );
   }
   const response = await fetch(`${API_URL}/users/login`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password }),
+    headers: { "Content-Type": "application/json" }, // Indique au serveur que le corps de la requête sera au format JSON. Le serveur saura donc faire un JSON.parse() pour récupérer les données.
+    body: JSON.stringify({ email, password }), // JSON.stringify transforme un objet JavaScript en chaîne JSON. C’est ce que le backend attend pour l’authentification.
   });
 
   if (!response.ok) {
-    if ((response.status === 401) || (response.status === 404)) {
+    if (response.status === 401 || response.status === 404) {
       // 401 = Unauthorized et 404 = Not Found
       throw new Error("Identifiants incorrects");
     }
@@ -29,6 +31,8 @@ export async function login(email, password) {
 
   return response.json(); // Contient normalement { token, userId }
 }
+
+// -------------Ce que l'on peut faire grâce au token récupéré -----------
 
 // ----------------- Sauvegarde Auth -----------------
 
@@ -51,11 +55,5 @@ export function logout() {
 // ----------------- Récupération Token -----------------
 
 export function getToken() {
-  return localStorage.getItem("token");
-}
-
-// ----------------- Vérification Auth -----------------
-
-export function isLoggedIn() {
-  return Boolean(getToken());
+  return localStorage.getItem("token"); // renvoie ce qu'il y a dans le local storage (string ou null)
 }
