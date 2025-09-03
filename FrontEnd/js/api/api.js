@@ -60,7 +60,7 @@ export function checkTokenExpiration(token) {
 
   //  On programme une déconnexion automatique quand le token expirera
   setTimeout(() => {
-    alert("Token expiré");
+    alert("Délais de connexion dépassé, veuillez vous reconnecter.");
     localStorage.removeItem("token");
     window.location.href = "/FrontEnd/pages/login.html";
   }, delay);
@@ -150,7 +150,7 @@ export async function deleteWork(workId) {
     });
 
     handleApiResponse(response, "Erreur lors de la suppression du projet");
-    return response.json();
+    // Pas besoin de parser le JSON (car pas besoin de récupérer les données après le delete)
   } catch (error) {
     console.error("Erreur deleteWork:", error);
     throw error; // on lance l'erreur et on la rattrapera avec un try/catch là où elle sera appelée

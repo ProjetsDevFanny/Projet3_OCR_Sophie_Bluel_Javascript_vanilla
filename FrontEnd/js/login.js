@@ -21,7 +21,7 @@ loginForm.addEventListener("submit", async (e) => {
   try {
     const data = await login(email, password);
     saveAuth(data); // sauvegarde du token dans le localStorage
-    window.location.href = "HomePage.html"; // retourne sur la page d'accueil (mais en mode edition car le token a été sauvegardé dans le localStorage)
+    window.location.href = "HomePage.html"; // retourne sur la page d'accueil (mais en mode edition car dans la fonction editPage le token a été sauvegardé dans le localStorage)
   } catch (error) {
     document.getElementById("error-message").textContent = error.message;
   }

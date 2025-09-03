@@ -7,7 +7,8 @@
 
 // Import de la fonction displayProjects depuis gallery.js
 import { displayProjects } from "./gallery.js";
-import { deleteWork, addWork, fetchWorksAdmin } from "../api/api.js";
+import { deleteWork, addWork } from "../api/api.js";
+import { projectsArray } from "../main.js";
 
 // ========================== Helpers (fonctions transversales) ==========================
 
@@ -27,22 +28,10 @@ function closeModal(modal) {
 
 // Ferme toutes les modales ouvertes
 function closeAllModals() {
-  document.querySelectorAll(".modal").forEach((modal) => modal.classList.add("hidden"));
+  document
+    .querySelectorAll(".modal")
+    .forEach((modal) => modal.classList.add("hidden"));
   document.querySelector(".modal-overlay").classList.add("hidden");
-}
-
-// Rechargement de tous les projets (mise à jour après ajout ou suppression)
-async function refreshAllProjects() {
-  try {
-    const updatedProjects = await fetchWorksAdmin();
-    displayProjects(updatedProjects); // ← met à jour la page principale
-    displayProjectsModal(updatedProjects); // ← met à jour la modale DisplayProjets
-  } catch (error) {
-    console.error("Erreur lors du rafraîchissement des projets :", error);
-    alert(
-      "Impossible de rafraîchir les projets. Merci de réessayer plus tard."
-    );
-  }
 }
 
 // Vider le formulaire d'ajout de photo, après ajout d'une projet
@@ -56,9 +45,9 @@ function clearForm() {
   if (title) title.value = "";
   if (categorySelect) categorySelect.value = "";
   if (image) image.value = "";
-  if (uploadedImage) uploadedImage.remove();
+  if (uploadedImage) uploadedImage.remove(); // l'enlève du DOM mais il exite toujours en mémoire (on peut y accéder en JS)
 
-  // Réafficher le conteneur d'upload
+  // Réafficher le conteneur d'upload avec les éléments centrés correctement
   if (uploadPhotoContainer) {
     uploadPhotoContainer.style.display = "flex";
   }
@@ -72,6 +61,7 @@ function displayProjectsModal(projectsArray) {
   galleryEditModal.innerHTML = "";
 
   projectsArray.forEach((project) => {
+    // Chaque itération de projectsArray.forEach() crée sa propre variable figure et son propre supprPhotoIcon`.
     const figure = document.createElement("figure");
 
     const img = document.createElement("img");
@@ -81,19 +71,34 @@ function displayProjectsModal(projectsArray) {
     const caption = document.createElement("figcaption");
     caption.innerText = project.title;
 
+    // Création et gestion de la suppression
     const supprPhotoIcon = document.createElement("i");
     supprPhotoIcon.classList.add("fa-solid", "fa-trash-can", "supprPhotoIcon");
     supprPhotoIcon.dataset.id = project.id;
 
-    // Gestion suppression
-    supprPhotoIcon.addEventListener("click", async (e) => {
+    // Sur chaque icone (qui contient le dataset) on lui applique un addEventListener:
+    supprPhotoIcon.addEventListener("click", async () => {
+      // la fonction callback {...} "capture" la variable figure de son scope.
       const confirmed = confirm("Voulez-vous vraiment supprimer ce projet ?");
       if (!confirmed) return;
 
       try {
-        await deleteWork(e.target.dataset.id);
-        e.target.closest("figure").remove();
-        refreshAllProjects();
+        await deleteWork(project.id); // supprime côté serveur (c'est le dataset=id de l'icone poubelle qui lui a indiqué)
+
+        // Supprime du tableau global projectsArray
+        const index = projectsArray.findIndex((p) => p.id === project.id); // index = représente la position dans le tableau du projet qu’on veut supprimer.
+        if (index > -1) projectsArray.splice(index, 1); // Si l'élement existe: suppression d'un seul élément à la position index (=> findIndex va retourner -1 s'il ne trouve pas l'élément)
+
+        // Supprime du DOM de la modale
+        figure.remove();
+        // ✔️ figure.remove() fonctionne parce que chaque icône et son <figure>
+        //    sont créés dans le même scope (la même "boîte" de variables).
+        // ✔️ Comme on est dans le forEach, chaque itération crée un nouveau couple
+        //    (figure + icône). Donc quand on clique sur une icône, elle supprime
+        //    uniquement SA figure.
+
+        // Met à jour la galerie Home
+        displayProjects(projectsArray);
       } catch (error) {
         console.error("Erreur lors de la suppression :", error);
         alert("Impossible de supprimer le projet. Merci de réessayer.");
@@ -106,29 +111,39 @@ function displayProjectsModal(projectsArray) {
 }
 
 // Chargement de la modale Gallery Display
-export async function loadModalGallery() {
+export async function loadModalGallery(projectsArray) {
+  const modalGalleryDisplay = document.getElementById("modalGalleryDisplay");
+
+  // Toujours utiliser la source globale projectsArray
+  displayProjectsModal(projectsArray); // mise à jour au chargement
+  openModal(modalGalleryDisplay);
+}
+
+// Attacher les events UNE SEULE FOIS (au chargement)
+function setupModalGalleryEvents() {
   const modalGalleryDisplay = document.getElementById("modalGalleryDisplay");
   const overlay = document.querySelector(".modal-overlay");
-
   const closeBtn = modalGalleryDisplay.querySelector(".close-btn");
-  if (closeBtn) closeBtn.onclick = () => closeModal(modalGalleryDisplay);
 
-  overlay.onclick = () => closeModal(modalGalleryDisplay);
+  if (closeBtn) {
+    closeBtn.addEventListener("click", () => closeModal(modalGalleryDisplay));
+  }
+
+  if (overlay) {
+    overlay.addEventListener("click", () => closeModal(modalGalleryDisplay));
+  }
 
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") closeModal(modalGalleryDisplay);
   });
-
-  openModal(modalGalleryDisplay);
-  // Toujours rafraîchir avant d’afficher
-  const updatedProjects = await fetchWorksAdmin();
-  displayProjectsModal(updatedProjects);
 }
+
+// On appelle ça une seule fois au démarrage
+setupModalGalleryEvents();
 
 // ========================== 2ème Modale : Ajout Photo ==========================
 
-// 1. Ouvrir la modale quand on clique sur le bouton "Ajouter une photo"
-
+// Bouton "Ajouter une photo" → ouvre la 2ème modale
 const addPhotoBtn = document.querySelector("#addPhotoBtn");
 addPhotoBtn.addEventListener("click", () => {
   openAddPhotoModal();
@@ -137,20 +152,12 @@ addPhotoBtn.addEventListener("click", () => {
 // Fonction qui ouvre la modale
 function openAddPhotoModal() {
   const modalAddPhoto = document.getElementById("modal-add-photo");
-
-  // Ouvrir la modale
   openModal(modalAddPhoto);
-
-  // On attache les events une seule fois (création d'un dataset qui indique que les events sont attachés)
-  if (!modalAddPhoto.dataset.eventsAttached) {
-    attachAddPhotoEvents(); // <-- on passe la modalAddPhoto
-    modalAddPhoto.dataset.eventsAttached = "true";
-  }
 }
 
-// 2. Attacher les événements de la modale
+// -------- Attacher les événements de la modale addPhoto (une seule fois)-------------------
 
-function attachAddPhotoEvents() {
+function setupAddPhotoEvents() {
   const modalAddPhoto = document.getElementById("modal-add-photo");
   const overlay = document.querySelector(".modal-overlay");
   const closeBtn = modalAddPhoto.querySelector(".close-btn");
@@ -159,39 +166,60 @@ function attachAddPhotoEvents() {
   const uploadPhotoBtn = document.getElementById("uploadPhotoBtn"); // Bouton upload photo
   const fileInput = document.getElementById("image"); // Input file pour l'upload de la photo
 
-  // Fermer la modale
-  closeBtn.onclick = () => closeAllModals();
-
   // Retour en arrière
-  backBtn.onclick = () => {
+  backBtn.addEventListener("click", () => {
     const confirmed = confirm(
-      "Etes-vous sûr de vouloir revenir en arrière ?\nValidez votre projet avant, sinon il risque d'être perdu."
+      "Êtes-vous sûr de vouloir revenir en arrière ?\nValidez votre projet avant, sinon il risque d'être perdu."
     );
     if (!confirmed) return;
     clearForm();
     modalAddPhoto.classList.add("hidden");
-  };
-
-  // Fermer si clic sur overlay ou touche Escape
-  overlay.onclick = () => closeAllModals();
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeAllModals();
   });
 
-  // 3. Upload photo → input + aperçu
-  uploadPhotoBtn.onclick = () => fileInput.click(); // simulation de clic sur le bouton upload photo (car on ne peut pas cliquer sur l'input file)
+  // Fermer la modale avec confirmation si clic sur la croix
+  closeBtn.addEventListener("click", () => {
+    const confirmed = confirm(
+      "Êtes-vous sûr de vouloir quitter ? Les modifications non sauvegardées seront perdues."
+    );
+    if (confirmed) closeAllModals();
+  });
 
-  fileInput.onchange = () => {
+  // Fermer si clic sur overlay, avec confirmation
+  overlay.addEventListener("click", () => {
+    const confirmed = confirm(
+      "Êtes-vous sûr de vouloir quitter ? Les modifications non sauvegardées seront perdues."
+    );
+    if (confirmed) closeAllModals();
+  });
+
+  // Fermer si touche Escape, avec confirmation
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      const confirmed = confirm(
+        "Êtes-vous sûr de vouloir quitter ? Les modifications non sauvegardées seront perdues."
+      );
+      if (confirmed) closeAllModals();
+    }
+  });
+
+  // Upload photo → input + aperçu
+  uploadPhotoBtn.addEventListener("click", () => fileInput.click()); // simulation de clic sur le bouton upload photo (car on ne peut pas cliquer sur l'input file) "tu fais comme si tu cliquais sur fileInput"
+
+  // On écoute l'événement "change" sur l'input file (quand l'utilisateur choisit un fichier)
+  fileInput.addEventListener("change", () => {
+    // On récupère le premier fichier sélectionné
     const file = fileInput.files[0];
-    if (!file) return;
+    if (!file) return; // Si aucun fichier n'a été sélectionné, on sort de la fonction
 
+    // On crée un objet FileReader pour lire le contenu du fichier
     const reader = new FileReader();
+    // Quand la lecture du fichier est terminée, cette fonction est appelée
     reader.onload = (e) => {
-      // Supprimer un ancien aperçu
+      // On cherche s'il existe déjà un ancien aperçu et on le supprime
       const oldPreview = modalAddPhoto.querySelector("#uploadedImage");
       if (oldPreview) oldPreview.remove();
 
-      // Masquer le conteneur d'upload
+      // Masquer le conteneur d'upload (tout le contenu de présentation)
       const uploadPhotoContainer = modalAddPhoto.querySelector(
         ".uploadPhoto-container"
       );
@@ -199,24 +227,25 @@ function attachAddPhotoEvents() {
 
       // Créer et insérer l’aperçu
       const img = document.createElement("img");
-      img.id = "uploadedImage";
-      img.src = e.target.result;
-      img.alt = "Aperçu de la photo choisie";
+      img.id = "uploadedImage"; // on lui donne un id pour pouvoir le retrouver et le supprimer si nécessaire
+      img.src = e.target.result; // src = contenu du fichier lu en base64 par FileReader
+      img.alt = "Aperçu de la photo choisie"; // texte alternatif pour l'image
 
+      // On ajoute l'image dans le div prévu pour l'aperçu
       const uploadPhotoDiv = modalAddPhoto.querySelector(".uploadPhoto");
       if (uploadPhotoDiv) uploadPhotoDiv.appendChild(img);
     };
+    // On lance la lecture du fichier en DataURL (base64) pour pouvoir l'afficher dans <img>
     reader.readAsDataURL(file);
-  };
+  });
 
-  // Fonction pour vérifier si tous les champs sont remplis et activer le bouton submit (coloration verte)
-
+  // ----- Vérification des champs pour activer le bouton submit (coloration verte)-----
   function checkFormCompletion() {
     const title = document.getElementById("title").value;
     const category = document.getElementById("category-select").value;
-    const imageInput = document.getElementById("image");
+    const fileInput = document.getElementById("image");
 
-    if (imageInput.files[0] && title && category) {
+    if (fileInput.files[0] && title && category) {
       addPhotoSubmitBtn.classList.add("verified-add-photo-form");
     } else {
       addPhotoSubmitBtn.classList.remove("verified-add-photo-form");
@@ -227,35 +256,30 @@ function attachAddPhotoEvents() {
   const titleInput = document.getElementById("title");
   const categorySelect = document.getElementById("category-select");
 
-  if (titleInput) {
-    titleInput.addEventListener("input", checkFormCompletion);
-  }
-
-  if (categorySelect) {
+  if (titleInput) titleInput.addEventListener("input", checkFormCompletion);
+  if (categorySelect)
     categorySelect.addEventListener("change", checkFormCompletion);
-  }
-
-  if (fileInput) {
-    fileInput.addEventListener("change", checkFormCompletion);
-  }
+  if (fileInput) fileInput.addEventListener("change", checkFormCompletion);
 
   // Vérification initiale
   checkFormCompletion();
 
-  // 4. Submit du formulaire → envoi à l’API
+  //---------------------------------------
+
+  // Submit du formulaire si tous les champs sont remplis → envoi à l’API
   addPhotoSubmitBtn.addEventListener("click", async (e) => {
     e.preventDefault();
 
-    // Vérification si l'image est sélectionnée
-    const imageInput = document.getElementById("image");
-    if (!imageInput || !imageInput.files || !imageInput.files[0]) {
+    const title = document.getElementById("title").value;
+    const category = document.getElementById("category-select").value;
+
+    // Vérification de la présence de l'image uploadée
+    if (!fileInput.files[0]) {
       alert("Veuillez sélectionner une image !");
       return;
     }
 
-    // Vérification si le titre et la catégorie sont remplis
-    const title = document.getElementById("title").value;
-    const category = document.getElementById("category-select").value;
+    // Vérification des champs titre et catégories
     if (!title || !category) {
       alert("Veuillez remplir tous les champs s.v.p");
       return;
@@ -263,24 +287,29 @@ function attachAddPhotoEvents() {
 
     // Création du FormData
     const formData = new FormData();
-    formData.append("image", imageInput.files[0]);
+    formData.append("image", fileInput.files[0]);
     formData.append("title", title);
     formData.append("category", category);
 
     // Ajout du projet à l'API
     try {
-      await addWork(formData);
+      const newProject = await addWork(formData); // addWork doit renvoyer le projet ajouté
+      projectsArray.push(newProject); // on ajoute au tableau global
       addPhotoSubmitBtn.classList.remove("verified-add-photo-form");
-      await refreshAllProjects();
+      alert("Projet ajouté avec succés !");
       clearForm();
       closeAllModals();
-      alert("Projet ajouté avec succès !");
+      displayProjectsModal(projectsArray); // On met à jour la galerie de la 1ere modale
+      displayProjects(projectsArray); // on met à jour la galerie Home immédiatement après l’ajout, sans recharger la page :
     } catch (error) {
       console.error("Erreur lors de l'ajout :", error);
       alert("Impossible d'ajouter le projet. Merci de réessayer.");
     }
   });
 }
+
+// => On attache tous les events une seule fois au chargement
+setupAddPhotoEvents();
 
 // ========================== Injecter les catégories dans le select ( modal Ajout Photo)==========================
 

@@ -20,25 +20,29 @@ import {
 
 // ----------------- Initialisation de l'application -----------------
 
+// Source unique de vérité pour tous les projets
+export let projectsArray = [];
+
 async function init() {
   try {
     // Récupération et affichage des données
-    const projectsArray = await fetchWorksPublic();
-    displayProjects(projectsArray);
+    projectsArray = await fetchWorksPublic(); // on remplit la source unique
+    displayProjects(projectsArray); // la gallerie de la Home Page
 
     // Chargement des catégories
     const categories = await fetchCategories();
-    createButtons(categories);
-    setUpButtonListeners(projectsArray);
-    injectCategoriesInSelect(categories);
+    createButtons(categories); // lorsqu'on créer les boutons de filtrage
+    setUpButtonListeners(projectsArray); // Gestion des événements des boutons de filtre
+    injectCategoriesInSelect(categories); // injections des catégories dans le select de la modale addPhoto
 
     // Configuration de l'interface utilisateur
     clickNavbarLinks();
 
     // Activation du mode édition si connecté
-    editPage(() => {
-      loadModalGallery();
-    });
+    editPage(() => loadModalGallery(projectsArray));
+    // On passe projectsArray pour que la modale soit synchronisée
+    // () => loadModalGallery(projectsArray) est une fonction anonyme qui n’est exécutée que quand editPage l’appelle.
+    // On passe la fonction loadModalGallery() à editPage() ici, (pas d'import : import { loadModalGallery }, dans editPage.js, rend le code plus modulable: on peut y passer d'autres modales si on veut, ça rend editPage() complètement indépendante)
   } catch (error) {
     console.error("Erreur lors de l'initialisation :", error);
     alert("Impossible de charger les données. Merci de réessayer plus tard.");
