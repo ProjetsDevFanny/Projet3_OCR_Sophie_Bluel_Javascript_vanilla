@@ -62,7 +62,7 @@ export function checkTokenExpiration(token) {
   setTimeout(() => {
     alert("Délais de connexion dépassé, veuillez vous reconnecter.");
     logout();
-    window.location.href = "/FrontEnd/pages/homePage.html"; // retour à la page d'accueil (mode public)
+    window.location.href = "/FrontEnd/pages/login.html"; // retour à la page d'accueil (mode public)
   }, delay);
 
   return true; // token valide
