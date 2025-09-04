@@ -6,7 +6,7 @@
 // ======================================================
 
 import { API_URL } from "./config.js";
-import { getToken } from "./authApi.js";
+import { getToken, logout } from "./authApi.js";
 
 // ------------------ Interpétation et gestion des réponses API ------------------
 
@@ -51,7 +51,7 @@ export function checkTokenExpiration(token) {
 
   // Déconnexion immédiate si token est déjà expiré (exemple lors d'une requête)
   if (now >= expirationDate) {
-    localStorage.removeItem("token");
+    logout();
     window.location.href = "/FrontEnd/pages/login.html";
     throw new Error("Délais de connexion dépassé, veuillez vous reconnecter.");
   }
@@ -61,8 +61,8 @@ export function checkTokenExpiration(token) {
   //  On programme une déconnexion automatique quand le token expirera
   setTimeout(() => {
     alert("Délais de connexion dépassé, veuillez vous reconnecter.");
-    localStorage.removeItem("token");
-    window.location.href = "/FrontEnd/pages/login.html";
+    logout();
+    window.location.href = "/FrontEnd/pages/homePage.html"; // retour à la page d'accueil (mode public)
   }, delay);
 
   return true; // token valide
@@ -91,40 +91,18 @@ export async function fetchWorksPublic() {
   }
 }
 
-// Pour le mode admin (connexion avec token)
-export async function fetchWorksAdmin() {
+// ----------------- Ajouter un projet -----------------
+
+export async function addWork(formData) {
   try {
     const token = getToken(); // peut être null
     checkTokenExpiration(token); // gère le cas "null", invalide, expiré (côté client uniquement)
 
     const response = await fetch(`${API_URL}/works`, {
-      // on envoie le token dans l'entête, à l’API pour prouver qu’on est bien authentifié: et le serveur vérifie le token
-      // Bearer: un token de type « porteur » (= le serveur doit le vérifier).
-      headers: { Authorization: `Bearer ${token}` },
-    });
-
-    handleApiResponse(
-      response,
-      "Erreur lors de la récupération des projets en mode privé"
-    );
-
-    return await response.json();
-  } catch (error) {
-    console.error("Erreur fetchWorksAdmin :", error);
-    throw error; // on lance l'erreur et on la rattrapera avec un try/catch là où elle sera appelée
-  }
-}
-
-// ----------------- Ajouter un projet -----------------
-
-export async function addWork(formData) {
-  try {
-    const token = getToken();
-    checkTokenExpiration(token);
-
-    const response = await fetch(`${API_URL}/works`, {
       method: "POST",
       headers: { Authorization: `Bearer ${token}` },
+      // on envoie le token dans l'entête, à l’API pour prouver qu’on est bien authentifié: et le serveur vérifie le token
+      // Bearer: un token de type « porteur » (= le serveur doit le vérifier).
       body: formData, // FormData contient { image, title, category }
     });
 

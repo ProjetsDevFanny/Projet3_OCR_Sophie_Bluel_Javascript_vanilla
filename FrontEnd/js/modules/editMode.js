@@ -129,4 +129,3 @@ export function editPage(loadModal) {
 // --------------------- Note ---------------------
 
 // La fonction editPage() est appelée depuis main.js
-// Pas besoin d'un DOMContentLoaded ici

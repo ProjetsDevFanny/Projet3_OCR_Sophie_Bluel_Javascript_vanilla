@@ -44,7 +44,7 @@ export function createButtons(categories) {
 
     // On utilise directement l'id (pour éviter de faire une requête à l'API à chaque clique sur le bouton)
     // On stocke l'id de la catégorie dans le dataset du bouton pour le filtrage par la suite
-    // On utilise un dataset pour l'événement click par la suite
+    // On utilise un dataset pour l'événement click (filter) par la suite
     btn.dataset.category = category.id; // ex = data-category = data-1
 
     // Le texte du bouton
