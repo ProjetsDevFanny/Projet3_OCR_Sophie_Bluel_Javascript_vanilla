@@ -105,8 +105,12 @@
   padding: 0 5px;
   
   /* Style de la barre de scroll */
-  scrollbar-width: 10px; /* Pour Firefox */
   scrollbar-color: var(--grey-color) transparent;
+}
+
+/* Style de la barre de scroll (Chrome, Edge, Safari) => On ne peut pas ecrire scrollbar-width = 10px (car ne prend que des valeurs: auto/thin/none ) et moi je veux vraiment 10px*/
+.gallery-edit::-webkit-scrollbar {
+  width: 10px; /* largeur en pixels */
 }
 
 /* Styles spécifiques aux figures dans la modale */
@@ -241,14 +245,14 @@ border-radius: 3px;
   font-weight: 400;
   color: var(--dark-blue-color);
   cursor: pointer;
-    
-  &:hover {
-    background-color: var(--grey-color);
-  }
+}
 
-  &:active {
-    transform: scale(0.95);
-  }
+.uploadPhoto-container button:hover {
+  background-color: var(--grey-color);
+}
+
+.uploadPhoto-container button:active {
+  transform: scale(0.95);
 }
 
 .uploadPhoto-container small {

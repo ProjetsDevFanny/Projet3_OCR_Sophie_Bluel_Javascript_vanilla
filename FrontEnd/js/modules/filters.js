@@ -15,8 +15,7 @@ export function createButtons(categories) {
   const uniqueCategories = [
     { id: "all", name: "Tous" },
     ...categories.filter((cat) => {
-      // has : vérifie si l'id de la catégorie est déjà présent: ignore si id déjà rencontré
-      if (seenIds.has(cat.id)) return false;
+      if (seenIds.has(cat.id)) return false; // has : vérifie si l'id de la catégorie est déjà présent: ignore si id déjà rencontré
       seenIds.add(cat.id); // sinon, on ajoute l'id au Set (avec la propriété "add")
       return true; // et on garde l'objet
     }),

@@ -194,13 +194,12 @@ a {
 	border-radius: 60px;
 	cursor: pointer;
 	transition: all 0.3s ease;
-
-	&:hover {
-		background-color: var(--dark-green-color);
-		cursor: pointer;
-	}
 }
 
+.style-btn:hover {
+	background-color: var(--dark-green-color);
+	cursor: pointer;
+}
 /* ======Styles des formulaires ====== */
 
 form {

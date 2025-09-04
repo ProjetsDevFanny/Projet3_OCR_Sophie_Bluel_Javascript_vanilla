@@ -5,7 +5,7 @@
 // Date : 2025-08-21
 // ======================================================
 
-import { getToken } from "../api/authApi.js";
+import { getToken, logout } from "../api/authApi.js";
 import { checkTokenExpiration } from "../api/api.js";
 
 // --------------------- Helpers / Fonctions internes ---------------------
@@ -42,8 +42,7 @@ function updateNavbar() {
   if (loginOutBtn) {
     loginOutBtn.textContent = "logout";
     loginOutBtn.addEventListener("click", () => {
-      localStorage.removeItem("token");
-      localStorage.removeItem("userId");
+      logout();
       window.location.href = "/FrontEnd/pages/login.html";
     });
   }

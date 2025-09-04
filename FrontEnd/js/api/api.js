@@ -71,7 +71,7 @@ export function checkTokenExpiration(token) {
 // ----------------- Récupération des projets depuis l'API -----------------
 
 // Pour le mode public (hors connexion)
-export async function fetchWorksPublic() {
+export async function fetchWorks() {
   try {
     const response = await fetch(`${API_URL}/works`);
     handleApiResponse(

@@ -6,7 +6,7 @@
 // ======================================================
 
 // ----------------- Importation des modules API -----------------
-import { fetchWorksPublic, fetchCategories } from "./api/api.js";
+import { fetchWorks, fetchCategories } from "./api/api.js";
 
 // ----------------- Importation des modules UI -----------------
 import { displayProjects } from "./modules/gallery.js";
@@ -26,7 +26,7 @@ export let projectsArray = [];
 async function init() {
   try {
     // Récupération et affichage des données
-    projectsArray = await fetchWorksPublic(); // on remplit la source unique
+    projectsArray = await fetchWorks(); // on remplit la source unique
     displayProjects(projectsArray); // la gallerie de la Home Page
 
     // Chargement des catégories
