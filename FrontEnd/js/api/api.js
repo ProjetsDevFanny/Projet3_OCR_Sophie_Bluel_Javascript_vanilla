@@ -62,7 +62,7 @@ export function checkTokenExpiration(token) {
   setTimeout(() => {
     alert("Délais de connexion dépassé, veuillez vous reconnecter.");
     logout();
-    window.location.href = "/FrontEnd/pages/login.html"; // retour à la page d'accueil (mode public)
+    window.location.href = "/FrontEnd/pages/homePage.html"; // retour à la page d'accueil (mode public)
   }, delay);
 
   return true; // token valide
@@ -70,23 +70,23 @@ export function checkTokenExpiration(token) {
 
 // ----------------- Récupération des projets depuis l'API -----------------
 
-// Pour le mode public (hors connexion)
 export async function fetchWorks() {
   try {
     const response = await fetch(`${API_URL}/works`);
     handleApiResponse(
       response,
-      "Erreur lors de la récupération des projets en mode public"
+      "Erreur lors de la récupération des projets de la page d'accueil."
     );
 
     const data = await response.json();
     console.log("Projets récupérés :", data);
     return data;
 
-    //le catch attrape toutes les erreurs de fetchWorksPublic (dont celles lancées dans le handleApiResponse)
+    // le catch attrape toutes les erreurs de fetchWorksPublic (dont celles lancées dans le handleApiResponse)
+    // Permet de renvoyer ce qui ne va pas, sans faire planter le code avec un throw seul.
   } catch (error) {
-    console.error("Erreur fetchWorksPublic :", error); // Different du console.log (gèrer les info générales) ici sert à afficher les messages d'erreur
-    // Permet de renvoyer ce qui ne va pas, sans faire planter le code avec un throw.
+    console.error("Erreur lors de la requête fetchWorks", error);
+    // Different du console.log (gèrer les info générales) ici sert à afficher les messages d'erreur
     throw error; // on lance l'erreur et on la rattrapera avec un try/catch là où elle sera appelée
   }
 }
