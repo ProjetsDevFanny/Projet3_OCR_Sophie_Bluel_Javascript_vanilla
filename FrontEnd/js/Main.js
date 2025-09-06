@@ -27,6 +27,7 @@ async function init() {
   try {
     // Récupération et affichage des données
     projectsArray = await fetchWorks(); // on remplit la source unique
+    console.log("ProjectArray contient : ", projectsArray); // petit log de débug (pour savoir ce que l'on récupère)    
     displayProjects(projectsArray); // la gallerie de la Home Page
 
     // Chargement des catégories

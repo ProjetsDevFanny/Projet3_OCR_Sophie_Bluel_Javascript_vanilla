@@ -8,7 +8,7 @@
 import { API_URL } from "./config.js";
 import { getToken, logout } from "./authApi.js";
 
-// ------------------ Interpétation et gestion des réponses API ------------------
+// ------------------ Interpétation et gestion des mauvaises réponses API (côté serveur)------------------
 
 export function handleApiResponse(
   response,
@@ -27,10 +27,9 @@ export function handleApiResponse(
   return response;
 }
 
-// ------------------ Vérifier présence et expiration du token ---------------------------------
+// ------------------ Vérifier présence et expiration du token, et validité du payload (en plus)---------------------------------
 // => intéressant pour gèrer le front (UI) mais n'apporte pas de sécurité réelle = la vérification du token est surtout faite côté serveur dans le backend)	------------------
 
-// Fonction pour vérifier la validité et l'expiration d'un token JWT (côté client uniquement)
 export function checkTokenExpiration(token) {
   if (!token) throw new Error("Utilisateur non authentifié");
 
@@ -38,12 +37,12 @@ export function checkTokenExpiration(token) {
   try {
     payload = JSON.parse(atob(token.split(".")[1]));
     // On décode le token :
-    // - token.split(".")[1] prend la 2e partie du token (le payload encodé en Base64)
+    // - token.split(".")[1] prend la 2e partie du token (= le payload encodé en Base64)
     // - atob() décode la chaîne Base64 en texte
     // - JSON.parse() transforme le texte JSON en objet JavaScript
   } catch {
     // Si le token est mal formé ou corrompu, on lance une erreur
-    throw new Error("Token invalide ou corrompu");
+    throw new Error("Payload du token invalide ou corrompu");
   }
   // On récupère la date d'expiration du token (payload.exp est en secondes depuis Epoch (=pt de départ pour mesurer le temps))
   const expirationDate = new Date(payload.exp * 1000);
@@ -96,22 +95,23 @@ export async function fetchWorks() {
 export async function addWork(formData) {
   try {
     const token = getToken(); // peut être null
-    checkTokenExpiration(token); // gère le cas "null", invalide, expiré (côté client uniquement)
+    checkTokenExpiration(token); // gère le cas payload "null", invalide, token expiré (côté client uniquement) avant de faire la requête
 
     const response = await fetch(`${API_URL}/works`, {
       method: "POST",
-      headers: { Authorization: `Bearer ${token}` },
-      // on envoie le token dans l'entête, à l’API pour prouver qu’on est bien authentifié: et le serveur vérifie le token
+      headers: { Authorization: `Bearer ${token}` }, // on envoie le token dans l'entête, à l’API pour prouver qu’on est bien authentifié: et le serveur vérifie le token
       // Bearer: un token de type « porteur » (= le serveur doit le vérifier).
       body: formData, // FormData contient { image, title, category }
     });
 
-    handleApiResponse(response, "Erreur lors de l’ajout du projet");
+    handleApiResponse(response, "Erreur lors de l'ajout de projet.");
 
-    return response.json();
+    const data = await response.json();
+    console.log("Projet ajouté : ", data);
+    return data;
   } catch (error) {
-    console.error("Erreur addWork :", error);
-    throw error; // on lance l'erreur et on la rattrapera avec un try/catch là où elle sera appelée
+    console.error("Erreur lors de la requête addWork: ", error);
+    throw error;
   }
 }
 
@@ -128,6 +128,9 @@ export async function deleteWork(workId) {
     });
 
     handleApiResponse(response, "Erreur lors de la suppression du projet");
+    console.log("Projet supprimé :", response.url);
+    console.log("Id du projet supprimé :", `${workId}`);
+
     // Pas besoin de parser le JSON (car pas besoin de récupérer les données après le delete)
   } catch (error) {
     console.error("Erreur deleteWork:", error);
