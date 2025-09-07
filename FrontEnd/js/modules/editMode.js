@@ -87,6 +87,7 @@ function setupEditButton(loadModal) {
     childList: true,
     subtree: true,
   });
+  //  On observe le body et tout son sous-arbre pour détecter les ajouts d'éléments
 }
 
 // --- Cache les boutons de filtrage
@@ -98,22 +99,16 @@ function hideFilterButtons() {
     });
     observerHideBtns.disconnect(); // arrêt de l'observation (permet de dépenser moins d'énergie inutilement pour le navigateur)
   });
-  observerHideBtns.observe(document.body, { childList: true, subtree: true }); //  On observe le body et tout son sous-arbre pour détecter les ajouts d'éléments
-
+  observerHideBtns.observe(document.body, { childList: true, subtree: true });
   //Sans MutationObserver, on n'aurait pas le temps de les cacher, il faut d'abord attendre qu'ils apparaissent dans le DOM pour ensuite pouvoir les cacher.
 }
 
 // --------------------- Export / Fonction principale ---------------------
 
 export function editPage(loadModal) {
-  const token = getToken(); // ← Vérification du token, s'il est présent dans le localStorage (stocké lors de la connexion), la page HomePage "se transforme" en Mode édition. (c'est le script JS qui transforme dynamiquement la page en mode édition)
-  if (!token) {
-    // pas de token → pas de mode édition
-    return;
-  }
-
   try {
-    checkTokenExpiration(token); // vérifie validité et expiration
+    const token = getToken(); // ← Vérification du token, s'il est présent dans le localStorage (stocké lors de la connexion), la page HomePage "se transforme" en Mode édition. (c'est le script JS qui transforme dynamiquement la page en mode édition)
+    checkTokenExpiration(token); // vérifie présence, validité(payload) et expiration
     // Si on arrive ici, le token est valide → on active le mode édition :
     displayBanner(); // Mise en place de la bannière noire au dessus du mode édition
     hideFilterButtons(); // On cache les boutons filtres

@@ -1,6 +1,6 @@
 // ======================================================
 // Fichier : login.js
-// Description : Gestion de la connexion
+// Description : Gestion de la page de connexion
 // Auteur : SIMON Fanny
 // Date : 2025-08-20
 // ======================================================
@@ -20,7 +20,7 @@ loginForm.addEventListener("submit", async (e) => {
 
   try {
     const data = await login(email, password);
-    saveAuth(data); // sauvegarde du token dans le localStorage
+    saveAuth(data); // sauvegarde du token et de l'userId dans le localStorage
     window.location.href = "HomePage.html"; // retourne sur la page d'accueil (mais en mode edition car dans la fonction editPage le token a été sauvegardé dans le localStorage)
   } catch (error) {
     document.getElementById("error-message").textContent = error.message;

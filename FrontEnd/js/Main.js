@@ -1,6 +1,6 @@
 // ======================================================
 // Fichier : Main.js
-// Description : Orchestrateur principal de l'application
+// Description : Orchestrateur principal de l'application (gestion page d'accueil et récupération des données centralisée)
 // Auteur : SIMON Fanny
 // Date : 2025-08-17
 // ======================================================
