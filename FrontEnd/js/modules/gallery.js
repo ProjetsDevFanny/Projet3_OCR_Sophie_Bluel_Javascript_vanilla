@@ -13,9 +13,7 @@ export function displayProjects(projectsArray) {
 
   projectsArray.forEach((project) => {
     const figure = document.createElement("figure");
-    // création d'un attribut data-category sur l'élément <figure> avec la valeur de project.category.id.
-    // Permettra le filtrage des projets avec les boutons de filtage par le suite
-
+ 
     const img = document.createElement("img");
     img.src = project.imageUrl;
     img.alt = project.title;

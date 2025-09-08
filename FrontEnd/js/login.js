@@ -26,3 +26,4 @@ loginForm.addEventListener("submit", async (e) => {
     document.getElementById("error-message").textContent = error.message;
   }
 });
+

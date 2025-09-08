@@ -38,7 +38,7 @@ async function init() {
 
     // Configuration de l'interface utilisateur
     clickNavbarLinks();
-
+ 
     // Activation du mode édition si connecté
     editPage(() => loadModalGallery(projectsArray));
     // On passe projectsArray pour que la modale soit synchronisée

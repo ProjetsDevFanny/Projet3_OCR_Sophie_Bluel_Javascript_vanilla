@@ -17,14 +17,6 @@ export function clickNavbarLinks() {
     const linkPath = new URL(link.href); // Récupérer le chemin (URL) complet de la page liée
     // link.href en JavaScript retourne l’URL complète, pas seulement ce qui est écrit dans le HTML !
 
-    // ------------  exemple concret ----------:
-    // console.log(link.href); => "http://127.0.0.1:5500/FrontEnd/pages/HomePage.html#portfolio"
-    // const linkPath = new URL(link.href);
-    // console.log(linkPath.pathname);  (le chemin de la page) => /FrontEnd/pages/HomePage.html"
-    // console.log(linkPath.hash);     // l'ancre => "#portfolio"
-
-    //---------------------------------------------
-
     // Si lien cliqué est sur la page courante, et son ancre aussi, alors on ajoute la classe "active-nav "(= font-weight: 600) cela permet que seul le lien de la page (avec son ancre spécifique) (et pas ceux des autres pages) se mette en surbrillance
     if (
       linkPath.pathname === currentPath.pathname &&
@@ -40,6 +32,8 @@ export function clickNavbarLinks() {
     });
   });
 }
+
+
 
 // --------------------- Explications: -----------------
 

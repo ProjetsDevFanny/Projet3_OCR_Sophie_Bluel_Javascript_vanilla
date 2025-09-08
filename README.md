@@ -1,25 +1,25 @@
 # Portfolio Architecte Sophie Bluel
 
-Code du projet 6 d'intégrateur web - OpenClassrooms.
+Projet 3 formation Développeur Web - OpenClassrooms.
 
 ## 📁 Architecture Frontend
 
 ```
 FrontEnd/
 ├── 📄 pages/                      # Pages HTML
-│   ├── HomePage.html             # Page d'accueil avec portfolio
-│   └── Login.html                # Page de connexion admin
+│   ├── homePage.html             # Page d'accueil avec portfolio
+│   └── login.html                # Page de connexion admin
 │
 ├── 🎨 css/                        # Styles CSS modulaires
-│   ├── Global.css                # Styles globaux et variables
-│   ├── Navbar.css                # Navigation principale
-│   ├── Introduction.css          # Section présentation
-│   ├── Gallery.css               # Galerie de projets
-│   ├── Contact.css               # Formulaire de contact
-│   ├── Footer.css                # Pied de page
-│   ├── Login.css                 # Styles page connexion
-│   ├── HomePageEdit.css          # Styles mode édition
-│   └── Modals.css                # Styles des modales
+│   ├── global.css                # Styles globaux et variables
+│   ├── navbar.css                # Navigation principale
+│   ├── introduction.css          # Section présentation
+│   ├── gallery.css               # Galerie de projets
+│   ├── contact.css               # Formulaire de contact
+│   ├── footer.css                # Pied de page
+│   ├── login.css                 # Styles page connexion
+│   ├── homePageEdit.css          # Styles mode édition
+│   └── modals.css                # Styles des modales
 │
 ├── 🖼️ assets/                     # Ressources statiques
 │   ├── images/                   # Images du portfolio
@@ -53,7 +53,7 @@ FrontEnd/
         │   └── setUpButtonListeners() # Gestion clics
         │
         ├── 🧭 navbar.js          # Navigation
-        │   └── clickNavbarLinks() # Gestion liens actifs
+        │   └── clickNavbarLinks() # Gestion liens actifs et navigation
         │
         ├── ✏️ editMode.js        # Mode édition administrateur
         │   ├── editPage()        # Activation mode édition
@@ -71,53 +71,41 @@ FrontEnd/
 
 ## 🏗️ Architecture JavaScript
 
-### Principe d'organisation
-
-L'application suit une **architecture modulaire** avec séparation claire des responsabilités :
-
-```mermaid
-graph TD
-    A[main.js - Orchestrateur] --> B[api/ - Couche données]
-    A --> C[modules/ - Logique métier]
-    A --> D[login.js - Authentification]
-
-    B --> E[api.js - fetchWorks/fetchCategories]
-    B --> F[authApi.js - login/logout]
-    B --> G[config.js - Configuration]
-
-    C --> H[gallery.js - Affichage projets]
-    C --> I[filters.js - Filtres catégories]
-    C --> J[navbar.js - Navigation]
-    C --> K[editMode.js - Mode édition]
-    C --> L[modals.js - Modales]
-
-    K --> M[Vérification token]
-    K --> N[Affichage bannière édition]
-    K --> O[Bouton modifier]
-
-    L --> P[Modale galerie]
-    L --> Q[Modale ajout photo]
-    L --> R[Gestion upload]
-```
-
 ### Flux d'initialisation
 
 ```mermaid
 sequenceDiagram
+    participant DOM as DOMContentLoaded
     participant M as main.js
     participant A as api.js
     participant G as gallery.js
     participant F as filters.js
+    participant N as navbar.js
     participant E as editMode.js
+    participant MOD as modals.js
 
+    DOM->>M: init()
+
+    Note over M: 1. Récupération des données
     M->>A: fetchWorks()
-    A-->>M: projets[]
-    M->>G: displayProjects(projets)
+    A-->>M: projectsArray[]
+    M->>G: displayProjects(projectsArray)
+
     M->>A: fetchCategories()
-    A-->>M: catégories[]
-    M->>F: createButtons(catégories)
-    M->>F: setUpButtonListeners(projets)
-    M->>E: editPage() si token
+    A-->>M: categories[]
+
+    Note over M: 2. Configuration des filtres
+    M->>F: createButtons(categories)
+    M->>F: setUpButtonListeners(projectsArray)
+
+    Note over M: 3. Configuration des modales
+    M->>MOD: injectCategoriesInSelect(categories)
+
+    Note over M: 4. Configuration de l'interface
+    M->>N: clickNavbarLinks()
+
+    Note over M: 5. Mode édition (si connecté)
+    M->>E: editPage(() => loadModalGallery(projectsArray))
 ```
 
 ## 🚀 Installation et lancement
@@ -198,6 +186,26 @@ sequenceDiagram
 ## 🔧 Astuces de développement
 
 > **💡 Conseil** : Ouvrir le backend et le frontend dans deux instances VSCode séparées pour éviter les conflits de ports et faciliter le développement.
+
+## 🆕 Améliorations récentes
+
+### Navigation améliorée
+
+- ✅ Gestion automatique des liens actifs dans la navbar
+- ✅ Support des ancres (#portfolio, #contact) avec scroll fluide
+- ✅ Navigation entre pages (homePage ↔ login) avec état persistant
+
+### Interface utilisateur
+
+- ✅ Icône Instagram remplacée par image locale pour une meilleure compatibilité
+- ✅ Effets de hover optimisés sur les éléments interactifs
+- ✅ Gestion des erreurs améliorée avec messages utilisateur
+
+### Architecture
+
+- ✅ Flux d'initialisation optimisé et documenté
+- ✅ Gestion modulaire des événements de navigation
+- ✅ Code plus maintenable avec séparation des responsabilités
 
 ## 📄 Licence
 

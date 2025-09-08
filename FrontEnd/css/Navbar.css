@@ -53,6 +53,14 @@ nav li a:hover {
 	font-weight: 600;
 }
 
+/* Quand on charge la page "login" je veux que le lien "login" soit en surbrillance */
+#login-btn {
+	font-weight: 600;
+}
+
+#login-out-btn:hover {
+	font-weight: 600;
+}
 
 /* Modification de la taille de l'icone instagram */
 .insta-icon {
