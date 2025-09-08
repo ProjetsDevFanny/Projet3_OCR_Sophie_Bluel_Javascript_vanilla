@@ -41,11 +41,11 @@
         <h2>Log In</h2>
         <form action="#" method="post" id="loginForm">
           <label for="email">Email</label>
-          <input type="email" name="email" id="email" autocomplete="username" onfocus="this.removeAttribute('readonly')"
-            placeholder="Entrez votre email">
+          <input type="email" name="email" id="email" autocomplete="username" readonly
+            onfocus="this.removeAttribute('readonly')" placeholder="Entrez votre email">
           <label for="password">Mot de passe</label>
-          <input type="password" name="password" id="password" readonly onfocus="this.removeAttribute('readonly')"
-            placeholder="Entrez votre mot de passe">
+          <input type="password" name="password" id="password" autocomplete="current-password" readonly
+            onfocus="this.removeAttribute('readonly')" placeholder="Entrez votre mot de passe">
           <button class="style-btn" id="submit-loginBtn" type="submit">Se connecter</button>
         </form>
         <p class="forgot-password">Mot de passe oublié</p>

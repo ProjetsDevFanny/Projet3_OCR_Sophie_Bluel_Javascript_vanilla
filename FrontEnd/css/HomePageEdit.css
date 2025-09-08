@@ -39,3 +39,8 @@
   font-family: "Work Sans", sans-serif;
   cursor: pointer;
 }
+
+/* Suppression du focus visible du bouton modifier */
+.btn-modifier:focus {
+  outline: none;
+}

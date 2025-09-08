@@ -1,8 +1,10 @@
 /* =============Style de la page de connexion ============= */
 
-html, body {
-  height: 100vh; /* 100% de la hauteur de la fenêtre */
-  position: relative;
+html,
+body {
+	height: 100vh;
+	/* 100% de la hauteur de la fenêtre */
+	position: relative;
 	overflow-y: hidden;
 }
 
@@ -19,19 +21,22 @@ footer nav ul li {
 }
 
 #login {
-	width: 50%;
+	width: 40%;
 	margin: auto;
 }
-#login > * {
+
+#login>* {
 	text-align: center;
 
 }
-#login h2{
+
+#login h2 {
 	margin-bottom: 20px;
 }
+
 #login form {
 	text-align: left;
-	margin-top:30px;
+	margin-top: 30px;
 	display: flex;
 	flex-direction: column;
 }
@@ -44,12 +49,21 @@ footer nav ul li {
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
+
+/* Test pour changer la couleur du background quand on focus sur l'input email et mot de passe = non fonctionnel*/
+#login input,
+#login input:focus,
+#login input:webkit-autofill,
+#login input:-internal-autofill-selected {
+	background-color: var(--white-color) !important;
+}
+
 #login label {
 	margin: 2em 0 1em 0;
 }
 
 #submit-loginBtn {
-	margin : 3em auto 2em auto ;
+	margin: 3em auto 2em auto;
 }
 
 .forgot-password {

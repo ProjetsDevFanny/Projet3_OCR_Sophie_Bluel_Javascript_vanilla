@@ -19,13 +19,6 @@ function openModal(modal) {
   overlay.classList.remove("hidden");
 }
 
-// Ferme une modale et cache l’overlay
-function closeModal(modal) {
-  const overlay = document.querySelector(".modal-overlay");
-  modal.classList.add("hidden");
-  overlay.classList.add("hidden");
-}
-
 // Ferme toutes les modales ouvertes
 function closeAllModals() {
   document
@@ -34,7 +27,69 @@ function closeAllModals() {
   document.querySelector(".modal-overlay").classList.add("hidden");
 }
 
-// Vider le formulaire d'ajout de photo, après ajout d'une projet
+// Attachement des événements de fermeture des modales
+// => Click sur la croix, sur l'overlay et sur la touche escape => fermeture des modales avec confirmation
+function setupModalsEvents() {
+  const overlay = document.querySelector(".modal-overlay");
+  const closeBtnModalGallery = document.getElementById(
+    "close-btn-modal-gallery"
+  );
+  const closeBtnModalAddPhoto = document.getElementById(
+    "close-btn-modal-add-photo"
+  );
+  const backBtn = document.querySelector(".back-btn");
+  const modalAddPhoto = document.getElementById("modal-add-photo");
+
+  // Fermeture de la modale avec confirmation si clic sur la croix
+  if (closeBtnModalGallery && closeBtnModalAddPhoto) {
+    closeBtnModalGallery.addEventListener("click", () => {
+      const confirmed = confirm(
+        "Êtes-vous sûr de vouloir quitter ?\nLes modifications non validées seront perdues."
+      );
+      if (confirmed) closeAllModals();
+    });
+    closeBtnModalAddPhoto.addEventListener("click", () => {
+      const confirmed = confirm(
+        "Êtes-vous sûr de vouloir quitter ?\nLes modifications non validées seront perdues."
+      );
+      if (confirmed) closeAllModals();
+    });
+  }
+
+  // Fermeture de la modale avec confirmation si clic sur l'overlay
+  if (overlay) {
+    overlay.addEventListener("click", () => {
+      const confirmed = confirm(
+        "Êtes-vous sûr de vouloir quitter ?\nLes modifications non validées seront perdues."
+      );
+      if (confirmed) closeAllModals();
+    });
+  }
+
+  // Fermeture de la modale avec confirmation si touche Escape
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      const confirmed = confirm(
+        "Êtes-vous sûr de vouloir quitter ?\nLes modifications non validées seront perdues."
+      );
+      if (confirmed) closeAllModals();
+    }
+  });
+
+  // Retour en arrière avec confirmation
+  backBtn.addEventListener("click", () => {
+    const confirmed = confirm(
+      "Êtes-vous sûr de vouloir revenir en arrière ?\nValidez votre projet avant, sinon il risque d'être perdu."
+    );
+    if (!confirmed) return;
+    clearForm();
+    modalAddPhoto.classList.add("hidden");
+  });
+}
+// Attachement des événements de fermeture des modales (1 fois au chargement)
+setupModalsEvents();
+
+// Vider le formulaire d'ajout de photo, après ajout d'une projet (modale Ajout Photo)
 function clearForm() {
   const title = document.getElementById("title");
   const categorySelect = document.getElementById("category-select");
@@ -71,7 +126,7 @@ function displayProjectsModal(projectsArray) {
     const caption = document.createElement("figcaption");
     caption.innerText = project.title;
 
-    // Création et gestion de la suppression
+    // Création et gestion de la suppression (modale Gallery Display)
     const supprPhotoIcon = document.createElement("i");
     supprPhotoIcon.classList.add("fa-solid", "fa-trash-can", "supprPhotoIcon");
     supprPhotoIcon.dataset.id = project.id;
@@ -112,34 +167,12 @@ function displayProjectsModal(projectsArray) {
 
 // Chargement de la modale Gallery Display
 export async function loadModalGallery(projectsArray) {
-  const modalGalleryDisplay = document.getElementById("modalGalleryDisplay");
+  const modalGalleryDisplay = document.getElementById("modal-gallery-display");
 
   // Toujours utiliser la source globale projectsArray
   displayProjectsModal(projectsArray); // mise à jour au chargement
   openModal(modalGalleryDisplay);
 }
-
-// Attacher les events UNE SEULE FOIS (au chargement)
-function setupModalGalleryEvents() {
-  const modalGalleryDisplay = document.getElementById("modalGalleryDisplay");
-  const overlay = document.querySelector(".modal-overlay");
-  const closeBtn = modalGalleryDisplay.querySelector(".close-btn");
-
-  if (closeBtn) {
-    closeBtn.addEventListener("click", () => closeModal(modalGalleryDisplay));
-  }
-
-  if (overlay) {
-    overlay.addEventListener("click", () => closeModal(modalGalleryDisplay));
-  }
-
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeModal(modalGalleryDisplay);
-  });
-}
-
-// On appelle ça une seule fois au démarrage
-setupModalGalleryEvents();
 
 // ========================== 2ème Modale : Ajout Photo ==========================
 
@@ -149,58 +182,20 @@ addPhotoBtn.addEventListener("click", () => {
   openAddPhotoModal();
 });
 
-// Fonction qui ouvre la modale
+// Fonction qui ouvre la modale et met en place le formulaire de la modale addPhoto
 function openAddPhotoModal() {
   const modalAddPhoto = document.getElementById("modal-add-photo");
   openModal(modalAddPhoto);
 }
 
-// -------- Attacher les événements de la modale addPhoto (une seule fois)-------------------
+// -------- Mise en place de la modale addPhoto (formulaire d'ajout d'un projet)-------------------
 
-function setupAddPhotoEvents() {
+// Mise en place de la modale Ajout Photo
+function setupAddPhotoModal() {
   const modalAddPhoto = document.getElementById("modal-add-photo");
-  const overlay = document.querySelector(".modal-overlay");
-  const closeBtn = modalAddPhoto.querySelector(".close-btn");
-  const backBtn = modalAddPhoto.querySelector(".back-btn");
   const addPhotoSubmitBtn = document.getElementById("submit-addPhotoBtn"); // Bouton submit du formulaire
   const uploadPhotoBtn = document.getElementById("uploadPhotoBtn"); // Bouton upload photo
   const fileInput = document.getElementById("image"); // Input file pour l'upload de la photo
-
-  // Retour en arrière
-  backBtn.addEventListener("click", () => {
-    const confirmed = confirm(
-      "Êtes-vous sûr de vouloir revenir en arrière ?\nValidez votre projet avant, sinon il risque d'être perdu."
-    );
-    if (!confirmed) return;
-    clearForm();
-    modalAddPhoto.classList.add("hidden");
-  });
-
-  // Fermer la modale avec confirmation si clic sur la croix
-  closeBtn.addEventListener("click", () => {
-    const confirmed = confirm(
-      "Êtes-vous sûr de vouloir quitter ? Les modifications non sauvegardées seront perdues."
-    );
-    if (confirmed) closeAllModals();
-  });
-
-  // Fermer si clic sur overlay, avec confirmation
-  overlay.addEventListener("click", () => {
-    const confirmed = confirm(
-      "Êtes-vous sûr de vouloir quitter ? Les modifications non sauvegardées seront perdues."
-    );
-    if (confirmed) closeAllModals();
-  });
-
-  // Fermer si touche Escape, avec confirmation
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") {
-      const confirmed = confirm(
-        "Êtes-vous sûr de vouloir quitter ? Les modifications non sauvegardées seront perdues."
-      );
-      if (confirmed) closeAllModals();
-    }
-  });
 
   // Upload photo → input + aperçu
   uploadPhotoBtn.addEventListener("click", () => fileInput.click()); // simulation de clic sur le bouton upload photo (car on ne peut pas cliquer sur l'input file) "tu fais comme si tu cliquais sur fileInput"
@@ -307,9 +302,8 @@ function setupAddPhotoEvents() {
     }
   });
 }
-
-// => On attache tous les events une seule fois au chargement
-setupAddPhotoEvents();
+// Mise en place de la modale Ajout Photo : Attachement des événements de la modale addPhoto (1 fois au chargement)
+setupAddPhotoModal();
 
 // ========================== Injecter les catégories dans le select ( modal Ajout Photo)==========================
 

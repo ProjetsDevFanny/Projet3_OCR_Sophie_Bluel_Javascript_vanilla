@@ -112,7 +112,7 @@ section {
 
 html {
 	scroll-behavior: smooth;
-	background-color: #fffef8;
+	background-color: var(--background-color);
 }
 
 body {
@@ -174,9 +174,13 @@ body {
 
 a {
 	text-decoration: none;
-	color: #000000;
-	transition: color 0.2s ease;
-}
+	color: var(--black-color);
+	/* Pour centrer les liens dans leur conteneur "a" : surtout pour l'icone instagram */
+	display: flex;
+  justify-content: center; 
+  align-items: center;     
+	}
+
 
 /* ============= Style général des boutons ============= */
 

@@ -2,7 +2,7 @@
 /* ============= Style du formulaire de contact ============= */
 
 #contact {
-	width: 50%;
+	width: 40%;
 	margin: auto;
 }
 #contact > * {
@@ -29,6 +29,7 @@
 #contact textarea {
 	border: none;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.3);
+	resize: none; /* empêche complètement le redimensionnement (3 traits en bas à droite)*/
 }
 
 #contact button {

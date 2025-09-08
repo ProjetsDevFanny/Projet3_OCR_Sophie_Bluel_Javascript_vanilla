@@ -106,9 +106,9 @@ function hideFilterButtons() {
 // --------------------- Export / Fonction principale ---------------------
 
 export function editPage(loadModal) {
+  const token = getToken(); // ← Vérification du token, s'il est présent dans le localStorage (stocké lors de la connexion), la page HomePage "se transforme" en Mode édition. (c'est le script JS qui transforme dynamiquement la page en mode édition)
+  if (!token) return;
   try {
-    const token = getToken(); // ← Vérification du token, s'il est présent dans le localStorage (stocké lors de la connexion), la page HomePage "se transforme" en Mode édition. (c'est le script JS qui transforme dynamiquement la page en mode édition)
-    checkTokenExpiration(token); // vérifie présence, validité(payload) et expiration
     // Si on arrive ici, le token est valide → on active le mode édition :
     displayBanner(); // Mise en place de la bannière noire au dessus du mode édition
     hideFilterButtons(); // On cache les boutons filtres
