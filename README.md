@@ -93,7 +93,7 @@ async function init() {
 **Avantages :**
 
 - ✅ Synchronisation automatique entre galerie et modales
-- ✅ Pas de rechargement inutile des données
+- ✅ Les projets sont récupérés une seul fois (main.js) au lancement de l'application: Pas de rechargement inutile des données
 - ✅ Gestion centralisée de l'état des projets
 
 ### Flux d'initialisation
@@ -223,6 +223,29 @@ sequenceDiagram
 ### Interface utilisateur
 
 - ✅ Messages utilisateur pour confirmer la fermeture de la modale qui permet d'ajouter un projet (click sur la croix, l'overlay et touche escape du clavier)
+
+## 🚀 Déploiement
+
+### Expérience Netlify
+
+J'ai tenté de déployer ce site sur Netlify mais j'ai rencontré une erreur 404. Le problème vient du fait que Netlify cherche automatiquement un fichier `index.html` à la racine pour lancer le site, alors que mon fichier principal se trouve dans `pages/homePage.html`.
+
+### Solutions possibles
+
+Pour résoudre ce problème, deux approches sont viables :
+
+1. **Renommer le fichier principal :**
+
+   - `pages/homePage.html` → `index.html`
+   - Mettre `index.html` à la racine du projet
+
+2. **Créer un fichier de redirection :**
+   - Créer un `index.html` à la racine
+   - Ajouter une redirection automatique vers `pages/homePage.html`
+
+Ces solutions permettraient un déploiement réussi sur Netlify ou d'autres plateformes d'hébergement statique.
+
+**Note :** Ce déploiement sera certainement réalisé plus tard, mais pour le moment je préfère me recentrer sur les fonctionnalités demandées pour ce projet de formation.
 
 ## 📄 Licence
 
