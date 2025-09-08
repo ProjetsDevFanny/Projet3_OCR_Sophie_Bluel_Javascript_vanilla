@@ -139,6 +139,33 @@ sequenceDiagram
 
 - Un éditeur de code (VSCode recommandé)
 - Extension Live Server (pour le frontend)
+- Node.js et npm (pour le backend)
+
+### Backend
+
+1. **Ouvrir un terminal dans le dossier Backend**
+
+   ```bash
+   cd Backend
+   ```
+
+2. **Installer les dépendances**
+
+   ```bash
+   npm install
+   ```
+
+3. **Lancer le serveur**
+
+   ```bash
+   npm start
+   ```
+
+   Le serveur backend sera accessible sur `http://localhost:5678`
+
+   **⚠️ Important :** Laisser ce terminal ouvert pour que le backend continue de fonctionner.
+
+   📖 **Pour plus d'informations détaillées sur le backend** (compte de test, documentation Swagger, etc.), consultez le [README du Backend](Backend/README.md).
 
 ### Frontend
 
@@ -154,6 +181,11 @@ sequenceDiagram
    - "Open with Live Server"
 
    L'application s'ouvre sur `http://localhost:5500`
+
+### Ordre de lancement recommandé
+
+1. **D'abord le Backend** (terminal 1)
+2. **Puis le Frontend** (Live Server)
 
 ## 🔑 Authentification
 
