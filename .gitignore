@@ -1,1 +1,21 @@
+# IDE
 .idea
+
+# Variables d'environnement
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# Fichiers de configuration sensibles
+Backend/.env
+Backend/config/.env
+
+# Base de données
+Backend/database.sqlite
+Backend/database.sqlite-journal
+
+# Dépendances
+node_modules/
+Backend/node_modules/

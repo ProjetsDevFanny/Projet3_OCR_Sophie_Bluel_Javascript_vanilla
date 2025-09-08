@@ -2,6 +2,10 @@
 
 Projet 3 formation Développeur Web - OpenClassrooms.
 
+## 📸 Aperçu de l'application
+
+![Portfolio Sophie Bluel - Version Desktop](FrontEnd/assets/images/screenshot_desktop.png)
+
 ## 📁 Architecture Frontend
 
 ```
@@ -66,10 +70,31 @@ FrontEnd/
             ├── loadModalGallery() # Modale galerie
             ├── loadModalAddPhoto() # Modale ajout photo
             ├── deleteProjectFromAPI() # Suppression projet
-            └── refreshAllProjects() # Mise à jour galerie
+            └── injectCategoriesInSelect() # Injection catégories dans select
 ```
 
 ## 🏗️ Architecture JavaScript
+
+### Gestion des données
+
+L'application utilise un **tableau global** `projectsArray` comme source unique de vérité :
+
+```javascript
+// main.js - Source unique de vérité
+export let projectsArray = [];
+
+async function init() {
+  projectsArray = await fetchWorks(); // Récupération initiale
+  displayProjects(projectsArray); // Affichage galerie
+  // ... autres initialisations
+}
+```
+
+**Avantages :**
+
+- ✅ Synchronisation automatique entre galerie et modales
+- ✅ Pas de rechargement inutile des données
+- ✅ Gestion centralisée de l'état des projets
 
 ### Flux d'initialisation
 
@@ -143,17 +168,17 @@ sequenceDiagram
 
 - ✅ Affichage du portfolio
 - ✅ Filtrage par catégories
-- ✅ Navigation responsive
 - ✅ Formulaire de contact
 
 ### Mode administrateur
 
 - ✅ Connexion sécurisée
-- ✅ Bannière "Mode édition"
+- ✅ HomePage en "Mode édition" (bannière noire, bouton "modifier", lien "logout"..)
+- ✅ Ouverture d'une modale pour gèrer les projets
 - ✅ Suppression de projets
-- ✅ Ajout de nouveaux projets
+- ✅ Ajout de nouveaux projets avec :
 - ✅ Upload d'images
-- ✅ Gestion des catégories
+- ✅ Sélection d'une catégorie pour le nouveau projet ajouté
 
 ## 🛠️ Technologies utilisées
 
@@ -169,6 +194,7 @@ sequenceDiagram
 ### Architecture modulaire
 
 - **main.js** : Point d'entrée unique, orchestration
+- **login.js**: Gestion de la page de connexion
 - **api/** : Couche d'abstraction des données
 - **modules/** : Logique métier séparée par fonctionnalité
 
@@ -192,20 +218,11 @@ sequenceDiagram
 ### Navigation améliorée
 
 - ✅ Gestion automatique des liens actifs dans la navbar
-- ✅ Support des ancres (#portfolio, #contact) avec scroll fluide
 - ✅ Navigation entre pages (homePage ↔ login) avec état persistant
 
 ### Interface utilisateur
 
-- ✅ Icône Instagram remplacée par image locale pour une meilleure compatibilité
-- ✅ Effets de hover optimisés sur les éléments interactifs
-- ✅ Gestion des erreurs améliorée avec messages utilisateur
-
-### Architecture
-
-- ✅ Flux d'initialisation optimisé et documenté
-- ✅ Gestion modulaire des événements de navigation
-- ✅ Code plus maintenable avec séparation des responsabilités
+- ✅ Messages utilisateur pour confirmer la fermeture de la modale qui permet d'ajouter un projet (click sur la croix, l'overlay et touche escape du clavier)
 
 ## 📄 Licence
 
