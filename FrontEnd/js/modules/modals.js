@@ -93,13 +93,13 @@ setupModalsEvents();
 function clearForm() {
   const title = document.getElementById("title");
   const categorySelect = document.getElementById("category-select");
-  const image = document.getElementById("image");
+  const fileInput = document.getElementById("file-input");
   const uploadedImage = document.getElementById("uploadedImage");
   const uploadPhotoContainer = document.querySelector(".uploadPhoto-container");
 
   if (title) title.value = "";
   if (categorySelect) categorySelect.value = "";
-  if (image) image.value = "";
+  if (fileInput) fileInput.value = "";
   if (uploadedImage) uploadedImage.remove(); // l'enlève du DOM mais il exite toujours en mémoire (on peut y accéder en JS)
 
   // Réafficher le conteneur d'upload avec les éléments centrés correctement
@@ -109,6 +109,13 @@ function clearForm() {
 }
 
 // ========================== 1ère Modale : Gallery Display ==========================
+
+// Chargement de la modale Gallery Display (au click sur le btn-modifier)
+export async function loadModalGallery(projectsArray) {
+  const modalGalleryDisplay = document.getElementById("modal-gallery-display");
+  displayProjectsModal(projectsArray); // Toujours utiliser la source globale projectsArray : mise à jour au chargement
+  openModal(modalGalleryDisplay);
+}
 
 // Affiche les projets dans la modale Gallery Display
 function displayProjectsModal(projectsArray) {
@@ -165,15 +172,6 @@ function displayProjectsModal(projectsArray) {
   });
 }
 
-// Chargement de la modale Gallery Display
-export async function loadModalGallery(projectsArray) {
-  const modalGalleryDisplay = document.getElementById("modal-gallery-display");
-
-  // Toujours utiliser la source globale projectsArray
-  displayProjectsModal(projectsArray); // mise à jour au chargement
-  openModal(modalGalleryDisplay);
-}
-
 // ========================== 2ème Modale : Ajout Photo ==========================
 
 // Bouton "Ajouter une photo" → ouvre la 2ème modale
@@ -182,7 +180,7 @@ addPhotoBtn.addEventListener("click", () => {
   openAddPhotoModal();
 });
 
-// Fonction qui ouvre la modale et met en place le formulaire de la modale addPhoto
+// Fonction qui ouvre la modale add-photo
 function openAddPhotoModal() {
   const modalAddPhoto = document.getElementById("modal-add-photo");
   openModal(modalAddPhoto);
@@ -195,12 +193,12 @@ function setupAddPhotoModal() {
   const modalAddPhoto = document.getElementById("modal-add-photo");
   const addPhotoSubmitBtn = document.getElementById("submit-addPhotoBtn"); // Bouton submit du formulaire
   const uploadPhotoBtn = document.getElementById("uploadPhotoBtn"); // Bouton upload photo
-  const fileInput = document.getElementById("image"); // Input file pour l'upload de la photo
+  const fileInput = document.getElementById("file-input"); // Input file pour l'upload de la photo
 
   // Upload photo → input + aperçu
   uploadPhotoBtn.addEventListener("click", () => fileInput.click()); // simulation de clic sur le bouton upload photo (car on ne peut pas cliquer sur l'input file) "tu fais comme si tu cliquais sur fileInput"
 
-  // On écoute l'événement "change" sur l'input file (quand l'utilisateur choisit un fichier)
+  // On écoute l'événement "change" sur l'input file (quand l'utilisateur choisi un fichier)
   fileInput.addEventListener("change", () => {
     // On récupère le premier fichier sélectionné
     const file = fileInput.files[0];
@@ -209,7 +207,7 @@ function setupAddPhotoModal() {
     // On crée un objet FileReader pour lire le contenu du fichier
     const reader = new FileReader();
     // Quand la lecture du fichier est terminée, cette fonction est appelée
-    reader.onload = (e) => {
+    reader.onload = () => {
       // On cherche s'il existe déjà un ancien aperçu et on le supprime
       const oldPreview = modalAddPhoto.querySelector("#uploadedImage");
       if (oldPreview) oldPreview.remove();
@@ -223,7 +221,8 @@ function setupAddPhotoModal() {
       // Créer et insérer l’aperçu
       const img = document.createElement("img");
       img.id = "uploadedImage"; // on lui donne un id pour pouvoir le retrouver et le supprimer si nécessaire
-      img.src = e.target.result; // src = contenu du fichier lu en base64 par FileReader
+      img.src = reader.result; // src = contenu du fichier convertit en base64 par FileReader
+      // console.log("Image uploadée: en Data URL au format base64 : ", img.src);
       img.alt = "Aperçu de la photo choisie"; // texte alternatif pour l'image
 
       // On ajoute l'image dans le div prévu pour l'aperçu
@@ -238,7 +237,7 @@ function setupAddPhotoModal() {
   function checkFormCompletion() {
     const title = document.getElementById("title").value;
     const category = document.getElementById("category-select").value;
-    const fileInput = document.getElementById("image");
+    const fileInput = document.getElementById("file-input");
 
     if (fileInput.files[0] && title && category) {
       addPhotoSubmitBtn.classList.add("verified-add-photo-form");
@@ -309,7 +308,13 @@ setupAddPhotoModal();
 
 export function injectCategoriesInSelect(categories) {
   const select = document.querySelector("#category-select");
-  categories.forEach((category) => {
+  const newSetSelect = new Set();
+  const uniqueCategoriesSelect = categories.filter((cat) => {
+    if (newSetSelect.has(cat.id)) return false;
+    newSetSelect.add(cat.id);
+    return true;
+  });
+  uniqueCategoriesSelect.forEach((category) => {
     const option = document.createElement("option");
     option.value = category.id;
     option.textContent = category.name;

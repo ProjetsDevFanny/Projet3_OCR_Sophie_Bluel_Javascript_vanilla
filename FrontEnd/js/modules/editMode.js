@@ -6,7 +6,6 @@
 // ======================================================
 
 import { getToken, logout } from "../api/authApi.js";
-import { checkTokenExpiration } from "../api/api.js";
 
 // --------------------- Helpers / Fonctions internes ---------------------
 
