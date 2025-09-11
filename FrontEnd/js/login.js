@@ -27,3 +27,13 @@ loginForm.addEventListener("submit", async (e) => {
   }
 });
 
+//Pour résoudre le soucis autocomplete du formulaire de login: (en direct avec l'évaluateur)
+window.addEventListener("DOMContentLoaded", () => {
+  email.disabled = "true";
+  password.disabled = "true";
+  setTimeout(() => {
+    // Attention le setTimout provoque des soucis de mémoires (prend de l'énergie)
+    email.disabled = false;
+    password.disabled = false;
+  }, 500);
+});

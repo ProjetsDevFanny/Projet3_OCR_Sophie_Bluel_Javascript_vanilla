@@ -33,7 +33,7 @@ export function createButtons(categories) {
     document.getElementById("portfolio").insertBefore(btnContainer, gallery); // On insère la "div btn-container" dans l'élément parent "portfolio" juste avant la galerie
   }
 
-  // Si le containeur existe, on vide le vide de ses boutons (pour éviter d'empiler les boutons dans le containeur, à appel de la fonction createButtons)
+  // Si le containeur existe, on le vide de ses boutons (pour éviter d'empiler les boutons dans le containeur, à appel de la fonction createButtons)
   btnContainer.innerHTML = "";
 
   // Création des boutons
@@ -44,7 +44,7 @@ export function createButtons(categories) {
     // On utilise directement l'id (pour éviter de faire une requête à l'API à chaque clique sur le bouton)
     // On stocke l'id de la catégorie dans le dataset du bouton pour le filtrage par la suite
     // On utilise un dataset pour l'événement click (filter) par la suite
-    btn.dataset.category = category.id; // ex = data-category = data-1
+    btn.dataset.category = category.id; // ex = data-category = 1
 
     // Le texte du bouton
     btn.textContent = category.name;
@@ -94,14 +94,9 @@ function filterProjects(categoryId, projectsArray) {
 
 // Notes personnelles :
 
-// categoryId → l'ID de la catégorie choisie (ex. "1")
+// Attention : parseInt tronque (j'avais utilisé parseInt dans le code précédent)
 
-// projectsArray.filter(...) crée un nouveau tableau contenant seulement les projets qui passent le test.
+// parseInt("3.9", 10) → 3
+// Number("3.9") ou +"3.9" → 3.9
 
-// (project) => project.category.id === parseInt(categoryId)
-// Pour chaque projet, on regarde si son category.id correspond au categoryId choisi.
-// parseInt(categoryId) transforme la valeur de categoryId en nombre, au cas où categoryId serait une chaîne, pour comparer la même chose
-
-// project.category.id (nombre = id de la catégorie cherchée dans le tableau projectsArray) avec parseInt(categoryId) (string (= valeur du dataSet du bouton dans notre cas) convertie en nombre).
-
-// => Il faut toujours lui donner en comparaison un nombre, car project.category.id est un nombre.
+// Dans mon cas (id d’une catégorie = entier), donc on n'a pas besoin de tronquer => on utilise Number()

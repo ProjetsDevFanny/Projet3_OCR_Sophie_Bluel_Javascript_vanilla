@@ -233,7 +233,7 @@ function setupAddPhotoModal() {
     reader.readAsDataURL(file);
   });
 
-  // ----- Vérification des champs pour activer le bouton submit (coloration verte)-----
+  // ----- Vérification des champs pour "activer" le bouton submit (coloration verte)-----
   function checkFormCompletion() {
     const title = document.getElementById("title").value;
     const category = document.getElementById("category-select").value;
@@ -258,7 +258,7 @@ function setupAddPhotoModal() {
   // Vérification initiale
   checkFormCompletion();
 
-  //---------------------------------------
+  //-------------------------------------------------------------------------------
 
   // Submit du formulaire si tous les champs sont remplis → envoi à l’API
   addPhotoSubmitBtn.addEventListener("click", async (e) => {
